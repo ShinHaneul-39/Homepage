@@ -1,4 +1,6 @@
 /* 기본 리셋 및 폰트 설정 */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css');
+
 * {
   margin: 0;
   padding: 0;
@@ -6,7 +8,7 @@
 }
 
 :root {
-  --primary-color: #3a86ff;
+  --primary-color: #0b68ff;
   --secondary-color: #8ecae6;
   --accent-color: #219ebc;
   --text-primary: #2b2d42;
@@ -23,11 +25,13 @@
   --border-radius-full: 50%;
 
   /* Dark Mode Variables */
-  --primary-color-dark: #023e8a;
-  --secondary-color-dark: #0077b6;
+  --primary-color-dark: #83b8ff;
+  --secondary-color-dark: #005785;
   --accent-color-dark: #00b4d8;
-  --text-primary-dark: #f0f0f0; /* 더 밝은 색으로 변경 */
-  --text-secondary-dark: #c0c0c0; /* 더 밝은 색으로 변경 */
+  --text-primary-dark: #f0f0f0;
+  /* 더 밝은 색으로 변경 */
+  --text-secondary-dark: #c0c0c0;
+  /* 더 밝은 색으로 변경 */
   --bg-light-dark: #1a1a1a;
   --bg-white-dark: #2c2c2c;
   --shadow-sm-dark: 0 2px 10px rgba(0, 0, 0, 0.3);
@@ -49,7 +53,8 @@ body.dark-mode {
 }
 
 @media (prefers-color-scheme: dark) {
-  body.dark-mode { /* 시스템 설정이 다크 모드일 때 */
+  body.dark-mode {
+    /* 시스템 설정이 다크 모드일 때 */
     --primary-color: var(--primary-color-dark);
     --secondary-color: var(--secondary-color-dark);
     --accent-color: var(--accent-color-dark);
@@ -63,12 +68,13 @@ body.dark-mode {
   }
 }
 
-body.dark-mode header.banner {
+/* body.dark-mode header.banner {
   background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
-}
+} */
 
 body.dark-mode .profile-image::before {
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* 그림자 조정 */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  /* 그림자 조정 */
 }
 
 body.dark-mode .avatar-image {
@@ -85,7 +91,6 @@ body.dark-mode .contact-me,
 body.dark-mode table {
   background-color: var(--bg-white);
   box-shadow: var(--shadow-md);
-  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 body.dark-mode nav ul li a.active {
@@ -109,7 +114,7 @@ body.dark-mode td {
 }
 
 body.dark-mode th {
-  background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+  background: var(--primary-color);
 }
 
 body.dark-mode tr:nth-child(even) {
@@ -152,11 +157,11 @@ body.dark-mode footer .social-links a:hover {
 }
 
 body.dark-mode .profile-image::before {
-  background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+  background: var(--shadow-sm-dark);
 }
 
 body.dark-mode .avatar-placeholder {
-  background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+  background: var(--primary-color);
 }
 
 body.dark-mode .avatar-image {
@@ -176,22 +181,22 @@ body.dark-mode .info-item i {
   color: var(--primary-color);
 }
 
-  .tmi-card::before {
-    background: linear-gradient(to bottom, var(--secondary-color-dark), var(--primary-color-dark));
-  }
+.tmi-card::before {
+  background: linear-gradient(to bottom, var(--secondary-color-dark), var(--primary-color-dark));
+}
 
 body.dark-mode .tmi-icon {
   color: var(--primary-color);
 }
 
-  .contact-me {
-    background: linear-gradient(135deg, rgba(100, 181, 246, 0.05), rgba(66, 165, 245, 0.05));
-    border: 1px solid rgba(100, 181, 246, 0.1);
-  }
+.contact-me {
+  background: linear-gradient(135deg, rgba(61, 168, 255, 0.05), rgba(191, 226, 255, 0.05));
+  border: 1px solid rgba(100, 181, 246, 0.1);
+}
 
-  .contact-me::before {
-    background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
-  }
+.contact-me::before {
+  background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+}
 
 body.dark-mode .contact-me i {
   color: var(--primary-color);
@@ -199,65 +204,66 @@ body.dark-mode .contact-me i {
 
 /* Table Header Filter Styles */
 .discord-career-table th.filter-th {
-    position: relative;
-    cursor: pointer;
-    padding-right: 25px; /* Space for the dropdown arrow */
+  position: relative;
+  cursor: pointer;
+  padding-right: 25px;
+  /* Space for the dropdown arrow */
 }
 
 .discord-career-table th.filter-th .filter-toggle-icon {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: transform 0.3s ease;
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.3s ease;
 }
 
 .discord-career-table th.filter-th .filter-options {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: var(--background-color-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    padding: 10px;
-    min-width: 120px;
-    z-index: 100;
-    box-shadow: var(--box-shadow);
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: var(--background-color-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 10px;
+  min-width: 120px;
+  z-index: 100;
+  box-shadow: var(--box-shadow);
 }
 
 .discord-career-table th.filter-th .filter-options.active {
-    display: block;
+  display: block;
 }
 
 .discord-career-table th.filter-th .filter-options label {
-    display: block;
-    margin-bottom: 5px;
-    color: var(--text-secondary);
-    cursor: pointer;
+  display: block;
+  margin-bottom: 5px;
+  color: var(--text-secondary);
+  cursor: pointer;
 }
 
 .discord-career-table th.filter-th .filter-options label:hover {
-    color: var(--text-primary);
+  color: var(--text-primary);
 }
 
 .discord-career-table th.filter-th .filter-options input[type="checkbox"] {
-    margin-right: 8px;
+  margin-right: 8px;
 }
 
 /* Dark Mode specific styles for table header filters */
 body.dark-mode .discord-career-table th.filter-th .filter-options {
-    background-color: var(--background-color-secondary-dark);
-    border-color: var(--border-color-dark);
-    box-shadow: var(--box-shadow-dark);
+  background-color: var(--background-color-secondary-dark);
+  border-color: var(--border-color-dark);
+  box-shadow: var(--box-shadow-dark);
 }
 
 body.dark-mode .discord-career-table th.filter-th .filter-options label {
-    color: var(--text-secondary-dark);
+  color: var(--text-secondary-dark);
 }
 
 body.dark-mode .discord-career-table th.filter-th .filter-options label:hover {
-    color: var(--text-primary-dark);
+  color: var(--text-primary-dark);
 }
 
 body.dark-mode .footer-links a {
@@ -265,9 +271,9 @@ body.dark-mode .footer-links a {
   color: var(--bg-white);
 }
 
-  .footer-links a:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-  }
+.footer-links a:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
 
 body.dark-mode .post-card::after {
   background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
@@ -282,9 +288,9 @@ body.dark-mode .tag {
   color: var(--primary-color);
 }
 
-  .tag:hover {
-    background-color: rgba(100, 181, 246, 0.25);
-  }
+.tag:hover {
+  background-color: rgba(100, 181, 246, 0.25);
+}
 
 body.dark-mode .read-more {
   color: var(--primary-color);
@@ -294,20 +300,19 @@ body.dark-mode .read-more::after {
   background-color: var(--primary-color);
 }
 
-  .read-more:hover {
-    color: var(--accent-color);
-  }
+.read-more:hover {
+  color: var(--accent-color);
+}
 
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css'); /* Google Fonts - Pretendard Variable 임포트 */
-
-body,
-html {
-  font-family: 'Pretendard Variable', sans-serif; /* 가독성 좋은 한글 폰트 적용 */
+body, html {
+  font-family: 'Pretendard Variable', sans-serif;
+  /* 가독성 좋은 한글 폰트 적용 */
   color: var(--text-primary);
   background-color: var(--bg-light);
   line-height: 1.7;
   scroll-behavior: smooth;
-  font-size: 16px; /* 기본 폰트 크기 설정 */
+  font-size: 16px;
+  /* 기본 폰트 크기 설정 */
 }
 
 .container {
@@ -319,14 +324,15 @@ html {
 
 /* 헤더 배경 및 텍스트 스타일 */
 header.banner {
-  background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
   color: var(--bg-white);
-  padding: 80px 0; /* 패딩 조정 */
+  padding: 80px 0;
+  /* 패딩 조정 */
   text-align: center;
   position: relative;
   overflow: hidden;
   box-shadow: var(--shadow-md);
-  border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg); /* 하단 라운드 처리 */
+  border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+  /* 하단 라운드 처리 */
 }
 
 /* 배너 이미지 스타일 */
@@ -353,7 +359,6 @@ header.banner.with-image {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.02), rgba(0,0,0,0.1));
   pointer-events: none;
 }
 
@@ -369,42 +374,58 @@ header.banner.with-image {
 
 /* 소개 섹션 스타일 */
 .intro-section {
-  padding: 50px 0 40px; /* 패딩 조정 */
+  padding: 50px 0 40px;
+  /* 패딩 조정 */
   background-color: var(--bg-white);
   text-align: center;
-  border-radius: var(--border-radius-lg); /* 더 둥글게 */
-  margin: -60px auto 40px; /* 마진 조정 및 중앙 정렬 */
-  max-width: 90%; /* 최대 너비 설정 */
+  border-radius: var(--border-radius-lg);
+  /* 더 둥글게 */
+  margin: -60px auto 40px;
+  /* 마진 조정 및 중앙 정렬 */
+  max-width: 90%;
+  /* 최대 너비 설정 */
   position: relative;
   z-index: 10;
-  box-shadow: var(--shadow-md); /* 그림자 강화 */
-  border: 1px solid rgba(0,0,0,0.05); /* 은은한 테두리 추가 */
+  box-shadow: var(--shadow-md);
+  /* 그림자 강화 */
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  /* 은은한 테두리 추가 */
 }
 
 .intro-section h1 {
-  font-size: 2.5rem; /* 폰트 크기 조정 */
+  font-size: 2.5rem;
+  /* 폰트 크기 조정 */
   font-weight: 700;
   margin-bottom: 10px;
-  color: var(--primary-color); /* 메인 색상으로 변경 */
-  letter-spacing: -0.8px; /* 자간 조정 */
+  color: var(--primary-color);
+  /* 메인 색상으로 변경 */
+  letter-spacing: -0.8px;
+  /* 자간 조정 */
 }
 
 .intro-section h1 span {
-  font-size: 1.3rem; /* 폰트 크기 조정 */
-  text-decoration: none; /* 밑줄 제거 */
+  font-size: 1.3rem;
+  /* 폰트 크기 조정 */
+  text-decoration: none;
+  /* 밑줄 제거 */
   font-weight: 500;
   color: var(--text-secondary);
   display: block;
-  margin-top: 8px; /* 마진 조정 */
+  margin-top: 8px;
+  /* 마진 조정 */
   letter-spacing: 0;
 }
 
 .intro-text {
-  font-size: 1.1rem; /* 폰트 크기 조정 */
+  font-size: 1.1rem;
+  /* 폰트 크기 조정 */
   color: var(--text-secondary);
-  margin-bottom: 25px; /* 마진 조정 */
-  line-height: 1.8; /* 줄 간격 조정 */
-  max-width: 750px; /* 최대 너비 조정 */
+  margin-bottom: 25px;
+  /* 마진 조정 */
+  line-height: 1.8;
+  /* 줄 간격 조정 */
+  max-width: 750px;
+  /* 최대 너비 조정 */
   margin-left: auto;
   margin-right: auto;
 }
@@ -421,17 +442,21 @@ header.banner::before {
 }
 
 header.banner h1 {
-  font-size: 3rem; /* 폰트 크기 조정 */
+  font-size: 3rem;
+  /* 폰트 크기 조정 */
   font-weight: 700;
   margin-bottom: 15px;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15); /* 그림자 조정 */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+  /* 그림자 조정 */
   position: relative;
 }
 
 header.banner p {
-  font-size: 1.2rem; /* 폰트 크기 조정 */
+  font-size: 1.2rem;
+  /* 폰트 크기 조정 */
   font-weight: 300;
-  max-width: 700px; /* 최대 너비 조정 */
+  max-width: 700px;
+  /* 최대 너비 조정 */
   margin: 0 auto;
   position: relative;
 }
@@ -444,9 +469,12 @@ nav {
   top: 0;
   z-index: 1000;
   transition: var(--transition);
-  border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg); /* 더 둥글게 */
-  margin: 0 auto; /* 중앙 정렬 */
-  max-width: 90%; /* 최대 너비 설정 */
+  border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+  /* 더 둥글게 */
+  margin: 0 auto;
+  /* 중앙 정렬 */
+  max-width: 90%;
+  /* 최대 너비 설정 */
 }
 
 nav.scrolled {
@@ -458,8 +486,10 @@ nav ul {
   display: flex;
   justify-content: center;
   list-style: none;
-  padding: 12px; /* 패딩 조정 */
-  gap: 15px; /* 간격 조정 */
+  padding: 12px;
+  /* 패딩 조정 */
+  gap: 15px;
+  /* 간격 조정 */
 }
 
 nav ul li {
@@ -468,15 +498,18 @@ nav ul li {
 
 nav ul li a {
   text-decoration: none;
-  font-size: 0.95rem; /* 폰트 크기 조정 */
+  font-size: 0.95rem;
+  /* 폰트 크기 조정 */
   font-weight: 600;
   color: var(--text-secondary);
   transition: var(--transition);
-  padding: 8px 18px; /* 패딩 조정 */
+  padding: 8px 18px;
+  /* 패딩 조정 */
   border-radius: var(--border-radius-md);
   display: flex;
   align-items: center;
-  gap: 6px; /* 간격 조정 */
+  gap: 6px;
+  /* 간격 조정 */
 }
 
 nav ul li a i {
@@ -501,29 +534,39 @@ main {
 }
 
 section {
-  margin-bottom: 50px; /* 마진 조정 */
+  margin-bottom: 50px;
+  /* 마진 조정 */
   background-color: var(--bg-white);
   border-radius: var(--border-radius-lg);
-  padding: 35px; /* 패딩 조정 */
+  padding: 35px;
+  /* 패딩 조정 */
   box-shadow: var(--shadow-sm);
   transition: var(--transition);
-  border: 1px solid rgba(0,0,0,0.03); /* 은은한 테두리 추가 */
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  /* 은은한 테두리 추가 */
 }
 
 section:hover {
-  transform: translateY(-5px); /* 호버 효과 강화 */
-  box-shadow: var(--shadow-md); /* 그림자 강화 */
+  transform: translateY(-5px);
+  /* 호버 효과 강화 */
+  box-shadow: var(--shadow-md);
+  /* 그림자 강화 */
 }
 
 h2 {
-  font-size: 1.8rem; /* 폰트 크기 조정 */
-  margin-bottom: 30px; /* 마진 조정 */
+  font-size: 1.8rem;
+  /* 폰트 크기 조정 */
+  margin-bottom: 30px;
+  /* 마진 조정 */
   text-align: center;
-  color: var(--primary-color); /* 메인 색상으로 변경 */
+  color: var(--primary-color);
+  /* 메인 색상으로 변경 */
   position: relative;
-  padding-bottom: 12px; /* 패딩 조정 */
+  padding-bottom: 12px;
+  /* 패딩 조정 */
   font-weight: 700;
-  letter-spacing: -0.6px; /* 자간 조정 */
+  letter-spacing: -0.6px;
+  /* 자간 조정 */
 }
 
 h2::after {
@@ -539,23 +582,29 @@ h2::after {
 }
 
 h3 {
-  font-size: 1.3rem; /* 폰트 크기 조정 */
-  margin: 25px 0 12px; /* 마진 조정 */
+  font-size: 1.3rem;
+  /* 폰트 크기 조정 */
+  margin: 25px 0 12px;
+  /* 마진 조정 */
   color: var(--text-primary);
   font-weight: 600;
-  letter-spacing: -0.2px; /* 자간 조정 */
+  letter-spacing: -0.2px;
+  /* 자간 조정 */
 }
 
 p {
-  font-size: 1rem; /* 폰트 크기 조정 */
+  font-size: 1rem;
+  /* 폰트 크기 조정 */
   line-height: 1.7;
   color: var(--text-secondary);
-  margin-bottom: 15px; /* 마진 조정 */
+  margin-bottom: 15px;
+  /* 마진 조정 */
 }
 
 #personal-info p, #tmi p {
   text-align: left;
-  max-width: 750px; /* 최대 너비 조정 */
+  max-width: 750px;
+  /* 최대 너비 조정 */
   margin-left: auto;
   margin-right: auto;
 }
@@ -564,9 +613,11 @@ p {
   color: var(--primary-color);
   font-weight: 600;
   display: inline-block;
-  min-width: 100px; /* 최소 너비 조정 */
+  min-width: 100px;
+  /* 최소 너비 조정 */
   position: relative;
-  margin-right: 8px; /* 마진 조정 */
+  margin-right: 8px;
+  /* 마진 조정 */
 }
 
 #personal-info p strong::after {
@@ -580,12 +631,18 @@ p {
 .table-container {
   width: 100%;
   overflow-x: auto;
-  white-space: nowrap; /* 줄바꿈 방지 */
-  margin-bottom: 30px; /* 마진 조정 */
-  border-radius: var(--border-radius-md); /* 둥글기 조정 */
-  box-shadow: var(--shadow-sm); /* 그림자 조정 */
-  border: 1px solid rgba(0,0,0,0.05); /* 은은한 테두리 */
-  background-color: var(--bg-white); /* 배경색 통일 */
+  white-space: nowrap;
+  /* 줄바꿈 방지 */
+  margin-bottom: 30px;
+  /* 마진 조정 */
+  border-radius: var(--border-radius-md);
+  /* 둥글기 조정 */
+  box-shadow: var(--shadow-sm);
+  /* 그림자 조정 */
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  /* 은은한 테두리 */
+  background-color: var(--bg-white);
+  /* 배경색 통일 */
 }
 
 table {
@@ -609,27 +666,34 @@ table, th, td {
 }
 
 th, td {
-  padding: 12px 15px; /* 패딩 조정 */
-  text-align: left; /* 텍스트 왼쪽 정렬 */
+  padding: 12px 15px;
+  /* 패딩 조정 */
+  text-align: left;
+  /* 텍스트 왼쪽 정렬 */
   transition: var(--transition);
 }
 
 td {
-  border-bottom: 1px solid rgba(0,0,0,0.05); /* 테두리 색상 조정 */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  /* 테두리 색상 조정 */
   color: var(--text-secondary);
 }
 
 th {
-  background: var(--primary-color); /* 단색 배경으로 변경 */
+  background: var(--primary-color);
+  /* 단색 배경으로 변경 */
   color: var(--bg-white);
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 0.85rem; /* 폰트 크기 조정 */
-  letter-spacing: 0.8px; /* 자간 조정 */
+  font-size: 0.85rem;
+  /* 폰트 크기 조정 */
+  letter-spacing: 0.8px;
+  /* 자간 조정 */
 }
 
 tr:nth-child(even) {
-  background-color: var(--bg-light); /* 배경색 조정 */
+  background-color: var(--bg-light);
+  /* 배경색 조정 */
 }
 
 tr:nth-child(odd) {
@@ -637,20 +701,24 @@ tr:nth-child(odd) {
 }
 
 tr:hover {
-  background-color: rgba(0,0,0,0.03); /* 호버 배경색 조정 */
+  background-color: rgba(0, 0, 0, 0.03);
+  /* 호버 배경색 조정 */
 }
 
 /* 푸터 스타일 */
 footer {
-  background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
   color: var(--bg-white);
-  padding: 40px 0 30px; /* 패딩 조정 */
+  padding: 40px 0 30px;
+  /* 패딩 조정 */
   text-align: center;
-  font-size: 0.95rem; /* 폰트 크기 조정 */
+  font-size: 0.95rem;
+  /* 폰트 크기 조정 */
   position: relative;
-  margin-top: 80px; /* 마진 조정 */
+  margin-top: 80px;
+  /* 마진 조정 */
   border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
-  box-shadow: var(--shadow-md); /* 그림자 조정 */
+  box-shadow: var(--shadow-md);
+  /* 그림자 조정 */
 }
 
 footer .container {
@@ -665,33 +733,42 @@ footer::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.03)"/></svg>'); /* 투명도 조정 */
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.03)"/></svg>');
+  /* 투명도 조정 */
   background-size: 100% 100%;
-  opacity: 0.8; /* 투명도 조정 */
+  opacity: 0.8;
+  /* 투명도 조정 */
 }
 
 /* 소셜 링크 스타일 */
 .social-links {
   display: flex;
   justify-content: center;
-  gap: 15px; /* 간격 조정 */
-  margin-top: 20px; /* 마진 조정 */
+  gap: 15px;
+  /* 간격 조정 */
+  margin-top: 20px;
+  /* 마진 조정 */
 }
 
 .social-links a {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 45px; /* 크기 조정 */
-  height: 45px; /* 크기 조정 */
+  width: 45px;
+  /* 크기 조정 */
+  height: 45px;
+  /* 크기 조정 */
   border-radius: var(--border-radius-full);
-  text-decoration: none; /* 밑줄 제거 */
-  font-size: 1.3rem; /* 폰트 크기 조정 */
+  text-decoration: none;
+  /* 밑줄 제거 */
+  font-size: 1.3rem;
+  /* 폰트 크기 조정 */
   transition: var(--transition);
   position: relative;
   overflow: hidden;
   z-index: 1;
-  border: 1px solid rgba(255,255,255,0.2); /* 테두리 추가 */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  /* 테두리 추가 */
 }
 
 .social-links a::before {
@@ -705,31 +782,38 @@ footer::before {
   opacity: 0;
   z-index: -1;
   transition: var(--transition);
-  border-radius: var(--border-radius-full); /* before 요소도 둥글게 */
+  border-radius: var(--border-radius-full);
+  /* before 요소도 둥글게 */
 }
 
 .intro-section .social-links a {
-  background-color: rgba(58, 134, 255, 0.05); /* 배경색 조정 */
+  background-color: rgba(58, 134, 255, 0.05);
+  /* 배경색 조정 */
   color: var(--primary-color);
   box-shadow: var(--shadow-sm);
-  border: 1px solid rgba(58, 134, 255, 0.1); /* 테두리 추가 */
+  border: 1px solid rgba(58, 134, 255, 0.1);
+  /* 테두리 추가 */
 }
 
 footer .social-links a {
-  background-color: rgba(255, 255, 255, 0.1); /* 배경색 조정 */
+  background-color: rgba(255, 255, 255, 0.1);
+  /* 배경색 조정 */
   color: var(--bg-white);
-  border: 1px solid rgba(255,255,255,0.1); /* 테두리 조정 */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* 테두리 조정 */
 }
 
 .social-links a:hover {
-  transform: translateY(-3px); /* 호버 효과 조정 */
+  transform: translateY(-3px);
+  /* 호버 효과 조정 */
 }
 
 .intro-section .social-links a:hover {
   background-color: transparent;
   color: var(--bg-white);
   box-shadow: var(--shadow-md);
-  border-color: transparent; /* 호버 시 테두리 제거 */
+  border-color: transparent;
+  /* 호버 시 테두리 제거 */
 }
 
 .intro-section .social-links a:hover::before {
@@ -745,27 +829,35 @@ footer .social-links a:hover {
 .profile-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 40px; /* 간격 조정 */
+  gap: 40px;
+  /* 간격 조정 */
   align-items: flex-start;
   justify-content: center;
-  margin-top: 15px; /* 마진 조정 */
+  margin-top: 15px;
+  /* 마진 조정 */
 }
 
 .profile-image {
-  flex: 0 0 200px; /* 크기 조정 */
+  flex: 0 0 200px;
+  /* 크기 조정 */
   position: relative;
 }
 
 .profile-image::before {
   content: '';
   position: absolute;
-  top: 0; /* 위치 조정 */
-  left: 0; /* 위치 조정 */
-  right: 0; /* 위치 조정 */
-  bottom: 0; /* 위치 조정 */
+  top: 0;
+  /* 위치 조정 */
+  left: 0;
+  /* 위치 조정 */
+  right: 0;
+  /* 위치 조정 */
+  bottom: 0;
+  /* 위치 조정 */
   background: transparent;
   border-radius: var(--border-radius-full);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* 새로운 그림자 효과 */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  /* 새로운 그림자 효과 */
   z-index: -1;
   transition: var(--transition);
 }
@@ -776,25 +868,30 @@ footer .social-links a:hover {
 }
 
 .avatar-placeholder {
-  width: 200px; /* 크기 조정 */
-  height: 200px; /* 크기 조정 */
+  width: 200px;
+  /* 크기 조정 */
+  height: 200px;
+  /* 크기 조정 */
   border-radius: var(--border-radius-full);
-  background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--bg-white);
-  font-size: 4.5rem; /* 폰트 크기 조정 */
+  font-size: 4.5rem;
+  /* 폰트 크기 조정 */
   box-shadow: var(--shadow-md);
 }
 
 .avatar-image {
-  width: 200px; /* 크기 조정 */
-  height: 200px; /* 크기 조정 */
+  width: 200px;
+  /* 크기 조정 */
+  height: 200px;
+  /* 크기 조정 */
   border-radius: var(--border-radius-full);
   object-fit: cover;
   object-position: center;
-  border: 4px solid var(--bg-white); /* 테두리 두께 조정 */
+  border: 4px solid var(--bg-white);
+  /* 테두리 두께 조정 */
   box-shadow: var(--shadow-md);
   transition: var(--transition);
 }
@@ -811,17 +908,21 @@ footer .social-links a:hover {
 
 .info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* 최소 너비 조정 */
-  gap: 15px; /* 간격 조정 */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  /* 최소 너비 조정 */
+  gap: 15px;
+  /* 간격 조정 */
   margin-top: 10px;
 }
 
 .info-item {
-  padding: 12px; /* 패딩 조정 */
+  padding: 12px;
+  /* 패딩 조정 */
   border-radius: var(--border-radius-md);
   transition: var(--transition);
   background-color: rgba(58, 134, 255, 0.02);
-  border: 1px solid rgba(0,0,0,0.03); /* 테두리 색상 조정 */
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  /* 테두리 색상 조정 */
 }
 
 .info-item:hover {
@@ -834,32 +935,40 @@ footer .social-links a:hover {
   margin: 0;
   display: flex;
   align-items: center;
-  font-size: 0.95rem; /* 폰트 크기 조정 */
+  font-size: 0.95rem;
+  /* 폰트 크기 조정 */
 }
 
 .info-item i {
-  margin-right: 10px; /* 마진 조정 */
+  margin-right: 10px;
+  /* 마진 조정 */
   color: var(--primary-color);
-  font-size: 1rem; /* 폰트 크기 조정 */
+  font-size: 1rem;
+  /* 폰트 크기 조정 */
 }
 
 /* TMI 카드 스타일 */
 .tmi-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* 최소 너비 조정 */
-  gap: 25px; /* 간격 조정 */
-  margin-top: 30px; /* 마진 조정 */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  /* 최소 너비 조정 */
+  gap: 25px;
+  /* 간격 조정 */
+  margin-top: 30px;
+  /* 마진 조정 */
 }
 
 .tmi-card {
   background-color: var(--bg-white);
   border-radius: var(--border-radius-lg);
-  padding: 30px 25px; /* 패딩 조정 */
+  padding: 30px 25px;
+  /* 패딩 조정 */
   box-shadow: var(--shadow-sm);
   transition: var(--transition);
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(0,0,0,0.03); /* 테두리 색상 조정 */
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  /* 테두리 색상 조정 */
 }
 
 .tmi-card::before {
@@ -869,7 +978,6 @@ footer .social-links a:hover {
   left: 0;
   width: 5px;
   height: 0;
-  background: linear-gradient(to bottom, var(--secondary-color), var(--primary-color));
   transition: var(--transition);
 }
 
@@ -883,9 +991,11 @@ footer .social-links a:hover {
 }
 
 .tmi-icon {
-  font-size: 2rem; /* 폰트 크기 조정 */
+  font-size: 2rem;
+  /* 폰트 크기 조정 */
   color: var(--primary-color);
-  margin-bottom: 18px; /* 마진 조정 */
+  margin-bottom: 18px;
+  /* 마진 조정 */
   transition: var(--transition);
 }
 
@@ -906,11 +1016,13 @@ footer .social-links a:hover {
 
 .contact-me {
   text-align: center;
-  margin-top: 40px; /* 마진 조정 */
-  padding: 25px; /* 패딩 조정 */
-  background: linear-gradient(135deg, rgba(58, 134, 255, 0.03), rgba(142, 202, 230, 0.03)); /* 배경 투명도 조정 */
+  margin-top: 40px;
+  /* 마진 조정 */
+  padding: 25px;
+  /* 패딩 조정 */
   border-radius: var(--border-radius-lg);
-  border: 1px solid rgba(0,0,0,0.05); /* 테두리 색상 조정 */
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  /* 테두리 색상 조정 */
   box-shadow: var(--shadow-sm);
   position: relative;
   overflow: hidden;
@@ -928,7 +1040,8 @@ footer .social-links a:hover {
 
 .contact-me p {
   margin: 0;
-  font-size: 1.05rem; /* 폰트 크기 조정 */
+  font-size: 1.05rem;
+  /* 폰트 크기 조정 */
   color: var(--text-secondary);
   display: flex;
   align-items: center;
@@ -937,8 +1050,10 @@ footer .social-links a:hover {
 
 .contact-me i {
   color: var(--primary-color);
-  margin-right: 10px; /* 마진 조정 */
-  font-size: 1.2rem; /* 폰트 크기 조정 */
+  margin-right: 10px;
+  /* 마진 조정 */
+  font-size: 1.2rem;
+  /* 폰트 크기 조정 */
 }
 
 /* 푸터 링크 스타일 */
@@ -951,22 +1066,30 @@ footer .social-links a:hover {
 
 .footer-links {
   display: flex;
-  flex-wrap: wrap; /* 반응형을 위해 추가 */
-  justify-content: center; /* 중앙 정렬 */
-  gap: 20px; /* 간격 조정 */
-  margin-bottom: 10px; /* 마진 조정 */
+  flex-wrap: wrap;
+  /* 반응형을 위해 추가 */
+  justify-content: center;
+  /* 중앙 정렬 */
+  gap: 20px;
+  /* 간격 조정 */
+  margin-bottom: 10px;
+  /* 마진 조정 */
 }
 
 .footer-links a {
   color: var(--bg-white);
   text-decoration: none;
-  font-size: 0.9rem; /* 폰트 크기 조정 */
+  font-size: 0.9rem;
+  /* 폰트 크기 조정 */
   font-weight: 500;
   transition: var(--transition);
-  padding: 7px 12px; /* 패딩 조정 */
+  padding: 7px 12px;
+  /* 패딩 조정 */
   border-radius: var(--border-radius-md);
-  background-color: rgba(255, 255, 255, 0.08); /* 배경색 조정 */
-  border: 1px solid rgba(255,255,255,0.1); /* 테두리 추가 */
+  background-color: rgba(255, 255, 255, 0.08);
+  /* 배경색 조정 */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* 테두리 추가 */
 }
 
 .footer-links a:hover {
@@ -979,36 +1102,51 @@ footer .social-links {
 }
 
 footer .social-links a {
-  width: 40px; /* 크기 조정 */
-  height: 40px; /* 크기 조정 */
-  font-size: 1.1rem; /* 폰트 크기 조정 */
-  background-color: rgba(255, 255, 255, 0.12); /* 배경색 조정 */
-  backdrop-filter: blur(4px); /* 블러 조정 */
+  width: 40px;
+  /* 크기 조정 */
+  height: 40px;
+  /* 크기 조정 */
+  font-size: 1.1rem;
+  /* 폰트 크기 조정 */
+  background-color: rgba(255, 255, 255, 0.12);
+  /* 배경색 조정 */
+  backdrop-filter: blur(4px);
+  /* 블러 조정 */
 }
 
 footer p {
   color: var(--bg-white);
-  opacity: 0.85; /* 투명도 조정 */
-  font-size: 0.85rem; /* 폰트 크기 조정 */
-  margin-top: 8px; /* 마진 조정 */
+  opacity: 0.85;
+  /* 투명도 조정 */
+  font-size: 0.85rem;
+  /* 폰트 크기 조정 */
+  margin-top: 8px;
+  /* 마진 조정 */
 }
 
 /* 섹션 인트로 스타일 */
 .section-intro {
   text-align: center;
-  max-width: 700px; /* 최대 너비 조정 */
-  margin: 0 auto 35px; /* 마진 조정 */
-  font-size: 1rem; /* 폰트 크기 조정 */
-  color: var(--text-secondary); /* 색상 변수 사용 */
+  max-width: 700px;
+  /* 최대 너비 조정 */
+  margin: 0 auto 35px;
+  /* 마진 조정 */
+  font-size: 1rem;
+  /* 폰트 크기 조정 */
+  color: var(--text-secondary);
+  /* 색상 변수 사용 */
   line-height: 1.7;
 }
 
 /* 포스트 카드 스타일 */
 .posts-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); /* 최소 너비 조정 */
-  gap: 25px; /* 간격 조정 */
-  margin-top: 30px; /* 마진 조정 */
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  /* 최소 너비 조정 */
+  gap: 25px;
+  /* 간격 조정 */
+  margin-top: 30px;
+  /* 마진 조정 */
 }
 
 .no-posts {
@@ -1018,21 +1156,25 @@ footer p {
   color: var(--text-secondary);
   font-size: 1.2rem;
   font-weight: 500;
-  grid-column: 1 / -1; /* 그리드 전체 너비 차지 */
-  margin: 0 auto; /* 중앙 정렬 */
+  grid-column: 1 / -1;
+  /* 그리드 전체 너비 차지 */
+  margin: 0 auto;
+  /* 중앙 정렬 */
 }
 
 .post-card {
   background-color: var(--bg-white);
   border-radius: var(--border-radius-lg);
-  padding: 30px 25px; /* 패딩 조정 */
+  padding: 30px 25px;
+  /* 패딩 조정 */
   box-shadow: var(--shadow-sm);
   transition: var(--transition);
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(0,0,0,0.03); /* 테두리 색상 조정 */
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  /* 테두리 색상 조정 */
 }
 
 .post-card::after {
@@ -1058,9 +1200,11 @@ footer p {
 }
 
 .post-date {
-  font-size: 0.85rem; /* 폰트 크기 조정 */
+  font-size: 0.85rem;
+  /* 폰트 크기 조정 */
   color: var(--text-secondary);
-  margin-bottom: 12px; /* 마진 조정 */
+  margin-bottom: 12px;
+  /* 마진 조정 */
   display: flex;
   align-items: center;
 }
@@ -1072,14 +1216,18 @@ footer p {
 
 .post-card h3 {
   margin-top: 0;
-  margin-bottom: 12px; /* 마진 조정 */
+  margin-bottom: 12px;
+  /* 마진 조정 */
   color: var(--text-primary);
-  font-size: 1.3rem; /* 폰트 크기 조정 */
-  letter-spacing: -0.2px; /* 자간 조정 */
+  font-size: 1.3rem;
+  /* 폰트 크기 조정 */
+  letter-spacing: -0.2px;
+  /* 자간 조정 */
 }
 
 .post-card p {
-  margin: 0 0 20px; /* 마진 조정 */
+  margin: 0 0 20px;
+  /* 마진 조정 */
   color: var(--text-secondary);
   flex-grow: 1;
   line-height: 1.6;
@@ -1088,19 +1236,26 @@ footer p {
 .post-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 7px; /* 간격 조정 */
-  margin-bottom: 20px; /* 마진 조정 */
+  gap: 7px;
+  /* 간격 조정 */
+  margin-bottom: 20px;
+  /* 마진 조정 */
 }
 
 .tag {
-  background-color: rgba(58, 134, 255, 0.05); /* 배경색 조정 */
+  background-color: rgba(58, 134, 255, 0.05);
+  /* 배경색 조정 */
   color: var(--primary-color);
-  padding: 5px 10px; /* 패딩 조정 */
-  border-radius: 20px; /* 둥글기 조정 */
-  font-size: 0.75rem; /* 폰트 크기 조정 */
+  padding: 5px 10px;
+  /* 패딩 조정 */
+  border-radius: 20px;
+  /* 둥글기 조정 */
+  font-size: 0.75rem;
+  /* 폰트 크기 조정 */
   font-weight: 600;
   transition: var(--transition);
-  border: 1px solid rgba(58, 134, 255, 0.1); /* 테두리 추가 */
+  border: 1px solid rgba(58, 134, 255, 0.1);
+  /* 테두리 추가 */
 }
 
 .tag:hover {
@@ -1115,9 +1270,11 @@ footer p {
   text-decoration: none;
   font-weight: 600;
   transition: var(--transition);
-  padding: 6px 0; /* 패딩 조정 */
+  padding: 6px 0;
+  /* 패딩 조정 */
   position: relative;
-  font-size: 0.95rem; /* 폰트 크기 조정 */
+  font-size: 0.95rem;
+  /* 폰트 크기 조정 */
 }
 
 .read-more::after {
@@ -1265,7 +1422,8 @@ footer p {
   }
 
   nav ul li a i {
-    display: none; /* 아이콘 숨김 */
+    display: none;
+    /* 아이콘 숨김 */
   }
 
   section {
@@ -1313,115 +1471,128 @@ footer p {
 
   .contact-me p {
     font-size: 0.95rem;
-    flex-direction: column; /* 모바일에서 세로 정렬 */
-    gap: 5px; /* 간격 추가 */
+    flex-direction: column;
+    /* 모바일에서 세로 정렬 */
+    gap: 5px;
+    /* 간격 추가 */
   }
 
   .contact-me i {
-    margin-right: 0; /* 마진 제거 */
-    margin-bottom: 5px; /* 하단 마진 추가 */
+    margin-right: 0;
+    /* 마진 제거 */
+    margin-bottom: 5px;
+    /* 하단 마진 추가 */
   }
-  
+
   .intro-section {
     margin: -30px 8px 15px;
     padding: 30px 15px 25px;
   }
-  
+
   .intro-section h1 {
     font-size: 1.8rem;
   }
-  
+
   .intro-section h1 span {
     font-size: 1.1rem;
   }
-  
+
   .intro-text {
     font-size: 1.1rem;
     margin-bottom: 20px;
   }
-  
+
   nav {
     margin: 0 8px;
   }
-  
+
   nav ul li a {
     padding: 6px 12px;
     font-size: 0.85rem;
   }
-  
+
   nav ul li a i {
     font-size: 1rem;
   }
-  
+
   section {
     padding: 25px 15px;
     margin-bottom: 30px;
   }
-  
+
   h2 {
     font-size: 1.6rem;
   }
-  
+
   h3 {
     font-size: 1.3rem;
   }
-  
+
   .social-links {
     gap: 12px;
   }
-  
+
   .social-links a {
     width: 40px;
     height: 40px;
     font-size: 1.2rem;
   }
-  
+
   .avatar-image, .avatar-placeholder {
     width: 180px;
     height: 180px;
   }
-  
+
   .footer-links {
     flex-direction: column;
     align-items: center;
     gap: 10px;
   }
-  
+
   .footer-links a {
     padding: 6px 12px;
     font-size: 0.9rem;
   }
-  
+
   .contact-me {
     padding: 25px 15px;
   }
-  
+
   .contact-me p {
     font-size: 1rem;
   }
 }
 
 #dark-mode-toggle {
-  min-width: 120px; /* 버튼의 최소 너비 설정 */
-  text-align: center; /* 텍스트 중앙 정렬 */
-  display: inline-flex; /* 아이콘과 텍스트를 한 줄에 표시 */
-  justify-content: center; /* 내용 중앙 정렬 */
-  align-items: center; /* 수직 중앙 정렬 */
+  min-width: 120px;
+  /* 버튼의 최소 너비 설정 */
+  text-align: center;
+  /* 텍스트 중앙 정렬 */
+  display: inline-flex;
+  /* 아이콘과 텍스트를 한 줄에 표시 */
+  justify-content: center;
+  /* 내용 중앙 정렬 */
+  align-items: center;
+  /* 수직 중앙 정렬 */
 }
 
 /* 버튼 그룹 스타일 추가 */
 .nav-buttons {
   display: flex;
   align-items: center;
-  gap: 12px; /* 버튼 간 일정한 간격 설정 */
+  gap: 12px;
+  /* 버튼 간 일정한 간격 설정 */
 }
 
 #dark-mode-toggle i {
-  margin-right: 5px; /* 아이콘과 텍스트 사이 간격 */
+  margin-right: 5px;
+  /* 아이콘과 텍스트 사이 간격 */
 }
 
 #dark-mode-toggle span {
   display: inline-block;
-  min-width: 70px; /* 텍스트 너비 고정 */
-  text-align: left; /* 텍스트 왼쪽 정렬 */
+  min-width: 70px;
+  /* 텍스트 너비 고정 */
+  text-align: left;
+  /* 텍스트 왼쪽 정렬 */
 }
