@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="신하늘의 블로그 포스트 페이지입니다." />
+    <title>포스트 - 신하늘의 블로그</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="banner">
+      <div class="container">
+        <h1>신하늘의 포스트</h1>
+        <p>생각과 경험을 공유하는 공간입니다</p>
+        <div class="social-links">
+          <a href="#" title="Discord"><i class="fab fa-discord"></i></a>
+          <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+          <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+          <a href="#" title="Spotify"><i class="fab fa-spotify"></i></a>
+        </div>
+      </div>
+    </header>
+    <nav id="main-nav">
+      <div class="container">
+        <ul>
+          <li><a href="index.html"><i class="fas fa-user"></i> 프로필</a></li>
+          <li><a href="portfolio.html"><i class="fas fa-briefcase"></i> Discord 관리자 경력</a></li>
+          <li><a href="posts.html" class="active"><i class="fas fa-pen"></i> 포스트</a></li>
+        </ul>
+      </div>
+    </nav>
+    <main>
+      <div class="container">
+        <section id="posts">
+          <h2><i class="fas fa-pen"></i> 최근 포스트</h2>
+          <p class="section-intro">제 생각과 경험을 공유하는 블로그 포스트입니다. 다양한 주제에 대한 이야기를 나눕니다.</p>
+          
+          <div class="posts-container">
+            <p class="no-posts">작성된 포스트가 없습니다.</p>
+          </div>
+        </section>
+      </div>
+    </main>
+    
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-links">
+            <a href="index.html">프로필</a>
+            <a href="portfolio.html">Discord 관리자 경력</a>
+            <a href="posts.html">포스트</a>
+          </div>
+          <div class="social-links">
+            <a href="#" title="Discord"><i class="fab fa-discord"></i></a>
+            <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+            <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="#" title="Spotify"><i class="fab fa-spotify"></i></a>
+          </div>
+          <p>&copy; 2025 신하늘 | All Rights Reserved</p>
+        </div>
+      </div>
+    </footer>
+    
+    <script>
+      // 스크롤 시 네비게이션 바 스타일 변경
+      window.addEventListener('scroll', function() {
+        const nav = document.getElementById('main-nav');
+        if (window.scrollY > 100) {
+          nav.classList.add('scrolled');
+        } else {
+          nav.classList.remove('scrolled');
+        }
+      });
+    </script>
+  </body>
+</html>
