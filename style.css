@@ -133,6 +133,44 @@ body.dark-mode footer {
   background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
 }
 
+/* Footer Social Links */
+footer .social-links {
+  display: flex;
+  justify-content: center;
+  gap: 15px; /* 아이콘 간 간격 */
+  margin-top: 15px;
+}
+
+footer .social-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; /* 아이콘 크기 */
+  height: 40px; /* 아이콘 크기 */
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--bg-white);
+  border-radius: 50%; /* 원형 */
+  font-size: 18px;
+  transition: var(--transition);
+}
+
+footer .social-links a:hover {
+  background-color: var(--bg-white);
+  color: var(--primary-color);
+  transform: translateY(-3px);
+}
+
+/* Intro Section Social Links (기존 스타일 유지) */
+.intro-section .social-links a {
+  background-color: rgba(100, 181, 246, 0.15);
+  color: var(--primary-color);
+}
+
+.intro-section .social-links a:hover {
+  background-color: transparent;
+  color: var(--bg-white);
+}
+
 body.dark-mode .social-links a {
   color: var(--bg-white);
 }
