@@ -8,7 +8,7 @@
 }
 
 :root {
-  --primary-color: #0b68ff;
+  --primary-color: #3885ff;
   --secondary-color: #8ecae6;
   --accent-color: #219ebc;
   --text-primary: #2b2d42;
@@ -585,8 +585,6 @@ section {
 }
 
 section:hover {
-  transform: translateY(-5px);
-  /* 호버 효과 강화 */
   box-shadow: var(--shadow-md);
   /* 그림자 강화 */
 }
@@ -745,6 +743,7 @@ tr:hover {
 
 /* 푸터 스타일 */
 footer {
+  background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
   color: var(--bg-white);
   padding: 40px 0 30px;
   /* 패딩 조정 */
