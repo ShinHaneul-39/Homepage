@@ -745,6 +745,7 @@ tr:hover {
 
 /* 푸터 스타일 */
 footer {
+  background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
   color: var(--bg-white);
   padding: 40px 0 30px;
   /* 패딩 조정 */
