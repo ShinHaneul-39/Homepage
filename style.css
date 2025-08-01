@@ -1634,3 +1634,29 @@ footer p {
   text-align: left;
   /* 텍스트 왼쪽 정렬 */
 }
+
+/* 선물 목록 스타일 */
+.gift-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.gift-item {
+  background-color: var(--bg-white);
+  border-radius: var(--border-radius-md);
+  padding: 15px 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.gift-item .gift-date {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
