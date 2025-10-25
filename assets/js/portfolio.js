@@ -1,0 +1,662 @@
+// Portfolio filters and safe dropdown positioning
+(function(){
+  'use strict';
+
+  function ready(fn){
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn); else fn();
+  }
+
+  class PortfolioManager{
+    constructor(){
+      this.table = document.querySelector('.discord-career-table');
+      if(!this.table) return;
+      this.tbody = this.table.querySelector('tbody');
+      // 초기 원본 행 순서를 보존하여 정렬 초기화 시 복원
+      this.originalRows = Array.from(this.tbody ? this.tbody.rows : []);
+      this.originalRows.forEach((tr, idx)=>{ try { tr.dataset.originalIndex = idx; } catch(e){} });
+      this.filterHeaders = Array.from(this.table.querySelectorAll('th.filter-th'));
+      this.typeToIndex = this._mapFilterTypeToColumnIndex();
+      this.state = { category:new Set(), department:new Set(), position:new Set() };
+      this._buildAllOptions();
+      this._bindGlobalHandlers();
+      // 카테고리 텍스트를 칩(태그) 형태로 장식
+      this._decorateCategoryCells();
+      // 직급 텍스트도 칩(태그) 형태로 장식 (이모지 없음)
+      this._decoratePositionCells();
+      // 부서 텍스트도 칩(태그) 형태로 장식 (이모지 없음)
+      this._decorateDepartmentCells();
+      // 정렬 핸들러 바인딩
+      this._bindSortHandlers();
+    }
+
+    _mapFilterTypeToColumnIndex(){
+      const map={};
+      const ths = Array.from(this.table.querySelectorAll('thead th'));
+      this.filterHeaders.forEach(h=>{ map[h.dataset.filterType]=ths.indexOf(h); });
+      return map;
+    }
+
+    _uniqueValues(colIdx){
+      const s=new Set();
+      Array.from(this.tbody.rows).forEach(tr=>{
+        const cell = tr.cells[colIdx];
+        const v = cell?.dataset.filterRaw || cell?.textContent.trim();
+        if(v) s.add(v);
+      });
+      return Array.from(s).sort((a,b)=>a.localeCompare(b,'ko'));
+    }
+
+    _buildAllOptions(){
+      this.filterHeaders.forEach(header=>{
+        const type = header.dataset.filterType;
+        const col = this.typeToIndex[type];
+        const container = header.querySelector('.filter-options');
+        if(!container) return;
+        const values = this._uniqueValues(col);
+        container.innerHTML = '';
+        container.setAttribute('role','dialog');
+        container.setAttribute('aria-label', `${type} 필터 옵션`);
+        // 포털용 메타데이터 저장 (헤더 참조 및 타입)
+        container.dataset.filterType = type;
+        container.__headerRef = header;
+
+        // 선택 해제/초기화 버튼
+        const ctrl = document.createElement('div');
+        ctrl.className='filter-controls';
+        const resetBtn=document.createElement('button');
+        resetBtn.type='button';
+        resetBtn.className='btn-reset';
+        resetBtn.textContent='모두 보기';
+        resetBtn.addEventListener('click',()=>{ this.state[type].clear(); this._applyFilters(); this._updateHeaderActive(header); });
+        ctrl.appendChild(resetBtn);
+        container.appendChild(ctrl);
+
+        // 옵션 목록
+        const list=document.createElement('div');
+        list.className='filter-list';
+        values.forEach(v=>{
+          const id = `filter-${type}-${v}`.replace(/\s+/g,'-');
+          const label=document.createElement('label');
+          label.className='filter-option';
+          const cb=document.createElement('input');
+          cb.type='checkbox'; cb.value=v; cb.id=id; cb.setAttribute('aria-label',`${v} 필터`);
+          cb.addEventListener('change',()=>{
+            if(cb.checked) this.state[type].add(v); else this.state[type].delete(v);
+            this._applyFilters();
+            this._updateHeaderActive(header);
+          });
+          const text=document.createElement('span'); text.textContent=v;
+          label.appendChild(cb); label.appendChild(text);
+          list.appendChild(label);
+        });
+        container.appendChild(list);
+
+        // 헤더 클릭 시 토글
+        header.addEventListener('click',(e)=>{
+          // 아이콘 클릭 포함 전체 헤더 클릭 허용, 단 정렬 아이콘은 제외
+          e.stopPropagation();
+          // 포털: body로 이동 (스타일/접근성 보존)
+          if(container.parentElement !== document.body){
+            document.body.appendChild(container);
+          }
+          this._toggleDropdown(header, container);
+        });
+      });
+    }
+
+    _bindGlobalHandlers(){
+      document.addEventListener('click',(e)=>{
+        // 드롭다운 외부 클릭 닫기
+        if(!e.target.closest('.filter-th') && !e.target.closest('.filter-options')){
+          this._closeAll();
+        }
+      });
+      // 스크롤/리사이즈 시 위치 재계산 (캡처 단계 포함)
+      const reposition=()=>this._repositionActive();
+      window.addEventListener('resize', reposition);
+      window.addEventListener('scroll', reposition, true);
+    }
+
+    _toggleDropdown(header, container){
+      const alreadyActive = container.classList.contains('active');
+      this._closeAll();
+      if(!alreadyActive){
+        container.classList.add('active');
+        this._positionDropdown(header, container);
+      }
+    }
+
+    _closeAll(){
+      document.querySelectorAll('.filter-options.active').forEach(el=>el.classList.remove('active'));
+    }
+
+    _repositionActive(){
+      document.querySelectorAll('.filter-options.active').forEach(el=>{
+        // 포털 이동 후에도 헤더 참조를 통해 위치 결정
+        const header = el.__headerRef || document.querySelector(`th.filter-th[data-filter-type="${el.dataset.filterType||''}"]`);
+        if(header) this._positionDropdown(header, el);
+      });
+    }
+
+    _positionDropdown(header, panel){
+      panel.style.position='fixed';
+      panel.style.overflow='auto';
+      const rect = header.getBoundingClientRect();
+      // 디자인 되돌림: 헤더 폭을 기본으로 사용하고 과도한 가로 확장을 제거
+      const panelW = Math.max(180, Math.round(rect.width));
+      panel.style.width = panelW + 'px';
+
+      const margin = 12;
+      const offsetY = 8;
+      const viewportH = window.innerHeight;
+
+      const availBelow = viewportH - rect.bottom - margin - offsetY;
+      const availAbove = rect.top - margin - offsetY;
+      const minBelowThreshold = 72; // 최소한의 공간 기준
+
+      let placeBelow;
+      if (availBelow >= minBelowThreshold) {
+        placeBelow = true;
+      } else if (availAbove >= minBelowThreshold) {
+        placeBelow = false;
+      } else {
+        // 둘 다 충분치 않다면 더 넓은 쪽을 선택 (동률 시 아래 우선)
+        placeBelow = availBelow >= availAbove;
+      }
+
+      // 디자인 되돌림: 높이는 CSS의 내부 스크롤 규칙(.filter-list max-height 등)에 맡김
+      // 단, 화면을 벗어나지 않도록 top만 안전하게 클램프
+      const panelHeight = Math.min(panel.offsetHeight || 0, viewportH - margin * 2);
+
+      let top = placeBelow
+        ? Math.min(rect.bottom + offsetY, viewportH - margin - panelHeight)
+        : Math.max(margin, rect.top - (panelHeight || 0) - offsetY);
+
+      let left = Math.min(window.innerWidth - panelW - margin, Math.max(margin, rect.left));
+
+      // 안전 클램프
+      left = Math.max(margin, Math.min(left, window.innerWidth - margin - panelW));
+
+      panel.style.top = `${top}px`;
+      panel.style.left = `${left}px`;
+      panel.setAttribute('aria-modal','true');
+    }
+
+    _applyFilters(){
+      const getVals=(tr, type)=>{
+        const idx=this.typeToIndex[type];
+        const cell = tr.cells[idx];
+        if(!cell) return [];
+        const raw = (cell.dataset.filterRaw) || (cell.textContent.trim()) || '';
+        if(!raw) return [];
+        const tokens = (cell.dataset.filterTokens ? cell.dataset.filterTokens.split('|') : raw.split(/[,，、\/|]/)).map(s=>s.trim()).filter(Boolean);
+        return Array.from(new Set(tokens.length ? tokens : [raw]));
+      };
+
+      const active = (type,vals)=>{
+        const set=this.state[type];
+        if(set.size===0) return true;
+        return vals.some(v=>set.has(v));
+      };
+
+      // 필터 적용 전, 현재 보이는 행들의 위치를 캡처 (FLIP-첫번째 단계)
+      this._captureVisiblePositions();
+
+      let anyHide = false;
+      Array.from(this.tbody.rows).forEach(tr=>{
+        const ok = active('category', getVals(tr,'category')) &&
+                   active('department', getVals(tr,'department')) &&
+                   active('position', getVals(tr,'position'));
+        if (ok) {
+          this._showRowAnimated(tr);
+        } else {
+          anyHide = true;
+          this._hideRowAnimated(tr);
+        }
+      });
+
+      // 숨김이 없는 경우(보여주기만 있을 때)는 즉시 위치 전환 애니메이션 수행
+      if(!anyHide){
+        this._animateFromCapturedPositions();
+      }
+    }
+
+    // 현재 보이는 행들의 상대 위치를 캡처
+    _captureVisiblePositions(){
+      if(!this.tbody) return;
+      const base = this.tbody.getBoundingClientRect();
+      this._lastPositions = new Map();
+      Array.from(this.tbody.rows).forEach(tr=>{
+        if(tr.hidden) return;
+        const r = tr.getBoundingClientRect();
+        this._lastPositions.set(tr, r.top - base.top);
+      });
+    }
+
+    // 캡처된 위치에서 현재 레이아웃 위치로 자연스럽게 이동(FLIP-마지막 단계)
+    _animateFromCapturedPositions(){
+      if(!this.tbody || !this._lastPositions) return;
+      const base = this.tbody.getBoundingClientRect();
+      const nextPositions = new Map();
+      Array.from(this.tbody.rows).forEach(tr=>{
+        if(tr.hidden || tr.classList.contains('is-hiding')) return; // 사라지는 중/숨김 제외, 남는 행만 이동
+        const r = tr.getBoundingClientRect();
+        nextPositions.set(tr, r.top - base.top);
+      });
+      nextPositions.forEach((lastTop, tr)=>{
+        const firstTop = this._lastPositions.get(tr);
+        if(firstTop == null) return;
+        const dy = firstTop - lastTop;
+        if(Math.abs(dy) < 0.5) return;
+        tr.style.transform = `translateY(${dy}px)`;
+        tr.style.willChange = 'transform';
+        // 리플로우로 시작점 고정 후 전환 시작
+        void tr.getBoundingClientRect();
+        tr.style.transform = '';
+        const onEnd = (e)=>{
+          if(e.propertyName !== 'transform') return;
+          tr.style.willChange = '';
+          tr.removeEventListener('transitionend', onEnd);
+        };
+        tr.addEventListener('transitionend', onEnd);
+      });
+      // 다음 변화에 대비해 최신 위치로 갱신
+      this._lastPositions = nextPositions;
+    }
+
+    _hideRowAnimated(tr){
+      if (!tr || tr.hidden || tr.classList.contains('is-hiding')) return;
+      let done = false;
+      const finish = () => {
+        tr.hidden = true;
+        tr.classList.remove('is-hiding');
+        tr.removeEventListener('transitionend', onEnd);
+        // 숨김 완료 후 남아있는 행들의 이동을 FLIP으로 수행
+        this._animateFromCapturedPositions();
+      };
+      const onEnd = (e) => {
+        if (e.target !== tr) return;
+        if (done) return;
+        done = true;
+        finish();
+      };
+      tr.addEventListener('transitionend', onEnd);
+      // Start transition on next frame to ensure styles are applied
+      requestAnimationFrame(() => {
+        tr.classList.add('is-hiding');
+      });
+      // Fallback in case transitionend doesn't fire (reduced-motion, old browsers)
+      setTimeout(() => {
+        if (done) return;
+        done = true;
+        finish();
+      }, 220);
+    }
+
+    _showRowAnimated(tr){
+      if (!tr) return;
+      // If already visible and not animating, skip
+      if (!tr.hidden && !tr.classList.contains('is-hiding')) return;
+      // Ensure we start from hidden style then fade in
+      tr.classList.add('is-hiding');
+      tr.hidden = false;
+      // Force reflow so removal of class will transition
+      void tr.offsetWidth;
+      requestAnimationFrame(() => {
+        tr.classList.remove('is-hiding');
+      });
+    }
+
+    _updateHeaderActive(header){
+      const type=header.dataset.filterType;
+      const has = this.state[type].size>0;
+      header.classList.toggle('has-active-filter', has);
+      const icon=header.querySelector('.filter-toggle-icon');
+      if(icon) icon.classList.toggle('active', has);
+    }
+
+    // ===== 정렬 기능 시작 =====
+    _bindSortHandlers(){
+      const allHeaders = Array.from(this.table.querySelectorAll('thead th'));
+      this.sortState = { index: -1, dir: 'none' };
+  
+      allHeaders.forEach((th, colIdx)=>{
+        const sortType = th.dataset.sortType;
+        const isFilter = th.classList.contains('filter-th');
+        if(!sortType || isFilter) return; // 필터 헤더는 정렬 제외
+  
+        th.style.cursor = 'pointer';
+        th.addEventListener('click', (e)=>{
+          const sameCol = this.sortState.index === colIdx;
+          let nextDir;
+          if(sameCol){
+            // asc -> desc -> none(기본)
+            if(this.sortState.dir === 'asc') nextDir = 'desc';
+            else if(this.sortState.dir === 'desc') nextDir = 'none';
+            else nextDir = 'asc';
+          } else {
+            nextDir = 'asc';
+          }
+  
+          if(nextDir === 'none'){
+            // 기본 순서로 복원
+            this.sortState = { index: -1, dir: 'none' };
+            this._resetSort(allHeaders);
+            return;
+          }
+  
+          this.sortState = { index: colIdx, dir: nextDir };
+          this._sortByColumn(colIdx, sortType, nextDir);
+          this._updateSortIcons(allHeaders, th, nextDir);
+        });
+      });
+    }
+  
+    _resetSort(headers){
+      if(!this.tbody || !this.originalRows) return;
+      // 원래 순서로 복원 (FLIP 애니메이션 적용)
+      this._animateReorder(()=>{
+        const frag = document.createDocumentFragment();
+        this.originalRows.forEach(tr => frag.appendChild(tr));
+        this.tbody.appendChild(frag);
+      });
+      // 아이콘을 기본 상태로 리셋
+      this._updateSortIcons(headers, null, 'none');
+    }
+  
+    _updateSortIcons(headers, activeTh, dir){
+      headers.forEach(th=>{
+        const icon = th.querySelector('i.fas.fa-sort, i.fas.fa-sort-up, i.fas.fa-sort-down');
+        if(!icon) return;
+        // 기본 상태
+        if(!activeTh || dir === 'none'){
+          icon.classList.remove('fa-sort-up','fa-sort-down');
+          icon.classList.add('fa-sort');
+          return;
+        }
+        if(th === activeTh){
+          icon.classList.remove('fa-sort');
+          icon.classList.toggle('fa-sort-up', dir==='asc');
+          icon.classList.toggle('fa-sort-down', dir==='desc');
+          if(dir==='asc') icon.classList.remove('fa-sort-down');
+          if(dir==='desc') icon.classList.remove('fa-sort-up');
+        } else {
+          icon.classList.remove('fa-sort-up','fa-sort-down');
+          icon.classList.add('fa-sort');
+        }
+      });
+    }
+
+    // 리스트 재정렬 시 자연스러운 이동을 위한 FLIP 애니메이션
+    _animateReorder(mutFn){
+      if(!this.tbody) { mutFn(); return; }
+      const visible = Array.from(this.tbody.rows).filter(r=>!r.hidden);
+      const firstPos = new Map();
+      const firstTBodyRect = this.tbody.getBoundingClientRect();
+      visible.forEach(r=>{
+        const rect = r.getBoundingClientRect();
+        firstPos.set(r, rect.top - firstTBodyRect.top);
+      });
+
+      // DOM 변경 수행 (정렬/복원 등)
+      mutFn();
+
+      const lastTBodyRect = this.tbody.getBoundingClientRect();
+      visible.forEach(r=>{
+        if(!r.isConnected || r.hidden) return;
+        const rect = r.getBoundingClientRect();
+        const lastTop = rect.top - lastTBodyRect.top;
+        const firstTop = firstPos.get(r);
+        if(firstTop == null) return;
+        const dy = firstTop - lastTop;
+        if(Math.abs(dy) < 0.5) return;
+        r.style.transform = `translateY(${dy}px)`;
+        r.style.willChange = 'transform';
+        // 강제 리플로우 후 원위치로 전환하여 애니메이션
+        void r.getBoundingClientRect();
+        r.style.transform = '';
+        const onEnd = (e)=>{
+          if(e.propertyName !== 'transform') return;
+          r.style.willChange = '';
+          r.removeEventListener('transitionend', onEnd);
+        };
+        r.addEventListener('transitionend', onEnd);
+      });
+    }
+  
+    _sortByColumn(colIdx, sortType, dir){
+      const rows = Array.from(this.tbody.rows);
+      // 안정 정렬을 위해 원래 인덱스 유지
+      const withIndex = rows.map((tr, i)=>({ tr, i }));
+  
+      const collator = new Intl.Collator('ko', { numeric: true, sensitivity: 'base' });
+  
+      const parseNumber = (text)=>{
+        if(!text) return null;
+        const m = text.replace(/[\,\s]/g,'').match(/\d+/);
+        return m ? parseInt(m[0],10) : null;
+      };
+  
+      const cmp = (a, b)=>{
+        const ta = a.tr.cells[colIdx]?.textContent.trim() ?? '';
+        const tb = b.tr.cells[colIdx]?.textContent.trim() ?? '';
+  
+        if(sortType === 'number'){
+          // '1000+', '50+', 'N/A', '-' 등 처리
+          const na = parseNumber(ta);
+          const nb = parseNumber(tb);
+          const isNullA = (na===null || isNaN(na));
+          const isNullB = (nb===null || isNaN(nb));
+          if(!isNullA && !isNullB){
+            return na - nb;
+          } else if(isNullA && isNullB){
+            // 둘 다 N/A인 경우 원래 순서 유지
+            return a.i - b.i;
+          } else {
+            // N/A는 항상 맨 뒤로
+            return isNullA ? 1 : -1;
+          }
+        } else {
+          // 문자열 정렬
+          const res = collator.compare(ta, tb);
+          if(res !== 0) return res;
+          return a.i - b.i; // 안정성
+        }
+      };
+  
+      withIndex.sort((x,y)=> dir==='asc' ? cmp(x,y) : cmp(y,x));
+  
+      // DOM에 재배치 (FLIP 애니메이션 적용)
+      this._animateReorder(()=>{
+        const frag = document.createDocumentFragment();
+        withIndex.forEach(({tr})=> frag.appendChild(tr));
+        this.tbody.appendChild(frag);
+      });
+    }
+    // ===== 정렬 기능 끝 =====
+    // 카테고리 텍스트를 칩 형태로 변환하고 색상/이모지 적용
+    _decorateCategoryCells(){
+      const idx = this.typeToIndex['category'];
+      if(idx == null || idx < 0) return;
+
+      const colors = (window.PortfolioTagColorConfig && window.PortfolioTagColorConfig.category) || {};
+      const defaultColor = colors._default || { bg:'#e2e8f0', fg:'#1f2937' };
+      const emojiMap = {
+        '친목': '👥',
+        '홍보': '📣',
+        '커뮤니티': '👥',
+        '이모지': '😀',
+        '개발': '💻',
+        '정보': '📚',
+        '연애': '💖',
+        '상담': '💬',
+        '스트리머': '🎥',
+        '태그': '🏷️'
+      };
+
+      Array.from(this.tbody.rows).forEach(tr=>{
+        const cell = tr.cells[idx];
+        if(!cell) return;
+        const raw = (cell.dataset.filterRaw || cell.textContent.trim());
+        if(!raw) return;
+        cell.dataset.filterRaw = raw; // 필터는 원본 텍스트 기준으로 동작
+
+        // '-' placeholder는 칩으로 만들지 않음
+        if (raw === '-' || raw === '—' || raw === '–') return;
+
+        // 이미 렌더링된 경우 중복 방지
+        if(cell.querySelector('.tag')) return;
+
+        const chip = document.createElement('span');
+        chip.className = 'tag';
+        const emoji = document.createElement('span');
+        emoji.className = 'tag-emoji';
+        emoji.textContent = emojiMap[raw] || '🏷️';
+        chip.appendChild(emoji);
+        chip.appendChild(document.createTextNode(raw));
+
+        const color = colors[raw] || defaultColor;
+        if(color.bg) {
+          chip.style.setProperty('--tag-bg', color.bg);
+          chip.style.setProperty('--tag-bg-alpha', '0.35');
+        }
+        if(color.fg) {
+          chip.style.setProperty('--tag-fg', color.fg);
+          chip.style.color = color.fg;
+        }
+
+        cell.textContent = '';
+        cell.appendChild(chip);
+      });
+    }
+    // 직급 텍스트를 칩 형태로 변환 (이모지 비포함, 중립 색상)
+    _decoratePositionCells(){
+      const idx = this.typeToIndex['position'];
+      if(idx == null || idx < 0) return;
+
+      // 직급 이모지 매핑
+      const emojiMap = {
+        '소유자': '👑',
+        '공동 소유자': '🤝',
+        '총 관리자': '🛡️',
+        '부 관리자': '🛠️',
+        '관리자': '🛠️',
+        '매니저': '🧑\u200d💼',
+        '팀장': '🧭',
+        '팀원': '👤'
+      };
+    
+      Array.from(this.tbody.rows).forEach(tr=>{
+        const cell = tr.cells[idx];
+        if(!cell) return;
+        const raw = (cell.dataset.filterRaw || cell.textContent.trim());
+        if(!raw) return;
+        cell.dataset.filterRaw = raw; // 필터는 원본 텍스트 기준으로 동작
+
+        // '-' placeholder는 칩으로 만들지 않음
+        if (raw === '-' || raw === '—' || raw === '–') return;
+
+        // 이미 렌더링된 경우 중복 방지
+        if(cell.querySelector('.tag')) return;
+
+        const chip = document.createElement('span');
+        chip.className = 'tag';
+        const emoji = document.createElement('span');
+        emoji.className = 'tag-emoji';
+        emoji.textContent = emojiMap[raw] || '🎖️';
+        chip.appendChild(emoji);
+        chip.appendChild(document.createTextNode(raw));
+
+        // 직급 색상: position 맵 우선, 없으면 category의 _default 사용
+        const cfg = window.PortfolioTagColorConfig || {};
+        const posColors = (cfg.position) || {};
+        const catColors = (cfg.category) || {};
+        const defaultColor = posColors._default || catColors._default || { bg:'#e2e8f0', fg:'#1f2937' };
+        const color = posColors[raw] || defaultColor;
+        if (color.bg) {
+          chip.style.setProperty('--tag-bg', color.bg);
+        }
+        if (color.fg) {
+          chip.style.setProperty('--tag-fg', color.fg);
+        }
+        // Per-cell override via data attributes on the td (e.g., data-tag-bg, data-tag-fg)
+        const bgOverride = cell.dataset.tagBg;
+        const fgOverride = cell.dataset.tagFg;
+        if (bgOverride) {
+          chip.style.setProperty('--tag-bg', bgOverride);
+        }
+        if (fgOverride) {
+          chip.style.setProperty('--tag-fg', fgOverride);
+          chip.style.color = fgOverride;
+        }
+    
+        cell.textContent = '';
+        cell.appendChild(chip);
+      });
+    }
+
+    // 부서 텍스트를 칩 형태로 변환 (이모지 비포함, 기본색은 카테고리 기본과 동일)
+    _decorateDepartmentCells(){
+      const idx = this.typeToIndex['department'];
+      if(idx == null || idx < 0) return;
+
+      // 부서 이모지 매핑
+      const emojiMap = {
+        '연합팀': '🤝',
+        '홍보팀': '📣',
+        '안내팀': '👋',
+        '봇 관리자': '🤖',
+        '운영팀': '🛠️',
+        '보안팀': '🔒'
+      };
+
+      Array.from(this.tbody.rows).forEach(tr => {
+        const cell = tr.cells[idx];
+        if(!cell) return;
+        const raw = (cell.dataset.filterRaw || cell.textContent.trim());
+        if(!raw) return;
+        cell.dataset.filterRaw = raw; // 필터는 원본 텍스트 기준으로 동작
+
+        // '-' placeholder는 칩으로 만들지 않음
+        if (raw === '-' || raw === '—' || raw === '–') return;
+
+        // 이미 렌더링된 경우 중복 방지
+        if(cell.querySelector('.tag')) return;
+
+        // 쉼표 등 구분자로 다중 부서를 분리하여 여러 칩으로 렌더링
+        let parts = raw.split(/[,，、\/|]/).map(s=>s.trim()).filter(Boolean);
+        if(parts.length === 0) parts = [raw];
+        cell.dataset.filterTokens = parts.join('|');
+
+        // 부서 색상: department 맵 우선, 없으면 category의 _default 사용
+        const cfg = window.PortfolioTagColorConfig || {};
+        const deptColors = (cfg.department) || {};
+        const catColors = (cfg.category) || {};
+        const defaultColor = deptColors._default || catColors._default || { bg:'#e2e8f0', fg:'#1f2937' };
+
+        cell.textContent = '';
+        parts.forEach(part => {
+          const chip = document.createElement('span');
+          chip.className = 'tag';
+          const emoji = document.createElement('span');
+          emoji.className = 'tag-emoji';
+          emoji.textContent = emojiMap[part] || '🏷️';
+          chip.appendChild(emoji);
+          chip.appendChild(document.createTextNode(part));
+          const color = deptColors[part] || defaultColor;
+          if (color.bg) {
+            chip.style.setProperty('--tag-bg', color.bg);
+            chip.style.setProperty('--tag-bg-alpha', '0.35');
+          }
+          if (color.fg) {
+            chip.style.setProperty('--tag-fg', color.fg);
+            chip.style.color = color.fg;
+          }
+          cell.appendChild(chip);
+        });
+      });
+    }
+  }
+
+  ready(()=> new PortfolioManager());
+})();

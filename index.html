@@ -1,215 +1,280 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="제가 어떤 사람인지 궁금하신가요? 이 링크를 눌러 알아보세요!" />
-    <title>신하늘의 프로필</title>
-    <meta property="og:image" content="https://raw.githubusercontent.com/Shin-Haneul/Homepage/main/images/embed_image.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <header class="banner with-image">
-      <div class="banner-image-container">
-        <img src="images/banner.png" alt="배너 이미지" class="banner-image">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>신하늘의 프로필</title>
+  <meta name="description" content="제가 어떤 사람인지 궁금하신가요? 이 링크를 눌러 알아보세요!" />
+  <meta property="og:title" content="신하늘의 프로필" />
+  <meta property="og:description" content="제가 어떤 사람인지 궁금하신가요? 이 링크를 눌러 알아보세요!" />
+  <meta property="og:site_name" content="신하늘" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://raw.githubusercontent.com/Shin-Haneul/Homepage/main/images/embed_image.png" />
+  <meta property="og:url" content="https://shinhaneul-39.github.io/Homepage/" />
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/style-v2.css" />
+</head>
+<body>
+  <!-- Skip to main content for accessibility -->
+  <a href="#main-content" class="skip-link">메인 콘텐츠로 건너뛰기</a>
+  
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <a href="index.html" aria-label="홈으로 이동">신하늘</a>
       </div>
-    </header>
-    
-    <section class="intro-section">
+      <nav class="nav" aria-label="주 메뉴">
+        <a href="#profile" aria-current="page">프로필</a>
+        <a href="career_table.html">Discord 관리자 경력</a>
+        <a href="blog.html">블로그</a>
+        <a href="special_thanks.html">고마운 사람들</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="intro section">
       <div class="container">
-        <h1>신하늘</h1>
-        <p class="intro-text">다채로운 경험과 Discord를 통한 소통을 즐기는 열정적인 청소년</p>
-        <div class="social-links">
-            <a href="https://github.com/ShinHaneul-39" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-            <a href="https://www.youtube.com/@shin._.haneul" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-            <a href="https://open.spotify.com/user/312a6vtoanw5rvzhshbsx7k52cwu" target="_blank" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
-            <a href="discord://-/users/959784288717520937" title="Discord"><i class="fab fa-discord"></i></a>
+        <div class="tag" role="text" aria-label="사이트 테마">Sky Minimal</div>
+        <h1>신하늘의 프로필</h1>
+        <p class="desc">제가 어떤 사람인지 궁금하신가요? 이 링크를 눌러 알아보세요!</p>
+      </div>
+    </section>
+
+    <section class="hero-banner" aria-label="배너 이미지">
+      <div class="container">
+        <div class="banner-frame">
+          <img 
+            class="banner-media" 
+            src="assets/images/banner.png" 
+            alt="신하늘의 개인 배너 이미지"
+            width="1200"
+            height="400"
+            loading="eager"
+          />
         </div>
       </div>
     </section>
-    <nav id="main-nav">
+
+    <section id="profile" class="profile section">
       <div class="container">
-        <ul class="nav-buttons">
-          <li><a href="index.html" class="active"><i class="fas fa-user"></i> 프로필</a></li>
-          <li><a href="portfolio.html"><i class="fas fa-briefcase"></i> Discord 관리자 경력</a></li>
-          <li><a href="posts.html"><i class="fas fa-pen"></i> 포스트</a></li>
-          <li><a href="gifts.html"><i class="fas fa-gift"></i> 선물</a></li>
-          <li><a href="#" id="dark-mode-toggle"><i class="fas fa-moon"></i> 다크 모드</a></li>
-        </ul>
-      </div>
-    </nav>
-    <main>
-      <div class="container">
-        <section id="personal-info">
-          <h2>About Me</h2>
-          <div class="profile-container">
-            <div class="profile-image">
-              <img src="images/profile.png" alt="프로필 이미지" class="avatar-image">
-            </div>
-            <div class="profile-details">
-              <div class="info-grid">
-                <div class="info-item">
-                  <p><strong><i class="fas fa-id-card"></i> 실명</strong> (비공개)</p>
-                </div>
-                <div class="info-item">
-                  <p><strong><i class="fas fa-user-tag"></i> 가명</strong> 신하늘</p>
-                </div>
-                <div class="info-item">
-                  <p><strong><i class="fas fa-user-edit"></i> 별칭</strong> 하늘이, 늘이, 늘</p>
-                </div>
-                <div class="info-item">
-                  <p><strong><i class="fas fa-birthday-cake"></i> 출생</strong> 2011년 3월 9일 오전 10:35 (GMT+9)</p>
-                </div>
-                <div class="info-item">
-                  <p><strong><i class="fas fa-venus-mars"></i> 성별</strong> 남성</p>
-                </div>
-                <div class="info-item">
-                  <p><strong><i class="fas fa-ruler-vertical"></i> 신장</strong> 167.2 cm</p>
-                </div>
-                <div class="info-item">
-                  <p><strong><i class="fas fa-weight"></i> 체중</strong> 58.00 kg</p>
-                </div>
-                <div class="info-item">
-                  <p><strong><i class="fas fa-flag"></i> 국적</strong> 중화인민공화국 (중국)</p>
-                </div>
-                <div class="info-item">
-                  <p><strong><i class="fas fa-brain"></i> MBTI</strong> ISTP-T / INTP-A</p>
-                </div>
-                <div class="info-item">
-                  <p>
-                    <strong><i class="fas fa-gamepad"></i> 취미</strong>
-                    Social, Media, Coding
-                  </p>
-                </div>
-                <div class="info-item">
-                  <p>
-                    <strong><i class="fas fa-heart"></i> 이상형</strong> 나이 차 ±1살, &lt;160cm, 귀엽고 착함
-                  </p>
-                </div>
-                <div class="info-item">
-                  <p>
-                    <strong><i class="fas fa-star"></i> 팬덤</strong>
-                    장난감(감규리), 바위게(QWER)
-                  </p>
-                </div>
-              </div>
+        <div class="profile-card">
+          <img 
+            class="avatar" 
+            src="assets/images/profile.png" 
+            alt="신하늘의 프로필 사진"
+            width="120"
+            height="120"
+            loading="lazy"
+          />
+          <div class="profile-info">
+            <h2 class="section-title">신하늘</h2>
+            <p class="muted">ISTP-T / INTP-A · Social, Media, Coding</p>
+            <div class="profile-actions">
+              <a 
+                class="btn primary" 
+                href="discord://-/users/959784288717520937" 
+                title="Discord로 연락하기"
+                aria-label="Discord로 신하늘에게 연락하기"
+              >
+                연락하기
+              </a>
+              <a 
+                class="btn ghost" 
+                href="https://github.com/ShinHaneul-39" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="신하늘의 GitHub 프로필 보기 (새 창에서 열림)"
+              >
+                GitHub
+              </a>
             </div>
           </div>
-        </section>
-        
-        <section id="tmi">
-          <h2>TMI</h2>
-          <div class="tmi-container">
-            <article class="tmi-card">
-              <div class="tmi-icon"><i class="fas fa-signature"></i></div>
-              <h3>가명의 기원</h3>
-              <p>
-                신하늘이라는 가명은 Opentown이라는 SNS에서 최초로 사용했었어요! 당시 짝사랑
-                중이었던 여자의 성이 신이고 좋아하는 색상이 하늘색이라 신하늘이라는 가명을
-                짓게 되었어요. 지금 생각해도 정말 예쁘고 귀여운 이름이라고 생각한답니다?
-              </p>
-            </article>
-            <article class="tmi-card">
-              <div class="tmi-icon"><i class="fas fa-language"></i></div>
-              <h3>한국어 잘 하는 이유</h3>
-              <p>
-                중국인이 어떻게 한국어를 잘 하는지에 대해 궁금한 분들이 많을 것 같아요!
-                사실 별거 없고 그냥 중국인이지만 민족이 조선족이기에 당연한 거에요!
-                영화에서 자주 보이는 그 조선족 맞아요! 저 본인은 그냥 한국인처럼 평범히 대해주길 원한답니다?
-              </p>
-            </article>
-            <article class="tmi-card">
-              <div class="tmi-icon"><i class="fab fa-discord"></i></div>
-              <h3>디스코드 망령이에요</h3>
-              <p>
-                평소 여러 플랫폼에서 디스코드에 관한 질문에 답변하는걸 즐겨요!
-                디스코드 실험에 대한 정보에 관심이 많고, 직접 봇을 만들어보기도 했었어요!
-                디스코드가 아닌 곳에서 제 프로필 사진을 본다면 대부분 저 본인일거에요!
-              </p>
-            </article>
-          </div>
-          <div class="contact-me">
-            <p><i class="fas fa-comment"></i> 이 외 궁금한 게 더 있으면 Discord에서 물어보세요!</p>
-          </div>
-        </section>
-      </div>
-    </main>
-    <footer>
-      <div class="container">
-        <div class="footer-content">
-          <div class="footer-links">
-            <a href="index.html">프로필</a>
-            <a href="portfolio.html">Discord 관리자 경력</a>
-            <a href="posts.html">포스트</a>
-            <a href="gifts.html">선물 내역</a>
-          </div>
-          <div class="social-links">
-            <a href="https://github.com/ShinHaneul-39" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-            <a href="https://www.youtube.com/@shin._.haneul" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-            <a href="https://open.spotify.com/user/312a6vtoanw5rvzhshbsx7k52cwu" target="_blank" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
-            <a href="discord://-/users/959784288717520937" title="Discord"><i class="fab fa-discord"></i></a>
-          </div>
-          <p>&copy; 2025 신하늘 | All Rights Reserved</p>
         </div>
       </div>
-    </footer>
-    
-    <script>
-      // 스크롤 시 네비게이션 바 스타일 변경
-      window.addEventListener('scroll', function() {
-        const nav = document.getElementById('main-nav');
-        if (window.scrollY > 100) {
-          nav.classList.add('scrolled');
-        } else {
-          nav.classList.remove('scrolled');
-        }
-      });
+    </section>
 
-      // 다크 모드 토글 기능
-      const darkModeToggle = document.getElementById('dark-mode-toggle');
-      const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-      
-      // 로컬 스토리지에서 테마 설정 불러오기
-      const savedTheme = localStorage.getItem('theme');
+    <section id="details" class="details section" aria-labelledby="details-title">
+      <div class="container">
+        <h2 id="details-title" class="section-title">프로필 상세</h2>
+        <div class="details-card" role="group" aria-label="상세 프로필 정보">
+          <dl class="details-grid">
+            <div class="detail-row">
+              <dt>실명</dt>
+              <dd>(비공개)</dd>
+            </div>
+            <div class="detail-row">
+              <dt>가명</dt>
+              <dd>신하늘</dd>
+            </div>
+            <div class="detail-row">
+              <dt>별칭</dt>
+              <dd>하늘이, 늘이, 늘</dd>
+            </div>
+            <div class="detail-row">
+              <dt>출생</dt>
+              <dd>
+                <time datetime="2011-03-09T10:35:00+09:00">
+                  2011년 3월 9일 오전 10:35 (GMT+9)
+                </time>
+              </dd>
+            </div>
+            <div class="detail-row">
+              <dt>성별</dt>
+              <dd>남성</dd>
+            </div>
+            <div class="detail-row">
+              <dt>신장</dt>
+              <dd>169.0 cm</dd>
+            </div>
+            <div class="detail-row">
+              <dt>체중</dt>
+              <dd>60.10 kg</dd>
+            </div>
+            <div class="detail-row">
+              <dt>국적</dt>
+              <dd>중화인민공화국 (중국)</dd>
+            </div>
+            <div class="detail-row">
+              <dt>MBTI</dt>
+              <dd>ISTP-T / INTP-A</dd>
+            </div>
+            <div class="detail-row">
+              <dt>취미</dt>
+              <dd>Social, Media, Coding</dd>
+            </div>
+            <div class="detail-row">
+              <dt>이상형</dt>
+              <dd>나이 차 ±1살, &lt;160cm, 귀엽고 착함</dd>
+            </div>
+            <div class="detail-row">
+              <dt>팬덤</dt>
+              <dd>장난감(감규리), 바위게(QWER)</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
 
-      // 초기 테마 설정 함수
-      function applyTheme(theme) {
-        if (theme === 'dark') {
-          document.body.classList.add('dark-mode');
-          darkModeToggle.innerHTML = '<i class="fas fa-sun"></i><span> 라이트 모드</span>'; // 다크 모드일 때 라이트 모드로 전환 버튼
-        } else {
-          document.body.classList.remove('dark-mode');
-          darkModeToggle.innerHTML = '<i class="fas fa-moon"></i><span> 다크 모드 </span>'; // 라이트 모드일 때 다크 모드로 전환 버튼 (글자 수 맞춤)
-        }
-      }
+    <section id="tmi" class="tmi section">
+      <div class="container">
+        <h2 class="section-title">TMI</h2>
+        <p class="section-desc">작지만 나를 잘 보여주는 정보들을 모았습니다.</p>
+        <div class="grid grid-3">
+          <article class="card">
+            <h3>가명의 기원</h3>
+            <p>신하늘이라는 가명은 Opentown이라는 SNS에서 최초로 사용했었어요! 당시 짝사랑 중이었던 여자의 성이 신이고 좋아하는 색상이 하늘색이라 신하늘이라는 가명을 짓게 되었어요. 지금 생각해도 정말 예쁘고 귀여운 이름이라고 생각한답니다?</p>
+          </article>
+          <article class="card">
+            <h3>한국어 잘 하는 이유</h3>
+            <p>중국인이 어떻게 한국어를 잘 하는지에 대해 궁금한 분들이 많을 것 같아요! 사실 별거 없고 그냥 중국인이지만 민족이 조선족이기에 당연한 거에요! 영화에서 자주 보이는 그 조선족 맞아요! 저 본인은 그냥 한국인처럼 평범히 대해주길 원한답니다?</p>
+          </article>
+          <article class="card">
+            <h3>디스코드 망령이에요</h3>
+            <p>평소 여러 플랫폼에서 디스코드에 관한 질문에 답변하는걸 즐겨요! 디스코드 실험에 대한 정보에 관심이 많고, 직접 봇을 만들어보기도 했었어요! 디스코드가 아닌 곳에서 제 프로필 사진을 본다면 대부분 저 본인일거에요!</p>
+          </article>
+        </div>
+        <p class="muted" style="margin-top: var(--space-3); text-align: center;">
+          <i class="fas fa-comment" aria-hidden="true"></i> 
+          이 외 궁금한 게 더 있으면 Discord에서 물어보세요!
+        </p>
+      </div>
+    </section>
 
-      if (savedTheme) {
-        applyTheme(savedTheme);
-      } else if (prefersDarkScheme.matches) {
-        // 로컬 스토리지에 없으면 시스템 설정 따르기
-        applyTheme('dark');
-      } else {
-        applyTheme('light');
-      }
+    <section id="posts" class="posts section">
+      <div class="container">
+        <h2 class="section-title">최근 포스트</h2>
+        <div class="grid grid-2">
+          <article class="post-card">
+            <a 
+              href="posts/2025-09-26_001.html" 
+              class="post-link" 
+              aria-label="Samsung Galaxy Ring 리뷰 포스트 읽기"
+            >
+              <figure class="thumb">
+                <picture>
+                  <source 
+                    srcset="assets/images/posts/2025-09-26-x7a9kd.jpg" 
+                    type="image/jpeg" 
+                  />
+                  <img 
+                    src="assets/images/embed_image.png" 
+                    alt="Samsung Galaxy Ring과 케이스 사진" 
+                    width="400"
+                    height="200"
+                    loading="lazy"
+                    onerror="this.onerror=null; this.src='assets/images/embed_image.png';" 
+                  />
+                </picture>
+              </figure>
+              <h3 class="post-title">Samsung Galaxy Ring 리뷰</h3>
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
 
-      // 버튼 클릭 시 다크/라이트 모드 토글
-      darkModeToggle.addEventListener('click', function(e) {
-        e.preventDefault();
-        if (document.body.classList.contains('dark-mode')) {
-          applyTheme('light');
-          localStorage.setItem('theme', 'light');
-        } else {
-          applyTheme('dark');
-          localStorage.setItem('theme', 'dark');
-        }
-      });
-    </script>
-  </body>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <nav aria-label="푸터 네비게이션">
+          <div class="footer-links">
+            <a href="index.html" aria-current="page">프로필</a>
+            <a href="career_table.html">Discord 관리자 경력</a>
+            <a href="blog.html">블로그</a>
+            <a href="special_thanks.html">고마운 사람들</a>
+          </div>
+        </nav>
+        <div class="social-links" aria-label="소셜 미디어 링크">
+          <a 
+            href="https://github.com/ShinHaneul-39" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            aria-label="GitHub에서 신하늘 팔로우하기 (새 창에서 열림)"
+            title="GitHub"
+          >
+            <i class="fab fa-github" aria-hidden="true"></i>
+          </a>
+          <a 
+            href="https://www.youtube.com/@shin._.haneul" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            aria-label="YouTube에서 신하늘 구독하기 (새 창에서 열림)"
+            title="YouTube"
+          >
+            <i class="fab fa-youtube" aria-hidden="true"></i>
+          </a>
+          <a 
+            href="https://open.spotify.com/user/312a6vtoanw5rvzhshbsx7k52cwu" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            aria-label="Spotify에서 신하늘 팔로우하기 (새 창에서 열림)"
+            title="Spotify"
+          >
+            <i class="fab fa-spotify" aria-hidden="true"></i>
+          </a>
+          <a 
+            href="discord://-/users/959784288717520937" 
+            title="Discord로 연락하기"
+            aria-label="Discord로 신하늘에게 연락하기"
+          >
+            <i class="fab fa-discord" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+      <div style="margin-top: var(--space-3); text-align: center; color: var(--color-muted);">
+        © 2025 신하늘 | All Rights Reserved
+      </div>
+    </div>
+  </footer>
+</body>
 </html>

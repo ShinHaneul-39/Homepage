@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="신하늘의 블로그 - 다양한 주제에 대한 생각과 경험을 공유합니다." />
+    <title>블로그 | 신하늘</title>
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/style-v2.css" />
+  </head>
+  <body>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link">메인 콘텐츠로 건너뛰기</a>
+    
+    <!-- Topbar -->
+    <header class="topbar" role="banner">
+      <div class="container">
+        <div class="brand">
+          <a href="index.html" aria-label="홈으로 이동">
+            <img src="assets/images/profile.png" alt="신하늘 프로필" width="32" height="32" loading="eager" />
+            <span>신하늘</span>
+          </a>
+        </div>
+        <nav class="nav" role="navigation" aria-label="주요 네비게이션">
+          <a href="index.html">프로필</a>
+          <a href="career_table.html">Discord 관리자 경력</a>
+          <a href="blog.html" aria-current="page">블로그</a>
+          <a href="special_thanks.html">고마운 사람들</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <!-- Intro -->
+      <section class="intro section">
+        <div class="container">
+          <h1 class="intro-title">블로그</h1>
+          <p class="intro-desc">제 생각과 경험을 공유하는 공간입니다.</p>
+        </div>
+      </section>
+
+      <!-- Hero Banner -->
+      <section class="hero-banner section" role="img" aria-label="블로그 배너">
+        <div class="container">
+          <div class="banner-frame" role="figure" aria-label="배너 이미지">
+            <img class="banner-media" src="assets/images/banner.png" alt="배너 이미지" width="800" height="400" loading="eager" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Posts -->
+      <section id="posts" class="posts section">
+        <div class="container">
+          <h2 class="section-title"><i class="fas fa-pen" aria-hidden="true"></i> 최근 포스트</h2>
+          <p class="section-desc">제 생각과 경험을 공유하는 블로그입니다. 다양한 주제에 대한 이야기를 나눕니다.</p>
+          <div class="posts-container grid-1" style="margin-top:16px; padding: var(--space-6) 0;">
+            <article id="galaxy-ring" class="post-card" aria-labelledby="galaxy-ring-title">
+               <a href="posts/2025-09-26_001.html" class="post-link" aria-describedby="galaxy-ring-title">
+                 <figure class="thumb">
+                   <picture>
+                     <source srcset="assets/images/posts/2025-09-26-x7a9kd.jpg" type="image/jpeg" />
+                     <img src="assets/images/embed_image.png" alt="Samsung Galaxy Ring 케이스 사진" width="300" height="200" loading="lazy" onerror="this.onerror=null; this.src='assets/images/embed_image.png';" />
+                   </picture>
+                 </figure>
+                 <h3 id="galaxy-ring-title" class="post-title">Samsung Galaxy Ring 리뷰</h3>
+               </a>
+             </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+      <div class="container">
+        <div class="footer-content">
+          <nav class="footer-nav" aria-label="푸터 네비게이션">
+            <a href="index.html">프로필</a>
+            <a href="career_table.html">Discord 관리자 경력</a>
+            <a href="blog.html" aria-current="page">블로그</a>
+            <a href="special_thanks.html">고마운 사람들</a>
+          </nav>
+          <div class="social-links" role="group" aria-label="소셜 미디어 링크">
+            <a href="https://github.com/ShinHaneul-39" target="_blank" rel="noopener noreferrer" aria-label="GitHub 프로필">GitHub</a>
+            <a href="https://www.youtube.com/@shin._.haneul" target="_blank" rel="noopener noreferrer" aria-label="YouTube 채널">YouTube</a>
+            <a href="https://open.spotify.com/user/312a6vtoanw5rvzhshbsx7k52cwu" target="_blank" rel="noopener noreferrer" aria-label="Spotify 프로필">Spotify</a>
+            <a href="discord://-/users/959784288717520937" aria-label="Discord 프로필">Discord</a>
+          </div>
+        </div>
+        <div class="footer-copyright">
+          <p>© <time datetime="2025">2025</time> 신하늘 | All Rights Reserved</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

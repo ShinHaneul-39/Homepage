@@ -1,0 +1,2507 @@
+/* ==================== 
+   MODERN HOMEPAGE REDESIGN 
+   ==================== */
+
+/* 기본 리셋 및 변수 정의 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* 컬러 시스템 */
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  
+  --primary-color: #667eea;
+  --secondary-color: #764ba2;
+  --accent-color: #4facfe;
+  
+  --text-primary: #2d3748;
+  --text-secondary: #718096;
+  --text-muted: #a0aec0;
+  
+  --bg-primary: #ffffff;
+  --bg-secondary: #f7fafc;
+  --bg-subtle: #edf2f7;
+  --bg-overlay: rgba(255, 255, 255, 0.95);
+  
+  /* 다크 모드 색상 */
+  --dark-bg-primary: #1a202c;
+  --dark-bg-secondary: #2d3748;
+  --dark-bg-subtle: #4a5568;
+  --dark-text-primary: #f7fafc;
+  --dark-text-secondary: #e2e8f0;
+  --dark-text-muted: #a0aec0;
+  
+  /* 그림자 & 효과 */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  /* 트랜지션 */
+  --transition-fast: all 0.15s ease;
+  --transition-normal: all 0.3s ease;
+  --transition-slow: all 0.5s ease;
+  
+  /* 크기 & 간격 */
+  --border-radius-sm: 0.375rem;
+  --border-radius-md: 0.5rem;
+  --border-radius-lg: 0.75rem;
+  --border-radius-xl: 1rem;
+  --border-radius-2xl: 1.5rem;
+  
+  --container-max-width: 1280px;
+  --section-spacing: 6rem;
+  --card-spacing: 2rem;
+}
+
+/* 다크 모드 변수 */
+body.dark-mode {
+  --bg-primary: var(--dark-bg-primary);
+  --bg-secondary: var(--dark-bg-secondary);
+  --bg-subtle: var(--dark-bg-subtle);
+  --text-primary: var(--dark-text-primary);
+  --text-secondary: var(--dark-text-secondary);
+  --text-muted: var(--dark-text-muted);
+  --bg-overlay: rgba(26, 32, 44, 0.95);
+}
+
+/* 로딩 오버레이 */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-gradient);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.1s ease, visibility 0.1s ease;
+}
+
+.loading-overlay.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loading-content {
+  text-align: center;
+  color: white;
+}
+
+.loading-spinner {
+  width: 3rem;
+  height: 3rem;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top: 4px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1.5rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.loading-subtext {
+  font-size: 0.875rem;
+  opacity: 0.8;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.loading-progress {
+  width: 12rem;
+  height: 0.25rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  margin: 1rem auto 0.5rem;
+  overflow: hidden;
+}
+
+.loading-progress-bar {
+  height: 100%;
+  background: white;
+  border-radius: 9999px;
+  width: 0%;
+  transition: width 0.1s ease;
+}
+
+body.loading {
+  overflow: hidden;
+}
+
+/* 기본 타이포그래피 & 레이아웃 */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Pretendard Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  transition: var(--transition-normal);
+  font-size: 16px;
+  overflow-x: hidden;
+}
+
+/* 컨테이너 시스템 */
+.container {
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* 글로벌 헤딩 스타일 */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+h1 { font-size: 3rem; }
+h2 { font-size: 2.25rem; }
+h3 { font-size: 1.875rem; }
+h4 { font-size: 1.5rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1.125rem; }
+
+p {
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+
+/* 메인 헤더 */
+header.banner {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--border-radius-xl);
+  margin: 1.5rem 0 2rem;
+  box-shadow: var(--shadow-xl);
+}
+
+header.banner.with-image {
+  height: auto;
+}
+
+
+/* 전환 부드럽게 */
+header.banner.with-image, .hero-content, .hero-content h1, .hero-content .intro-text { transition: var(--transition-normal); }
+
+/* 새로운 헤더 구조 (Topbar + Hero) */
+.site-header { position: relative; }
+
+.site-header .topbar {
+  position: sticky;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  border-radius: 0;
+  padding: 0.5rem 0; /* 초압축 간격 기준 */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* 헤더 내부 내비게이션은 전역 nav 스타일 무시하고 간결하게 */
+.site-header .topnav {
+  background: transparent;
+  backdrop-filter: none;
+  border: none;
+  box-shadow: none;
+  position: static;
+  top: auto;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+}
+.site-header .topnav ul { display: flex; align-items: center; gap: 0.25rem; list-style: none; flex-wrap: wrap; justify-content: flex-end; }
+.site-header .topnav ul li a {
+  display: flex; align-items: center; gap: 0.4rem;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.9rem; font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  border-radius: var(--border-radius-lg);
+  transition: var(--transition-fast);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+}
+.site-header .topnav ul li a:hover, .site-header .topnav ul li a.active { background: rgba(255, 255, 255, 0.2); color: #fff; border-color: rgba(255, 255, 255, 0.3); transform: translateY(-1px); }
+
+/* 브랜드 */
+.brand a { font-size: 1.25rem; font-weight: 800; color: #fff; text-decoration: none; letter-spacing: 0.2px; text-shadow: 0 2px 4px rgba(0,0,0,0.35); }
+.brand a:hover { opacity: 0.95; }
+
+/* 헤더 오버레이 + 히어로 컨텐츠: 배너 전체 표시를 위해 겹치지 않도록 비활성화 */
+.header-overlay { display: none !important; }
+.hero-content { display: none !important; }
+.hero-content h1 { }
+.hero-content .intro-text { }
+.hero-content .social-links { }
+
+/* 다크 모드에서 탑바 투명도 조정 */
+body.dark-mode .site-header .topbar { background: rgba(0,0,0,0.25); border-bottom-color: rgba(255,255,255,0.1); }
+body.dark-mode .site-header .topnav ul li a { color: rgba(255,255,255,0.9); background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); }
+
+.banner-image-container {
+  width: 100%;
+  max-width: clamp(280px, 92vw, 1200px); /* 화면 크기에 따라 자연스럽게 축소 */
+  height: auto;
+  position: relative;
+  margin: 0 auto; /* 가운데 정렬 */
+  overflow: visible; /* 클립 방지 */
+  border-radius: var(--border-radius-xl);
+}
+
+.banner-image {
+  width: auto; /* 원본 너비 */
+  max-width: 100%; /* 화면이 더 좁으면 축소 */
+  max-height: clamp(9rem, 26vh, 13rem); /* 과도한 압축감 완화 */
+  height: auto;
+  display: block;
+  padding: 0.25rem 0; /* 시각적으로 여유 공간 */
+}
+
+/* 컴팩트 상태에서는 시각적 임팩트를 위해 다시 cover로 전환 */
+
+
+body.dark-mode .banner-image-container::after {
+  background: transparent;
+}
+
+header.banner:hover .banner-image-container::after {
+  background: transparent;
+}
+
+header.banner:hover .banner-image-container::after {
+  background: linear-gradient(45deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+}
+
+/* 소개 섹션 */
+.intro-section {
+  background: var(--bg-primary);
+  border-radius: var(--border-radius-2xl);
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  margin: 1.5rem auto 3rem;
+  position: relative;
+  z-index: 10;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.intro-section h1 {
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+  font-size: 2.5rem;
+  font-weight: 800;
+}
+
+.intro-section .intro-text {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  font-weight: 400;
+}
+
+/* 소셜 링크 */
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.social-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  background: var(--bg-subtle);
+  border-radius: var(--border-radius-lg);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: var(--transition-normal);
+  font-size: 1.25rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.social-links a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-gradient);
+  transition: var(--transition-normal);
+}
+
+.social-links a:hover {
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.social-links a:hover::before {
+  left: 0;
+}
+
+.social-links a i {
+  position: relative;
+  z-index: 1;
+}
+
+/* 네비게이션 */
+nav {
+  background: var(--bg-overlay);
+  backdrop-filter: blur(20px);
+  border-radius: var(--border-radius-xl);
+  margin: 0 auto 3rem;
+  padding: 0.75rem 1rem;
+  box-shadow: var(--shadow-md);
+  position: sticky;
+  top: 1rem;
+  z-index: 100;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+nav.scrolled {
+  box-shadow: var(--shadow-lg);
+  background: var(--bg-primary);
+  border-color: var(--bg-subtle);
+}
+
+nav ul {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+nav ul li a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-weight: 600;
+  border-radius: var(--border-radius-lg);
+  transition: var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+nav ul li a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-gradient);
+  transition: var(--transition-normal);
+  z-index: -1;
+}
+
+nav ul li a.active,
+nav ul li a:hover {
+  color: white;
+  transform: translateY(-1px);
+}
+
+nav ul li a.active::before,
+nav ul li a:hover::before {
+  left: 0;
+}
+
+nav ul li a i {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* 메인 콘텐츠 영역 */
+main {
+  padding: 2rem 0 var(--section-spacing);
+}
+
+/* 섹션 스타일 */
+section {
+  background: var(--bg-primary);
+  border-radius: var(--border-radius-2xl);
+  padding: 3rem 2.5rem;
+  margin-bottom: 3rem;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--primary-gradient);
+}
+
+section:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+section h2 {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  position: relative;
+  color: var(--text-primary);
+}
+
+.section-intro {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+section h2::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4rem;
+  height: 3px;
+  background: var(--accent-gradient);
+  border-radius: 9999px;
+}
+
+/* 카드 시스템 */
+.card {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius-xl);
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: var(--primary-gradient);
+  border-radius: var(--border-radius-xl);
+  z-index: -1;
+  opacity: 0;
+  transition: var(--transition-normal);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+/* TMI 카드 그리드 */
+.tmi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.tmi-card {
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-subtle) 100%);
+  border-radius: var(--border-radius-xl);
+  padding: 2rem;
+  text-align: center;
+  transition: var(--transition-normal);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.tmi-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, transparent, var(--primary-color), transparent);
+  opacity: 0;
+  transition: var(--transition-slow);
+  animation: rotate 4s linear infinite paused;
+}
+
+.tmi-card:hover::before {
+  opacity: 0.1;
+  animation-play-state: running;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.tmi-card .tmi-icon {
+  width: 4rem;
+  height: 4rem;
+  background: var(--accent-gradient);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  color: white;
+  font-size: 1.5rem;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition-normal);
+}
+
+.tmi-card:hover .tmi-icon {
+  transform: scale(1.1) rotate(10deg);
+  box-shadow: var(--shadow-lg);
+}
+
+.tmi-card h3 {
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.tmi-card p {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* 프로필 정보 그리드 */
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+/* About Me - Profile image sizing */
+.profile-container {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 0.75rem;
+}
+
+.profile-image { flex: 0 0 auto; }
+
+.avatar-image {
+  display: block;
+  width: clamp(80px, 14vw, 120px);
+  height: clamp(80px, 14vw, 120px);
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: var(--shadow-md);
+}
+
+.profile-details { flex: 1 1 auto; }
+
+.info-item {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius-lg);
+  padding: 1.5rem;
+  transition: var(--transition-normal);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.info-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.info-item i {
+  color: var(--primary-color);
+  font-size: 1.25rem;
+  margin-right: 0.75rem;
+}
+
+.info-item strong {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+/* 테이블 스타일링 */
+.table-container {
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  margin: 2rem 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-primary);
+}
+
+th, td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--bg-subtle);
+}
+
+th {
+  background: var(--primary-gradient);
+  color: white;
+  font-weight: 600;
+  position: relative;
+}
+
+tr:hover {
+  background: var(--bg-subtle);
+}
+
+/* Horizontal scroll + no-wrap for portfolio table */
+/* Override container overflow to allow horizontal scrolling */
+.table-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0.5rem; /* 스크롤바 겹침 방지 */
+  scroll-snap-type: x proximity; /* 스크롤 힌트 */
+}
+
+/* 모바일에서 스크롤 안내 배경 힌트 */
+@media (max-width: 768px) {
+  .table-container {
+    background: linear-gradient(to right, rgba(0,0,0,0.06), transparent 40%) 0 0 / 16px 100% no-repeat;
+  }
+}
+
+/* Let table grow beyond container width when needed */
+.discord-career-table {
+  width: max-content;
+  min-width: 100%;
+}
+
+/* Prevent line wrapping inside the Discord career table */
+.discord-career-table th,
+.discord-career-table td {
+  white-space: nowrap;
+}
+
+/* But allow wrapping inside filter dropdown options */
+.discord-career-table th.filter-th .filter-options {
+  white-space: normal;
+}
+
+/* 선물 목록 (하단 중복 구간 동기화) */
+.gift-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.gift-item {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius-lg);
+  transition: var(--transition-normal);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.gift-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--primary-gradient);
+  transform: scaleX(0);
+  transition: var(--transition-normal);
+}
+
+.gift-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  background: var(--bg-primary);
+}
+
+.gift-item:hover::before {
+  transform: scaleX(1);
+}
+
+.gift-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.gift-number {
+  background: var(--primary-gradient);
+  color: white;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.gift-date {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-align: center;
+  padding: 0.3rem 0.6rem;
+  background: rgba(var(--primary-color-rgb), 0.1);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid rgba(var(--primary-color-rgb), 0.2);
+}
+
+@media (max-width: 768px) {
+  .gift-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}
+
+/* 블로그 카드 */
+.post-card {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius-xl);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  transition: var(--transition-normal);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.post-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--secondary-gradient);
+  transform: scaleX(0);
+  transition: var(--transition-normal);
+}
+
+.post-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.post-card:hover::after {
+  transform: scaleX(1);
+}
+
+.post-card h3 {
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.post-card p {
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* 푸터 */
+footer {
+  background: var(--primary-gradient);
+  color: white;
+  padding: 4rem 0 2rem;
+  border-radius: var(--border-radius-2xl) var(--border-radius-2xl) 0 0;
+  margin-top: 4rem;
+  position: relative;
+}
+
+footer::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent-gradient);
+}
+
+.footer-content {
+  text-align: center;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition-fast);
+}
+
+.footer-links a:hover {
+  color: white;
+  transform: translateY(-1px);
+}
+
+footer .social-links {
+  margin: 2rem 0;
+}
+
+footer .social-links a {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  backdrop-filter: blur(10px);
+}
+
+footer .social-links a:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-3px) scale(1.05);
+}
+
+footer p {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 0;
+  font-size: 0.875rem;
+}
+
+/* 키보드 접근성 */
+body.using-keyboard *:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 1rem;
+  }
+  
+  section {
+    padding: 2rem 1.5rem;
+  }
+  
+  .intro-section {
+    margin: 1.5rem auto 2rem;
+    padding: 2rem 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --section-spacing: 4rem;
+  }
+  
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
+  h3 { font-size: 1.5rem; }
+  
+  header.banner.with-image {
+    height: auto;
+  }
+  
+  .intro-section h1 {
+    font-size: 2rem;
+  }
+  
+  .intro-section .intro-text {
+    font-size: 1.125rem;
+  }
+  
+  nav ul {
+    gap: 0.25rem;
+  }
+  
+  nav ul li a {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+  }
+  
+  .tmi-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* stack profile layout on mobile */
+  .profile-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
+  }
+  .profile-details { width: 100%; }
+  
+  .gift-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .footer-links {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  section {
+    padding: 1.5rem 1rem;
+  }
+  
+  .social-links {
+    gap: 0.75rem;
+  }
+  
+  .social-links a {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.125rem;
+  }
+  
+  table {
+    font-size: 0.875rem;
+  }
+  
+  th, td {
+    padding: 0.75rem 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 0.75rem;
+  }
+  
+  header.banner.with-image {
+    height: auto;
+  }
+  
+  .intro-section {
+    margin: 1.25rem auto 1.5rem;
+    padding: 1.5rem 1rem;
+  }
+  
+  .intro-section h1 {
+    font-size: 1.75rem;
+  }
+  
+  nav ul li a span {
+    display: none;
+  }
+  
+  section {
+    padding: 1.25rem 0.75rem;
+  }
+  
+  .tmi-card {
+    padding: 1.5rem;
+  }
+  
+  .info-item {
+    padding: 1rem;
+  }
+}
+
+/* 밀도 최적화(Compact Density) */
+:root {
+  --section-spacing: 4rem; /* 6rem -> 4rem로 전역 섹션 간격 축소 */
+}
+
+main { padding: 1.5rem 0 var(--section-spacing); }
+
+section {
+  padding: 2rem 1.5rem; /* 3rem 2.5rem -> 2rem 1.5rem */
+  margin-bottom: 2rem; /* 3rem -> 2rem */
+}
+
+section h2 { margin-bottom: 1.25rem; /* 2.5rem -> 1.25rem */ }
+section h2::after { width: 3rem; height: 2px; /* 4rem, 3px -> 3rem, 2px */ }
+
+/* 내비게이션 간격 축소 */
+nav { margin: 0 auto 2rem; padding: 0.625rem 0.875rem; }
+
+/* 카드 및 그리드 밀도 */
+.card { padding: 1.25rem; }
+.tmi-grid { gap: 1rem; margin-top: 1rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.tmi-card { padding: 1.25rem; }
+
+/* 프로필 섹션 밀도 */
+.profile-container { gap: 1.25rem; }
+.profile-grid { gap: 1rem; margin-top: 1rem; }
+.info-item { padding: 1rem; }
+
+/* 선물 목록(카드) 밀도 */
+.gift-list { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.75rem; margin-top: 1rem; }
+.gift-item { padding: 0.875rem; }
+.gift-info { gap: 0.5rem; margin-bottom: 0.5rem; }
+.gift-number { width: 1.75rem; height: 1.75rem; font-size: 0.8rem; }
+.gift-date { font-size: 0.75rem; padding: 0.25rem 0.5rem; }
+
+/* 블로그 카드 밀도 */
+.post-card { padding: 1.5rem; margin-bottom: 1.5rem; }
+
+/* 테이블 셀 여백 소폭 축소 */
+table th, table td { padding: 0.875rem; }
+
+/* 푸터 간격 축소 */
+footer { padding: 3rem 0 1.25rem; margin-top: 3rem; }
+.footer-links { gap: 1.25rem; margin-bottom: 1.5rem; }
+
+/* 반응형(태블릿/모바일)에서 추가 컴팩트 튜닝) */
+@media (max-width: 1024px) {
+  section { padding: 1.75rem 1.25rem; }
+  .card, .tmi-card { padding: 1.125rem; }
+  .info-item { padding: 0.875rem; }
+}
+
+@media (max-width: 768px) {
+  section { padding: 1.5rem 1.125rem; margin-bottom: 1.5rem; }
+  .tmi-grid { gap: 0.875rem; }
+  .gift-list { grid-template-columns: 1fr; gap: 0.75rem; }
+  .post-card { padding: 1.25rem; }
+}
+
+/* 밀도 향상: 2차 전역 튜닝 (Moderate) */
+:root { --section-spacing: 3.5rem; }
+
+/* 헤더/배너 컴팩트 조정 */
+header.banner { margin: 0.75rem 0 0.75rem; }
+header.banner.with-image { height: auto; }
+
+/* 컨테이너 좌우 패딩 소폭 축소 */
+.container { padding: 0 1rem; }
+
+/* 메인 영역 상하 패딩 축소 */
+main { padding: 1rem 0 var(--section-spacing); }
+
+/* 섹션/헤딩 여백 축소 */
+section { padding: 1.5rem 1.25rem; margin-bottom: 1.25rem; }
+section h2 { margin-bottom: 1rem; }
+section h2::after { width: 2.5rem; height: 2px; }
+
+/* 소개 섹션 컴팩트 */
+.intro-section { margin: 1.5rem auto 2rem; padding: 2rem 1.5rem; }
+.intro-section h1 { font-size: 2.25rem; }
+.intro-section .intro-text { font-size: 1.125rem; }
+
+/* 네비게이션 간격 축소 */
+nav { margin: 0 auto 1.5rem; padding: 0.5rem 0.75rem; }
+
+/* 카드/그리드 밀도 */
+.card, .tmi-card, .post-card { padding: 1.25rem; }
+.post-card { margin-bottom: 1.25rem; }
+.tmi-grid { gap: 0.875rem; margin-top: 0.75rem; }
+.profile-grid { gap: 0.875rem; margin-top: 0.75rem; }
+.profile-container { gap: 1rem; }
+.info-item { padding: 0.875rem; }
+
+/* 표 밀도 */
+.table-container { margin: 1rem 0; }
+.table-container table { font-size: 0.95rem; }
+table th, table td { padding: 0.75rem 0.625rem; }
+
+/* 선물 카드 리스트 밀도 */
+.gift-list { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0.5rem; margin-top: 0.75rem; }
+.gift-item { padding: 0.75rem; }
+.gift-info { gap: 0.5rem; margin-bottom: 0.5rem; }
+.gift-number { width: 1.75rem; height: 1.75rem; font-size: 0.8rem; }
+.gift-date { font-size: 0.75rem; padding: 0.25rem 0.5rem; }
+
+/* 헤딩/본문 타이포 살짝 축소 */
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.625rem; }
+p { margin-bottom: 0.75rem; line-height: 1.6; }
+
+/* 푸터 간격 축소 */
+footer { padding: 2.5rem 0 1rem; margin-top: 2rem; }
+.footer-links { gap: 1rem; margin-bottom: 1rem; }
+
+/* 성능 최적화 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 포커스 관리 */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* 다크 모드 전용 추가 스타일 */
+body.dark-mode .banner-image-container::after {
+  background: linear-gradient(45deg, rgba(102, 126, 234, 0.4), rgba(118, 75, 162, 0.4));
+}
+
+body.dark-mode .card::before {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+body.dark-mode .tmi-card {
+  background: linear-gradient(135deg, var(--dark-bg-primary) 0%, var(--dark-bg-secondary) 100%);
+}
+
+body.dark-mode footer {
+  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+}
+
+/* Discord 테이블 특화 스타일 */
+.table-container .discord-career-table {
+  width: max-content;
+  min-width: 100%;
+  margin: 1.5rem 0;
+  font-size: 1rem; /* 가독성 향상을 위한 기본 폰트 크기 상향 */
+}
+
+/* 반응형: 기기 너비가 줄어들수록 표 글씨를 상대적으로 더 키워서 가독성 강화 */
+@media (max-width: 1024px) {
+  .table-container .discord-career-table { font-size: 1.05rem; }
+}
+@media (max-width: 768px) {
+  .table-container .discord-career-table { font-size: 1.1rem; }
+  .table-container .discord-career-table th, .table-container .discord-career-table td { padding: 0.95rem 0.75rem; }
+}
+@media (max-width: 480px) {
+  .table-container .discord-career-table { font-size: 1.15rem; }
+  .table-container .discord-career-table th, .table-container .discord-career-table td { padding: 0.9rem 0.75rem; }
+}
+
+.discord-career-table th.filter-th {
+  position: relative;
+  cursor: pointer;
+}
+
+.discord-career-table th.filter-th .filter-toggle-icon {
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.discord-career-table th.filter-th .filter-options {
+  position: relative;
+  top: 100%;
+  left: 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--bg-subtle);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 1rem;
+  min-width: 12rem;
+  z-index: 1000;
+  display: none;
+  max-height: 12rem;
+  overflow-y: auto;
+}
+
+.discord-career-table th.filter-th .filter-options.active {
+  display: block;
+}
+
+.discord-career-table th.filter-th .filter-options label {
+  display: block;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: var(--transition-fast);
+}
+
+.discord-career-table th.filter-th .filter-options label:hover {
+  color: var(--primary-color);
+}
+
+.discord-career-table .tag {
+  position: relative;
+  display: inline-block;
+
+  padding: 0.25rem 0.75rem;
+  background: transparent; /* 배경은 가상 요소가 담당 */
+  background-image: none !important; /* 태그에 그라데이션 강제 비활성화 */
+  color: var(--text-primary) !important;
+  border: 2px solid var(--tag-bg, var(--bg-subtle)); /* 태그 색상 테두리 (기본은 중립, 두께 ↑) */
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin: 0.125rem;
+  overflow: hidden;
+}
+
+/* 반투명 배경 오버레이 */
+.discord-career-table .tag::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--tag-bg, var(--bg-subtle)); /* 명시적으로 단색만 사용 */
+  background-image: none !important; /* 오버레이 그라데이션 차단 */
+  opacity: var(--tag-bg-alpha, 0.35); /* 기본 반투명도 (조금 더 진하게) */
+  border-radius: inherit;
+  z-index: 0;
+}
+
+/* 텍스트가 오버레이 위에 표시되도록 */
+.discord-career-table .tag { z-index: 0; }
+.discord-career-table .tag > * { position: relative; z-index: 1; }
+
+.discord-career-table .tag:hover {
+  transform: scale(1.05);
+}
+
+/* 다크모드 테이블 */
+body.dark-mode .discord-career-table th.filter-th .filter-options {
+  background: var(--dark-bg-secondary);
+  border-color: var(--dark-bg-subtle);
+}
+
+body.dark-mode .discord-career-table th.filter-th .filter-options label {
+  color: var(--dark-text-primary);
+}
+
+/* Discord 경력표 헤더 그라데이션 완화 및 가독성 향상 */
+.discord-career-table thead th {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--bg-subtle);
+  white-space: nowrap;
+}
+
+/* 헤더 하단에 얇은 포인트 라인으로만 그라데이션 사용 */
+.discord-career-table thead th {
+  position: relative;
+}
+.discord-career-table thead th::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--primary-gradient);
+  opacity: 0.35; /* 과한 느낌 방지 */
+  pointer-events: none;
+}
+
+/* 다크 모드에서의 자연스러운 톤 조정 */
+body.dark-mode .discord-career-table thead th {
+  background: var(--dark-bg-secondary);
+  color: var(--dark-text-primary);
+  border-bottom: 1px solid var(--dark-bg-subtle);
+}
+body.dark-mode .discord-career-table thead th::after {
+  opacity: 0.4; /* 다크 모드에서 약간 더 도드라지게 */
+}
+
+/* 헤더 행 전체 배경도 톤을 맞춰 정리 */
+.discord-career-table thead tr {
+  background: transparent;
+}
+body.dark-mode .discord-career-table thead tr {
+  background: transparent;
+}
+
+/* Small hint of scrollability on mobile */
+.table-container::-webkit-scrollbar {
+  height: 8px;
+}
+.table-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  border-radius: 9999px;
+}
+.table-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+.discord-career-table th.filter-th {
+  position: relative;
+}
+
+.discord-career-table th.filter-th .filter-toggle-icon {
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.discord-career-table th.filter-th .filter-options {
+  position: relative;
+  top: 100%;
+  left: 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--bg-subtle);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 1rem;
+  min-width: 12rem;
+  z-index: 1000;
+  display: none;
+  max-height: 12rem;
+  overflow-y: auto;
+}
+
+.discord-career-table th.filter-th .filter-options.active {
+  display: block;
+}
+
+.discord-career-table th.filter-th .filter-options label {
+  display: block;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: var(--transition-fast);
+}
+
+.discord-career-table th.filter-th .filter-options label:hover {
+  color: var(--primary-color);
+}
+
+.discord-career-table .tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: transparent; /* remove default gradient */
+  color: var(--tag-fg, var(--text-primary));
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin: 0.125rem;
+}
+
+.discord-career-table .tag:hover {
+  transform: scale(1.05);
+}
+
+/* 다크모드 테이블 */
+body.dark-mode .discord-career-table th.filter-th .filter-options {
+  background: var(--dark-bg-secondary);
+  border-color: var(--dark-bg-subtle);
+}
+body.dark-mode .discord-career-table th.filter-th::after {
+  opacity: 0.4; /* 다크 모드에서 약간 더 도드라지게 */
+}
+
+/* POPUP FILTERS & COLUMN ALIGNMENT OVERRIDES - Final rules to ensure proper behavior */
+/* Override all previous filter option positions to use fixed popups */
+.discord-career-table th.filter-th .filter-options {
+  position: fixed !important;
+  top: auto !important;
+  left: auto !important;
+  background: var(--bg-primary);
+  border: 1px solid var(--bg-subtle);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 1rem;
+  min-width: 12rem;
+  max-width: 20rem;
+  z-index: 9999;
+  display: none;
+  max-height: 15rem;
+  overflow-y: auto;
+  white-space: normal;
+}
+
+.discord-career-table th.filter-th .filter-options.active {
+  display: block !important;
+}
+
+body.dark-mode .discord-career-table th.filter-th .filter-options {
+  background: var(--dark-bg-secondary) !important;
+  border-color: var(--dark-bg-subtle) !important;
+}
+
+/* Column alignment: center for all columns except 서버명(2nd), 직무(7th), 임기(8th) */
+.discord-career-table th,
+.discord-career-table td {
+  text-align: center;
+}
+
+/* Keep left alignment only for specific columns: 서버명, 직무, 임기 */
+.discord-career-table th:nth-child(2),
+.discord-career-table td:nth-child(2),
+.discord-career-table th:nth-child(7), 
+.discord-career-table td:nth-child(7),
+.discord-career-table th:nth-child(8),
+.discord-career-table td:nth-child(8) {
+  text-align: left;
+}
+
+/* 헤더 행 전체 배경도 톤을 맞춰 정리 */
+.discord-career-table thead tr {
+  background: transparent;
+}
+body.dark-mode .discord-career-table thead tr {
+  background: transparent;
+}
+.discord-career-table th.filter-th {
+  position: relative;
+}
+
+.discord-career-table th.filter-th .filter-toggle-icon {
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.discord-career-table th.filter-th .filter-options {
+  position: relative;
+  top: 100%;
+  left: 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--bg-subtle);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 1rem;
+  min-width: 12rem;
+  z-index: 1000;
+  display: none;
+  max-height: 12rem;
+  overflow-y: auto;
+}
+
+.discord-career-table th.filter-th .filter-options.active {
+  display: block;
+}
+
+.discord-career-table th.filter-th .filter-options label {
+  display: block;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: var(--transition-fast);
+}
+
+.discord-career-table th.filter-th .filter-options label:hover {
+  color: var(--primary-color);
+}
+
+.discord-career-table .tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: transparent; /* remove default gradient */
+  color: var(--tag-fg, var(--text-primary));
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin: 0.125rem;
+}
+
+.discord-career-table .tag:hover {
+  transform: scale(1.05);
+}
+
+/* 다크모드 테이블 */
+body.dark-mode .discord-career-table th.filter-th .filter-options {
+  background: var(--dark-bg-secondary);
+  border-color: var(--dark-bg-subtle);
+}
+body.dark-mode .discord-career-table th.filter-th::after {
+  opacity: 0.4; /* 다크 모드에서 약간 더 도드라지게 */
+}
+
+/* 헤더 행 전체 배경도 톤을 맞춰 정리 */
+.discord-career-table thead tr {
+  background: transparent;
+}
+body.dark-mode .discord-career-table thead tr {
+  background: transparent;
+}
+.discord-career-table th.filter-th {
+  position: relative;
+}
+
+.discord-career-table th.filter-th .filter-toggle-icon {
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.discord-career-table th.filter-th .filter-options {
+  position: relative;
+  top: 100%;
+  left: 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--bg-subtle);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 1rem;
+  min-width: 12rem;
+  z-index: 1000;
+  display: none;
+  max-height: 12rem;
+  overflow-y: auto;
+}
+
+.discord-career-table th.filter-th .filter-options.active {
+  display: block;
+}
+
+.discord-career-table th.filter-th .filter-options label {
+  display: block;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: var(--transition-fast);
+}
+
+.discord-career-table th.filter-th .filter-options label:hover {
+  color: var(--primary-color);
+}
+
+.discord-career-table .tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: transparent; /* remove default gradient */
+  color: var(--tag-fg, var(--text-primary));
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin: 0.125rem;
+}
+
+.discord-career-table .tag:hover {
+  transform: scale(1.05);
+}
+
+/* 다크모드 테이블 */
+body.dark-mode .discord-career-table th.filter-th .filter-options {
+  background: var(--dark-bg-secondary);
+  border-color: var(--dark-bg-subtle);
+}
+body.dark-mode .discord-career-table th.filter-th::after {
+  opacity: 0.4; /* 다크 모드에서 약간 더 도드라지게 */
+}
+
+/* 헤더 행 전체 배경도 톤을 맞춰 정리 */
+.discord-career-table thead tr {
+  background: transparent;
+}
+body.dark-mode .discord-career-table thead tr {
+  background: transparent;
+}
+.discord-career-table th.filter-th {
+  position: relative;
+}
+
+.discord-career-table th.filter-th .filter-toggle-icon {
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.discord-career-table th.filter-th .filter-options {
+  position: relative;
+  top: 100%;
+  left: 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--bg-subtle);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 1rem;
+  min-width: 12rem;
+  z-index: 1000;
+  display: none;
+  max-height: 12rem;
+  overflow-y: auto;
+}
+
+.discord-career-table th.filter-th .filter-options.active {
+  display: block;
+}
+
+.discord-career-table th.filter-th .filter-options label {
+  display: block;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: var(--transition-fast);
+}
+
+.discord-career-table th.filter-th .filter-options label:hover {
+  color: var(--primary-color);
+}
+
+.discord-career-table .tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: transparent; /* remove default gradient */
+  color: var(--tag-fg, var(--text-primary));
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin: 0.125rem;
+}
+
+.discord-career-table .tag:hover {
+  transform: scale(1.05);
+}
+
+/* 다크모드 테이블 */
+body.dark-mode .discord-career-table th.filter-th .filter-options {
+  background: var(--dark-bg-secondary);
+  border-color: var(--dark-bg-subtle);
+}
+body.dark-mode .discord-career-table th.filter-th::after {
+  opacity: 0.4; /* 다크 모드에서 약간 더 도드라지게 */
+}
+
+/* 헤더 행 전체 배경도 톤을 맞춰 정리 */
+.discord-career-table thead tr {
+  background: transparent;
+}
+body.dark-mode .discord-career-table thead tr {
+  background: transparent;
+}
+.discord-career-table th.filter-th {
+  position: relative;
+}
+
+.discord-career-table th.filter-th .filter-toggle-icon {
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.discord-career-table th.filter-th .filter-options {
+  position: relative;
+  top: 100%;
+  left: 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--bg-subtle);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 1rem;
+  min-width: 12rem;
+  z-index: 1000;
+  display: none;
+  max-height: 12rem;
+  overflow-y: auto;
+}
+
+.discord-career-table th.filter-th .filter-options.active {
+  display: block;
+}
+
+.discord-career-table th.filter-th .filter-options label {
+  display: block;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: var(--transition-fast);
+}
+
+.discord-career-table th.filter-th .filter-options label:hover {
+  color: var(--primary-color);
+}
+
+.discord-career-table .tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: transparent; /* remove default gradient */
+  color: var(--tag-fg, var(--text-primary));
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin: 0.125rem;
+}
+
+.discord-career-table .tag:hover {
+  transform: scale(1.05);
+}
+
+/* 다크모드 테이블 */
+body.dark-mode .discord-career-table th.filter-th .filter-options {
+  background: var(--dark-bg-secondary);
+  border-color: var(--dark-bg-subtle);
+}
+body.dark-mode .discord-career-table th.filter-th::after {
+  opacity: 0.4; /* 다크 모드에서 약간 더 도드라지게 */
+}
+
+/* 헤더 행 전체 배경도 톤을 맞춰 정리 */
+.discord-career-table thead tr {
+  background: transparent;
+}
+body.dark-mode .discord-career-table thead tr {
+  background: transparent;
+}
+.discord-career-table th.filter-th {
+  position: relative;
+}
+
+.discord-career-table th.filter-th .filter-toggle-icon {
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.discord-career-table th.filter-th .filter-options {
+  position: relative;
+  top: 100%;
+  left: 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--bg-subtle);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 1rem;
+  min-width: 12rem;
+  z-index: 1000;
+  display: none;
+  max-height: 12rem;
+  overflow-y: auto;
+}
+
+.discord-career-table th.filter-th .filter-options.active {
+  display: block;
+}
+
+.discord-career-table th.filter-th .filter-options label {
+  display: block;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: var(--transition-fast);
+}
+
+.discord-career-table th.filter-th .filter-options label:hover {
+  color: var(--primary-color);
+}
+
+/* 헤더 행 전체 배경도 톤을 맞춰 정리 */
+.discord-career-table thead tr {
+  background: transparent;
+}
+body.dark-mode .discord-career-table thead tr {
+  background: transparent;
+}
+.discord-career-table th.filter-th {
+  position: relative;
+}
+
+.discord-career-table th.filter-th .filter-toggle-icon {
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.discord-career-table th.filter-th .filter-options {
+  position: relative;
+  top: 100%;
+  left: 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--bg-subtle);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 1rem;
+  min-width: 12rem;
+  z-index: 1000;
+  display: none;
+  max-height: 12rem;
+  overflow-y: auto;
+}
+
+.discord-career-table th.filter-th .filter-options.active {
+  display: block;
+}
+
+.discord-career-table th.filter-th .filter-options label {
+  display: block;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: var(--transition-fast);
+}
+
+.discord-career-table th.filter-th .filter-options label:hover {
+  color: var(--primary-color);
+}
+
+.discord-career-table .tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: var(--primary-gradient);
+  color: white;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin: 0.125rem;
+}
+
+.discord-career-table .tag:hover {
+  transform: scale(1.05);
+}
+
+/* 다크모드 테이블 */
+body.dark-mode .discord-career-table th.filter-th .filter-options {
+  background: var(--dark-bg-secondary);
+  border-color: var(--dark-bg-subtle);
+}
+body.dark-mode .discord-career-table th.filter-th::after {
+  opacity: 0.4; /* 다크 모드에서 약간 더 도드라지게 */
+}
+
+/* 헤더 행 전체 배경도 톤을 맞춰 정리 */
+.discord-career-table thead tr {
+  background: transparent;
+}
+body.dark-mode .discord-career-table thead tr {
+  background: transparent;
+}
+.discord-career-table th.filter-th {
+  position: relative;
+}
+
+.discord-career-table th.filter-th .filter-toggle-icon {
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.discord-career-table th.filter-th .filter-options {
+  position: relative;
+  top: 100%;
+  left: 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--bg-subtle);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 1rem;
+  min-width: 12rem;
+  z-index: 1000;
+  display: none;
+  max-height: 12rem;
+  overflow-y: auto;
+}
+
+.discord-career-table th.filter-th .filter-options.active {
+  display: block;
+}
+
+.discord-career-table th.filter-th .filter-options label {
+  display: block;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: var(--transition-fast);
+}
+
+.discord-career-table th.filter-th .filter-options label:hover {
+  color: var(--primary-color);
+}
+
+.discord-career-table .tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: var(--primary-gradient);
+  color: white;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin: 0.125rem;
+}
+
+.discord-career-table .tag:hover {
+  transform: scale(1.05);
+}
+
+/* 다크모드 테이블 */
+body.dark-mode .discord-career-table th.filter-th .filter-options {
+  background: var(--dark-bg-secondary);
+  border-color: var(--dark-bg-subtle);
+}
+body.dark-mode .discord-career-table th.filter-th::after {
+  opacity: 0.4; /* 다크 모드에서 약간 더 도드라지게 */
+}
+
+/* 헤더 행 전체 배경도 톤을 맞춰 정리 */
+.discord-career-table thead tr {
+  background: transparent;
+}
+body.dark-mode .discord-career-table thead tr {
+  background: transparent;
+}
+.discord-career-table th.filter-th {
+  position: relative;
+}
+
+.discord-career-table th.filter-th .filter-toggle-icon {
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.discord-career-table th.filter-th .filter-options {
+  position: relative;
+  top: 100%;
+  left: 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--bg-subtle);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 1rem;
+  min-width: 12rem;
+  z-index: 1000;
+  display: none;
+  max-height: 12rem;
+  overflow-y: auto;
+}
+
+.discord-career-table th.filter-th .filter-options.active {
+  display: block;
+}
+
+.discord-career-table th.filter-th .filter-options label {
+  display: block;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: var(--transition-fast);
+}
+
+.discord-career-table th.filter-th .filter-options label:hover {
+  color: var(--primary-color);
+}
+
+.discord-career-table .tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: var(--primary-gradient);
+  color: white;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin: 0.125rem;
+}
+
+.discord-career-table .tag:hover {
+  transform: scale(1.05);
+}
+
+/* 다크모드 테이블 */
+body.dark-mode .discord-career-table th.filter-th .filter-options {
+  background: var(--dark-bg-secondary);
+  border-color: var(--dark-bg-subtle);
+}
+body.dark-mode .discord-career-table th.filter-th::after {
+  opacity: 0.4; /* 다크 모드에서 약간 더 도드라지게 */
+}
+
+/* 헤더 행 전체 배경도 톤을 맞춰 정리 */
+.discord-career-table thead tr {
+  background: transparent;
+}
+body.dark-mode .discord-career-table thead tr {
+  background: transparent;
+}
+.discord-career-table th.filter-th {
+  position: relative;
+}
+
+.discord-career-table th.filter-th .filter-toggle-icon {
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.discord-career-table th.filter-th .filter-options {
+  position: relative;
+  top: 100%;
+  left: 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--bg-subtle);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 1rem;
+  min-width: 12rem;
+  z-index: 1000;
+  display: none;
+  max-height: 12rem;
+  overflow-y: auto;
+}
+
+.discord-career-table th.filter-th .filter-options.active {
+  display: block;
+}
+
+.discord-career-table th.filter-th .filter-options label {
+  display: block;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: var(--transition-fast);
+}
+
+.discord-career-table th.filter-th .filter-options label:hover {
+  color: var(--primary-color);
+}
+
+.discord-career-table .tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: var(--primary-gradient);
+  color: white;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin: 0.125rem;
+}
+
+.discord-career-table .tag:hover {
+  transform: scale(1.05);
+}
+
+/* 다크모드 테이블 */
+body.dark-mode .discord-career-table th.filter-th .filter-options {
+  background: var(--dark-bg-secondary);
+  border-color: var(--dark-bg-subtle);
+}
+body.dark-mode .discord-career-table th.filter-th::after {
+  opacity: 0.4; /* 다크 모드에서 약간 더 도드라지게 */
+}
+
+/* 헤더 행 전체 배경도 톤을 맞춰 정리 */
+.discord-career-table thead tr {
+  background: transparent;
+}
+body.dark-mode .discord-career-table thead tr {
+  background: transparent;
+}
+.discord-career-table th.filter-th {
+  position: relative;
+}
+
+.discord-career-table th.filter-th .filter-toggle-icon {
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.discord-career-table th.filter-th .filter-options {
+  position: relative;
+  top: 100%;
+  left: 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--bg-subtle);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 1rem;
+  min-width: 12rem;
+  z-index: 1000;
+  display: none;
+  max-height: 12rem;
+  overflow-y: auto;
+}
+
+.discord-career-table th.filter-th .filter-options.active {
+  display: block;
+}
+
+.discord-career-table th.filter-th .filter-options label {
+  display: block;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: var(--transition-fast);
+}
+
+.discord-career-table th.filter-th .filter-options label:hover {
+  color: var(--primary-color);
+}
+
+.discord-career-table .tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: var(--primary-gradient);
+  color: white;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin: 0.125rem;
+}
+
+.discord-career-table .tag:hover {
+  transform: scale(1.05);
+}
+
+/* 다크모드 테이블 */
+body.dark-mode .discord-career-table th.filter-th .filter-options {
+  background: var(--dark-bg-secondary);
+  border-color: var(--dark-bg-subtle);
+}
+body.dark-mode .discord-career-table th.filter-th::after {
+  opacity: 0.4; /* 다크 모드에서 약간 더 도드라지게 */
+}
+
+/* --- fixed stray comment --- */
+
+/* --- Tag color variants (per text) --- */
+/* Light mode colors: unify to gray */
+/* Tag color variant overrides removed; colors come from JS via --tag-bg per category */
+
+/* Tag emoji styling for portfolio tags */
+.discord-career-table .tag .tag-emoji {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9em; /* slightly smaller than text */
+  line-height: 1;
+  margin-right: 0.35rem; /* space between emoji and tag text */
+  position: relative; /* keep above ::before background */
+  z-index: 1;
+}
+
+/* On very small screens, shrink emoji a bit more */
+@media (max-width: 480px) {
+  .discord-career-table .tag .tag-emoji {
+    font-size: 0.85em;
+    margin-right: 0.3rem;
+  }
+}
+
+/* Viewport-fixed filter dropdown to prevent clipping by container overflow */
+.discord-career-table th.filter-th .filter-options {
+  position: fixed; /* override previous relative positioning */
+  /* left/top are set dynamically from JS using getBoundingClientRect() */
+  z-index: 2000; /* ensure above table and headers */
+  display: none; /* hidden by default; toggled via .active */
+  max-height: min(60vh, 22rem); /* prevent vertical overflow on small screens */
+  max-width: min(92vw, 24rem); /* keep within viewport width */
+  overflow-y: auto; /* scroll within dropdown when content long */
+  white-space: normal; /* allow wrapping of long option text */
+}
+
+.discord-career-table th.filter-th .filter-options.active {
+  display: block;
+}
+
+/* Mobile tweaks for compact layout */
+@media (max-width: 480px) {
+  .discord-career-table th.filter-th .filter-options {
+    padding: 0.75rem; /* slightly smaller padding on small screens */
+    min-width: 12rem; /* keep reasonable width */
+  }
+  .discord-career-table th.filter-th .filter-options label {
+    padding: 0.4rem 0; /* tighter option spacing */
+  }
+}
+
+/* ==================== 
+   INLINE NOTES (SUP/SUB DATA-NOTE POPOVER)
+   ==================== */
+
+/* Inline note trigger styles */
+.note-trigger {
+  cursor: help;
+  position: relative;
+  color: var(--text-primary);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--text-muted);
+  transition: var(--transition-fast);
+}
+
+.note-trigger:hover {
+  border-bottom-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+/* Note popover styles */
+.note-popover {
+  position: absolute;
+  z-index: 2000;
+  padding: 10px 12px;
+  border-radius: var(--border-radius-md);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--bg-subtle);
+  box-shadow: var(--shadow-lg);
+  line-height: 1.4;
+  font-size: 0.92rem;
+  max-width: 320px;
+  word-wrap: break-word;
+  font-family: inherit;
+}
+
+.note-popover::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--bg-primary);
+  border: 1px solid var(--bg-subtle);
+  transform: rotate(45deg);
+  left: 50%;
+  margin-left: -5px;
+  top: -6px; /* Arrow pointing up by default */
+}
+
+/* When popover is placed at bottom, move arrow to top edge of popover */
+.note-popover[data-placement="bottom"]::after {
+  top: -6px; /* still above since popover below trigger */
+}
+
+/* When placed at top, arrow should be below popover */
+.note-popover[data-placement="top"]::after {
+  bottom: -6px;
+  top: auto;
+}
+
+/* Dark mode support */
+body.dark-mode .note-popover {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-color: var(--bg-subtle);
+}
+
+body.dark-mode .note-popover::after {
+  background: var(--bg-primary);
+  border-color: var(--bg-subtle);
+}
+
+/* Accessibility: keyboard focus outline */
+.note-trigger:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .note-popover {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+    max-width: min(280px, 90vw);
+  }
+}
+
+/* 밀도 향상: 3차 전역 튜닝 (Tight) */
+:root { --section-spacing: 2.5rem; }
+
+/* 헤더/배너 더 컴팩트 */
+header.banner { margin: 0.75rem 0; }
+header.banner.with-image { height: auto; }
+@media (max-width: 480px) { header.banner.with-image { height: auto; } }
+
+/* 컨테이너 좌우 패딩 축소 */
+.container { padding: 0 0.75rem; }
+
+/* 메인 영역 상하 패딩 축소 */
+main { padding: 0.75rem 0 var(--section-spacing); }
+
+/* 섹션/헤딩 여백 축소 */
+section { padding: 1.25rem 1rem; margin-bottom: 1rem; }
+section h2 { margin-bottom: 0.75rem; }
+section h2::after { width: 2rem; height: 2px; }
+
+/* 소개 섹션 컴팩트 */
+.intro-section { margin: 1rem auto 1.5rem; padding: 1.5rem 1rem; }
+.intro-section h1 { font-size: 2rem; }
+.intro-section .intro-text { font-size: 1rem; margin-bottom: 1rem; }
+
+/* 네비게이션 간격 축소 */
+nav { margin: 0 auto 1rem; padding: 0.375rem 0.5rem; }
+nav ul { gap: 0.5rem; }
+nav ul li a { padding: 0.4rem 0.6rem; }
+
+/* 카드/그리드 밀도 */
+.card, .tmi-card, .post-card { padding: 1rem; }
+.post-card { margin-bottom: 1rem; }
+.tmi-grid { gap: 0.75rem; margin-top: 0.5rem; }
+.profile-grid { gap: 0.75rem; margin-top: 0.5rem; }
+.profile-container { gap: 0.75rem; }
+.info-item { padding: 0.75rem; }
+
+/* 표 밀도 */
+.table-container { margin: 0.75rem 0; }
+.table-container table { font-size: 0.925rem; }
+table th, table td { padding: 0.625rem 0.5rem; }
+.discord-career-table { margin: 1rem 0; font-size: 0.95rem; }
+
+/* 선물 카드 리스트 밀도 */
+.gift-list { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.5rem; margin-top: 0.5rem; }
+.gift-item { padding: 0.625rem; }
+.gift-info { gap: 0.4rem; margin-bottom: 0.4rem; }
+.gift-number { width: 1.5rem; height: 1.5rem; font-size: 0.75rem; }
+.gift-date { font-size: 0.7rem; padding: 0.2rem 0.4rem; }
+
+/* 타이포 약간 축소 */
+h1 { font-size: 2.25rem; }
+h2 { font-size: 1.875rem; }
+h3 { font-size: 1.5rem; }
+p { margin-bottom: 0.625rem; line-height: 1.55; }
+
+/* 푸터 간격 축소 */
+footer { padding: 2rem 0 0.75rem; margin-top: 1.5rem; }
+.footer-links { gap: 0.75rem; margin-bottom: 0.75rem; }
+
+/* 반응형 추가 미세 조정 */
+@media (max-width: 1024px) { section { padding: 1.25rem 0.875rem; } .card, .tmi-card { padding: 0.875rem; } .info-item { padding: 0.75rem; } }
+@media (max-width: 768px) { section { padding: 1rem 0.75rem; margin-bottom: 1rem; } .tmi-grid { gap: 0.75rem; } .post-card { padding: 1rem; } }
+@media (max-width: 480px) { .container { padding: 0 0.5rem; } section { padding: 0.875rem 0.625rem; } }
+
+/* 프로필: 명함 스타일 */
+.business-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: center;
+  background: var(--bg-primary);
+  border-radius: var(--border-radius-2xl);
+  border: 1px solid var(--bg-subtle);
+  box-shadow: var(--shadow-md);
+  padding: 1.25rem 1.25rem;
+}
+.business-card:hover { box-shadow: var(--shadow-lg); transition: var(--transition-normal); }
+
+.bc-left { display: flex; align-items: center; justify-content: center; }
+.bc-right { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.bc-header { margin-bottom: 0.25rem; }
+.bc-name {
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  font-weight: 800;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.bc-tagline { color: var(--text-secondary); font-size: 0.95rem; margin-top: 0.125rem; }
+
+/* 카드 내부 인포 그리드 */
+.business-card .info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+/* 반응형: 모바일에서 단일 열 */
+@media (max-width: 640px) {
+  .business-card { grid-template-columns: 1fr; text-align: center; padding: 1rem; }
+  .bc-right { align-items: center; }
+  .business-card .info-grid { grid-template-columns: 1fr; gap: 0.5rem; }
+}
+
+/* 초압축 밀도(Ultra Compact) */
+:root { --section-spacing: 1.75rem; }
+
+/* 컨테이너 좌우 패딩 추가 축소 */
+.container { padding: 0 0.5rem; }
+
+/* 헤더/배너 더 축소 */
+header.banner { margin: 0.5rem 0; }
+header.banner.with-image { height: auto; }
+@media (max-width: 480px) { header.banner.with-image { height: auto; } }
+
+/* 메인/섹션 여백 초압축 */
+main { padding: 0.5rem 0 var(--section-spacing); }
+section { padding: 1rem 0.75rem; margin-bottom: 0.75rem; }
+section h2 { margin-bottom: 0.5rem; }
+section h2::after { width: 1.75rem; height: 2px; }
+
+/* 소개 섹션 초압축 */
+.intro-section { margin: 0.75rem auto 1rem; padding: 1rem 0.75rem; }
+.intro-section h1 { font-size: 1.9rem; }
+.intro-section .intro-text { font-size: 0.95rem; margin-bottom: 0.75rem; }
+
+/* 네비게이션 간격 초압축 */
+nav { margin: 0 auto 0.75rem; padding: 0.35rem 0.5rem; }
+nav ul { gap: 0.4rem; }
+nav ul li a { padding: 0.35rem 0.5rem; }
+
+/* 카드/그리드 밀도 초압축 */
+.card, .tmi-card, .post-card { padding: 0.875rem; }
+.post-card { margin-bottom: 0.875rem; }
+.tmi-grid { gap: 0.5rem; margin-top: 0.5rem; }
+.profile-grid { gap: 0.5rem; margin-top: 0.5rem; }
+.profile-container { gap: 0.5rem; }
+.info-item { padding: 0.625rem; }
+
+/* 표 밀도 초압축 */
+.table-container { margin: 0.5rem 0; }
+.table-container table { font-size: 0.9rem; }
+table th, table td { padding: 0.5rem 0.4rem; }
+.discord-career-table { margin: 0.75rem 0; font-size: 0.925rem; }
+
+/* 선물 카드 리스트 초압축 */
+.gift-list { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0.4rem; margin-top: 0.4rem; }
+.gift-item { padding: 0.5rem; }
+.gift-info { gap: 0.35rem; margin-bottom: 0.35rem; }
+
+/* 타이포 약간 더 축소 */
+h1 { font-size: 2.1rem; }
+h2 { font-size: 1.75rem; }
+h3 { font-size: 1.35rem; }
+p { margin-bottom: 0.5rem; line-height: 1.5; }
+
+/* 푸터 간격 초압축 */
+footer { padding: 1.5rem 0 0.5rem; margin-top: 1rem; }
+.footer-links { gap: 0.5rem; margin-bottom: 0.5rem; }
+
+/* 명함 카드도 더 컴팩트 */
+.business-card { padding: 1rem 0.875rem; }
+.business-card .info-grid { gap: 0.4rem; margin-top: 0.15rem; }
+
+/* 반응형 추가 초압축 */
+@media (max-width: 1024px) { section { padding: 0.875rem 0.625rem; } .card, .tmi-card { padding: 0.75rem; } .info-item { padding: 0.6rem; } }
+@media (max-width: 768px) { section { padding: 0.75rem 0.5rem; margin-bottom: 0.75rem; } .post-card { padding: 0.875rem; } }
+@media (max-width: 480px) { .container { padding: 0 0.375rem; } section { padding: 0.75rem 0.5rem; } }
+
