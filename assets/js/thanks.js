@@ -15,30 +15,122 @@ class ThanksManager {
     }
 
     init() {
-        this.sortCards();
-        this.initFilters();
-        this.initScrollNav();
-    }
+    this.loadData();
+  }
 
-    sortCards() {
-        const grids = document.querySelectorAll('.gift-grid');
-        grids.forEach(grid => {
-            const cards = Array.from(grid.querySelectorAll('.gift-card'));
-            cards.sort((a, b) => {
-                const timeA = a.querySelector('time')?.getAttribute('datetime') || '';
-                const timeB = b.querySelector('time')?.getAttribute('datetime') || '';
-                return timeB.localeCompare(timeA); // Descending order (Newest first)
-            });
-            
-            // Re-append sorted cards
-            cards.forEach(card => grid.appendChild(card));
-        });
-        
-        // Refresh the cards list for filtering
-        this.cards = Array.from(document.querySelectorAll('.gift-card.card'));
-    }
+  loadData() {
+      if (typeof Papa === 'undefined') return;
 
-    initFilters() {
+      fetch('assets/data/thanks_data.csv')
+          .then(r => r.text())
+          .then(csvText => {
+              Papa.parse(csvText, {
+                  header: true,
+                  skipEmptyLines: true,
+                  complete: (results) => {
+                      this.renderData(results.data);
+                      this.sortCards(); // Initial sort
+                      this.initFilters();
+                      this.initScrollNav();
+                  }
+              });
+          });
+  }
+
+  renderData(data) {
+      const container = document.getElementById('gift-list-container');
+      const yearLinksNav = document.querySelector('.year-links');
+      const yearSelect = document.querySelector('.year-select');
+      
+      if (!container || !yearLinksNav || !yearSelect) return;
+
+      container.innerHTML = '';
+      yearLinksNav.innerHTML = '';
+      yearSelect.innerHTML = '';
+
+      // Group by year
+      const years = {};
+      data.forEach(row => {
+          if (!years[row.year]) years[row.year] = [];
+          years[row.year].push(row);
+      });
+
+      // Sort years descending
+      const sortedYears = Object.keys(years).sort((a, b) => b - a);
+
+      sortedYears.forEach(year => {
+          // 1. Create Nav Link
+          const link = document.createElement('a');
+          link.className = 'chip';
+          link.href = `#year-${year}`;
+          link.textContent = year;
+          yearLinksNav.appendChild(link);
+
+          // 2. Create Select Option
+          const option = document.createElement('option');
+          option.value = `year-${year}`;
+          option.textContent = year;
+          yearSelect.appendChild(option);
+
+          // 3. Create Year Section
+          const yearSection = document.createElement('div');
+          yearSection.className = 'gift-year';
+          yearSection.id = `year-${year}`;
+          yearSection.setAttribute('aria-label', `${year}년 선물`);
+          
+          const title = document.createElement('h3');
+          title.className = 'year-title';
+          title.textContent = year;
+          yearSection.appendChild(title);
+
+          const grid = document.createElement('div');
+          grid.className = 'gift-grid';
+
+          years[year].forEach(item => {
+              const article = document.createElement('article');
+              article.className = 'gift-card card';
+              article.dataset.type = item.type; // nitro, banner, etc.
+
+              // Determine tag class based on type/item
+              let tagClass = 'tag-etc';
+              if (item.type === 'nitro') tagClass = 'tag-nitro';
+              else if (item.type === 'banner') tagClass = 'tag-banner';
+              
+              article.innerHTML = `
+                  <div class="gift-card-header">
+                      <span class="gift-number">${item.number}</span>
+                      <div class="gift-user">${item.user}</div>
+                  </div>
+                  <div class="gift-card-body">
+                      <span class="tag ${tagClass}">${item.item}</span>
+                  </div>
+                  <div class="gift-meta">
+                      <time datetime="${item.date}">${item.displayDate}</time>
+                  </div>
+              `;
+              grid.appendChild(article);
+          });
+
+          yearSection.appendChild(grid);
+          container.appendChild(yearSection);
+      });
+  }
+
+  sortCards() {
+      const grids = document.querySelectorAll('.gift-grid');
+      grids.forEach(grid => {
+          const cards = Array.from(grid.querySelectorAll('.gift-card'));
+          cards.sort((a, b) => {
+              const timeA = a.querySelector('time')?.getAttribute('datetime') || '';
+              const timeB = b.querySelector('time')?.getAttribute('datetime') || '';
+              return timeB.localeCompare(timeA); // Descending order (Newest first)
+          });
+          cards.forEach(card => grid.appendChild(card));
+      });
+      this.cards = Array.from(document.querySelectorAll('.gift-card.card'));
+  }
+
+  initFilters() {
         if (this.tabs.length) {
             this.tabs.forEach((tab, idx) => {
                 tab.addEventListener('click', (e) => { 

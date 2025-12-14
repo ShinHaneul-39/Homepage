@@ -31,6 +31,79 @@
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn); else fn();
   }
 
+  // ===== CSV Loading Logic =====
+  function loadCareerData(callback) {
+    if (typeof Papa === 'undefined') {
+        console.error('PapaParse is not loaded.');
+        return;
+    }
+    
+    // Check if we are on the career page
+    if (!document.querySelector('.discord-career-table')) return;
+
+    fetch('assets/data/career_data.csv')
+      .then(response => response.text())
+      .then(csvText => {
+        Papa.parse(csvText, {
+          header: true,
+          skipEmptyLines: true,
+          complete: (results) => {
+            renderCareerTable(results.data);
+            if (callback) callback();
+          },
+          error: (err) => console.error('CSV Parsing Error:', err)
+        });
+      })
+      .catch(err => console.error('Failed to load career data:', err));
+  }
+
+  function renderCareerTable(data) {
+    const tbody = document.querySelector('.discord-career-table tbody');
+    if (!tbody) return;
+    tbody.innerHTML = ''; // Clear existing
+
+    // Helper to create tags is moved inside the class logic or kept here
+    // But since the class handles decoration logic (decorateCategoryCells etc.),
+    // we should render raw text and let the class decorate it, OR do it all here.
+    // The existing class has robust decoration logic. Let's reuse it by rendering plain text/attributes first.
+    
+    data.forEach(row => {
+      const tr = document.createElement('tr');
+      
+      // Server Name with Note
+      let serverNameHtml = row.serverName;
+      if (row.note) {
+          // Parse note: "[Tag] Detail" -> Tag and Detail
+          // Note format from extraction: "[Tag] Detail" or just "Detail"
+          // We stored it as text.
+          // Let's check for the square bracket pattern for the badge
+          const match = row.note.match(/^(\[[^\]]+\])\s*(.*)$/);
+          if (match) {
+              serverNameHtml += `<sup data-note="${match[2]}">${match[1]}</sup>`;
+          } else {
+               serverNameHtml += `<sup data-note="${row.note}">[비고]</sup>`; // Default badge if none found
+          }
+      }
+      
+      // We render RAW values here, and the PortfolioManager will decorate them
+      // OR we just assume the PortfolioManager will run AFTER this.
+      
+      tr.innerHTML = `
+        <td>${row.no}</td>
+        <td>${serverNameHtml}</td>
+        <td>${row.category}</td>
+        <td>${row.count}</td>
+        <td>${row.department}</td>
+        <td>${row.position}</td>
+        <td>${row.job}</td>
+        <td>${row.term}</td>
+      `;
+      
+      tbody.appendChild(tr);
+    });
+  }
+  // =============================
+
   class PortfolioManager{
     constructor(){
       this.table = document.querySelector('.discord-career-table');
@@ -42,19 +115,22 @@
       this.filterHeaders = Array.from(this.table.querySelectorAll('th.filter-th'));
       this.typeToIndex = this._mapFilterTypeToColumnIndex();
       this.state = { category:new Set(), department:new Set(), position:new Set() };
+      
       this._buildAllOptions();
       this._bindGlobalHandlers();
-      // 카테고리 텍스트를 칩(태그) 형태로 장식 (HTML에서 직접 구현함)
-      // this._decorateCategoryCells();
+      // 카테고리 텍스트를 칩(태그) 형태로 장식
+      this._decorateCategoryCells();
       // 직급 텍스트도 칩(태그) 형태로 장식
-      // this._decoratePositionCells();
+      this._decoratePositionCells();
       // 부서 텍스트도 칩(태그) 형태로 장식
-      // this._decorateDepartmentCells();
+      this._decorateDepartmentCells();
       // 비고(sup)에 대한 팝오버 초기화
-      // this._initNotes();
+      this._initNotes();
       // 정렬 핸들러 바인딩
       this._bindSortHandlers();
     }
+    // ... (rest of the class methods remain the same)
+
 
     _mapFilterTypeToColumnIndex(){
       const map={};
@@ -800,5 +876,10 @@
     }
   }
 
-  ready(()=> new PortfolioManager());
+  ready(() => {
+    // 먼저 CSV 데이터를 로드하고, 완료되면 PortfolioManager를 초기화
+    loadCareerData(() => {
+        new PortfolioManager();
+    });
+  });
 })();

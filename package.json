@@ -1,0 +1,26 @@
+{
+  "name": "homepage",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShinHaneul-39/My-Homepage.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ShinHaneul-39/My-Homepage/issues"
+  },
+  "homepage": "https://github.com/ShinHaneul-39/My-Homepage#readme",
+  "dependencies": {
+    "cheerio": "^1.1.2",
+    "csv-parse": "^6.1.0",
+    "csv-stringify": "^6.6.0",
+    "papaparse": "^5.5.3"
+  }
+}
