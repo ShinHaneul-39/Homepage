@@ -812,8 +812,8 @@
       // 안정 정렬(Stable Sort)을 위해 원래 인덱스 유지
       const withIndex = rows.map((tr, i)=>({ tr, i }));
   
-      // 한국어 정렬기
-      const collator = new Intl.Collator('ko', { numeric: true, sensitivity: 'base' });
+      // 한국어 정렬기 (제거됨 - 서버명 정렬 기능 삭제)
+      // const collator = new Intl.Collator('ko', { numeric: true, sensitivity: 'base' });
   
       const parseNumber = (text)=>{
         if(!text) return null;
@@ -860,8 +860,9 @@
            if (dateA !== dateB) return dateA - dateB;
            return a.i - b.i;
         } else {
-          const res = collator.compare(ta, tb);
-          if(res !== 0) return res;
+          // 문자열 정렬 로직 제거됨 (서버명 정렬 비활성화)
+          // const res = collator.compare(ta, tb);
+          // if(res !== 0) return res;
           return a.i - b.i;
         }
       };
