@@ -56,7 +56,7 @@
 }
 
 /* Dark Mode Variables */
-body.dark-mode {
+html.dark-mode {
   --color-bg: #0f172a;
   --color-surface: #1e293b;
   --color-surface-hover: #334155;
@@ -103,7 +103,7 @@ body {
   color: var(--color-text);
   line-height: 1.7;
   letter-spacing: -0.015em;
-  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  transition: background-color 0.3s ease, color 0.3s ease;
   overflow-x: hidden;
 }
 
@@ -221,7 +221,7 @@ h3 { font-size: 1.5rem; font-weight: 600; }
   transition: background-color 0.3s, border-color 0.3s;
 }
 
-body.dark-mode .topbar {
+html.dark-mode .topbar {
   background: rgba(15, 23, 42, 0.8);
 }
 
@@ -864,7 +864,7 @@ body.menu-open .topbar-inner {
   padding: 0 2px;
 }
 
-body.dark-mode .post-content u {
+html.dark-mode .post-content u {
   background: linear-gradient(120deg, rgba(254, 240, 138, 0.2) 0%, rgba(254, 240, 138, 0.2) 100%);
   background-size: 100% 40%;
   background-position: 0 88%;
@@ -937,6 +937,119 @@ body.dark-mode .post-content u {
   opacity: 0.8;
 }
 
+/* Table Controls & Toggle Switch (Removed) */
+/* .table-controls { ... } */
+
+/* Term Header Checkbox */
+.th-term .th-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  pointer-events: none; /* Disable pointer events on container, re-enable on children */
+}
+
+/* Re-enable pointer events for interactive elements */
+.th-term .th-inner > * {
+  pointer-events: auto;
+}
+
+/* But text node? Wait, text node isn't an element. 
+   So we wrap text in span if we want to be precise, or just apply to label.
+   Actually, sort works on TH. If we disable pointer-events on inner, clicks go to TH directly?
+   No, they go through if not blocked.
+   
+   Better approach requested: "pointer-events: none 속성을 헤더 영역의 불필요한 요소에 적용"
+   We want the TEXT "임기" to be clickable for sorting (or the whole TH).
+   We want the CHECKBOX to be clickable for filtering.
+   
+   If we make th-inner pointer-events:none, then clicks pass through to TH? Yes.
+   Then we make label pointer-events:auto.
+*/
+
+.th-term .th-inner {
+    /* Let the layout handle alignment, but let clicks pass through transparent parts if needed */
+}
+
+/* The label container for the checkbox */
+.term-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  pointer-events: auto; /* Explicitly interactive */
+  /* ... existing styles ... */
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  transition: all 0.2s;
+}
+
+.term-filter:hover {
+  background-color: var(--color-surface-hover);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.toggle-checkbox {
+  /* Class for identification and specific styling if needed */
+}
+
+.term-filter input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid var(--color-muted);
+  border-radius: 3px;
+  background-color: var(--color-surface);
+  position: relative;
+  cursor: pointer;
+  margin: 0;
+  transition: all 0.2s;
+}
+
+.term-filter input[type="checkbox"]:checked {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.term-filter input[type="checkbox"]:checked::after {
+  content: '✔';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 9px;
+  line-height: 1;
+}
+
+/* Checkbox active state text */
+.term-filter:has(input:checked) {
+  color: var(--color-primary);
+  background-color: rgba(59, 130, 246, 0.1); /* Light Blue tint */
+  border-color: var(--color-primary);
+}
+
+/* Dark mode adjustments */
+html.dark-mode .term-filter {
+  background-color: rgba(255,255,255,0.05);
+}
+
+html.dark-mode .term-filter:hover {
+  background-color: rgba(96, 165, 250, 0.2);
+}
+
+html.dark-mode .term-filter:has(input:checked) {
+  background-color: rgba(96, 165, 250, 0.2);
+}
+
 /* Tables (Career Table) */
 .table-container {
   /* Restore Legacy Colors & Radius for Table Context to maintain exact design */
@@ -956,7 +1069,7 @@ body.dark-mode .post-content u {
 }
 
 /* Dark Mode Override for Table */
-body.dark-mode .table-container {
+html.dark-mode .table-container {
   --color-bg: #0f172a;
   --color-surface: #1e293b;
   --color-surface-hover: #334155;
@@ -989,31 +1102,214 @@ tbody tr:hover {
 }
 
 /* Table Filters & Tags */
-.filter-th { cursor: pointer; user-select: none; }
-.filter-th:hover { color: var(--color-primary); }
-.filter-toggle-icon { margin-left: 4px; font-size: 0.8em; transition: transform 0.2s; }
+.filter-th { 
+  cursor: pointer; 
+  user-select: none; 
+  transition: color 0.2s, background-color 0.2s, box-shadow 0.2s;
+  position: relative;
+}
 
+.filter-th:hover { 
+  color: var(--color-primary); 
+  background-color: var(--color-surface-hover);
+}
+
+/* Open State for Filter Header */
+.filter-th.is-open {
+  color: var(--color-text); /* Keep text color neutral */
+  background-color: var(--color-surface);
+  box-shadow: inset 0 0 0 1px var(--color-primary), 0 2px 4px rgba(0,0,0,0.05); /* Border emphasis & Shadow */
+  z-index: 10; /* Ensure it stays above if needed */
+}
+
+/* Dark mode adjustment for open state */
+html.dark-mode .filter-th.is-open {
+  box-shadow: inset 0 0 0 1px var(--color-primary), 0 2px 4px rgba(0,0,0,0.2);
+  background-color: var(--color-surface);
+}
+
+.filter-toggle-icon { 
+  margin-left: 6px; 
+  font-size: 0.8em; 
+  transition: transform 0.3s ease, color 0.2s; 
+  opacity: 0.5;
+  display: inline-block; /* Required for transform */
+}
+
+.filter-th:hover .filter-toggle-icon {
+  opacity: 1;
+}
+
+/* Rotate icon when open */
+.filter-th.is-open .filter-toggle-icon {
+  transform: rotate(-90deg);
+  opacity: 1;
+  color: var(--color-primary);
+}
+
+.filter-th.has-active-filter .filter-toggle-icon {
+  color: var(--color-primary);
+  opacity: 1;
+}
+
+/* Modern Filter Dropdown */
 .filter-options {
   display: none;
   position: absolute;
-  background: var(--color-bg);
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
-  padding: var(--space-2);
+  padding: var(--space-3);
   z-index: 1000;
-  min-width: 150px;
-  max-height: 300px;
+  min-width: 220px;
+  max-width: 300px;
+  max-height: 400px;
+  overflow: hidden; /* Inner list handles scroll */
+  
+  /* Glassmorphism */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  
+  /* Animation */
+  animation: filterSlideIn 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform-origin: top left;
+}
+
+@keyframes filterSlideIn {
+  from { opacity: 0; transform: scale(0.95) translateY(-5px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.filter-options.active { display: flex; flex-direction: column; }
+
+.filter-controls {
+  padding-bottom: var(--space-2);
+  margin-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.btn-reset {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  background-color: var(--color-surface-hover);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.btn-reset:hover {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-reset:active {
+  transform: translateY(0);
+}
+
+.filter-list {
   overflow-y: auto;
+  max-height: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-right: 4px; /* Space for scrollbar */
 }
-.filter-options.active { display: block; }
-.filter-options label {
-  display: block;
-  padding: 4px 8px;
+
+/* Custom Scrollbar for Filter List */
+.filter-list::-webkit-scrollbar {
+  width: 6px;
+}
+.filter-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.filter-list::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 20px;
+}
+.filter-list::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-muted);
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  border-radius: 4px;
+  transition: background-color 0.2s;
+  color: var(--color-text);
+  font-size: 0.95rem;
+  user-select: none;
 }
-.filter-options label:hover { background: var(--color-surface-hover); }
+
+.filter-option:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.filter-option input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--color-muted);
+  border-radius: 4px;
+  background-color: var(--color-bg);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.filter-option input[type="checkbox"]:checked {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.filter-option input[type="checkbox"]:checked::after {
+  content: '✔';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.filter-option input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.filter-option span {
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Dark Mode Specific Adjustments for Filters */
+html.dark-mode .filter-options {
+  background: rgba(30, 41, 59, 0.95);
+  border-color: var(--color-border);
+}
+
+html.dark-mode .btn-reset {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+html.dark-mode .btn-reset:hover {
+  background-color: var(--color-primary);
+}
 
 /* Chip Component (Tags) - Pastel Pill Style */
 .tag {
@@ -1031,7 +1327,7 @@ tbody tr:hover {
   /* Soft Pastel Style with Border */
   background-color: var(--tag-bg, #f1f5f9);
   color: var(--tag-text, #475569);
-  border: 1px solid var(--tag-border, transparent); /* Border added for distinction */
+  border: 2px solid var(--tag-border, transparent); /* Border added for distinction */
   
   /* Remove heavy shadows/glows */
   box-shadow: none; 
@@ -1079,21 +1375,19 @@ tbody tr:hover {
 /* Dark Mode Overrides */
 /* Background: Keep same opacity */
 /* Border: Slightly lighter/more opaque border for dark background visibility */
-body.dark-mode .tag-yellow { --tag-bg: rgba(234, 179, 8, 0.2); --tag-text: #fef08a; --tag-border: rgba(254, 240, 138, 0.4); }
-body.dark-mode .tag-pink { --tag-bg: rgba(236, 72, 153, 0.2); --tag-text: #fbcfe8; --tag-border: rgba(251, 207, 232, 0.4); }
-body.dark-mode .tag-orange { --tag-bg: rgba(249, 115, 22, 0.2); --tag-text: #fed7aa; --tag-border: rgba(254, 215, 170, 0.4); }
-body.dark-mode .tag-blue { --tag-bg: rgba(59, 130, 246, 0.2); --tag-text: #bfdbfe; --tag-border: rgba(191, 219, 254, 0.4); }
-body.dark-mode .tag-indigo { --tag-bg: rgba(99, 102, 241, 0.2); --tag-text: #c7d2fe; --tag-border: rgba(199, 210, 254, 0.4); }
-body.dark-mode .tag-cyan { --tag-bg: rgba(6, 182, 212, 0.2); --tag-text: #a5f3fc; --tag-border: rgba(165, 243, 252, 0.4); }
-body.dark-mode .tag-rose { --tag-bg: rgba(244, 63, 94, 0.2); --tag-text: #fecdd3; --tag-border: rgba(254, 205, 211, 0.4); }
-body.dark-mode .tag-green { --tag-bg: rgba(34, 197, 94, 0.2); --tag-text: #bbf7d0; --tag-border: rgba(187, 247, 208, 0.4); }
-body.dark-mode .tag-purple { --tag-bg: rgba(168, 85, 247, 0.2); --tag-text: #e9d5ff; --tag-border: rgba(233, 213, 255, 0.4); }
-body.dark-mode .tag-sky { --tag-bg: rgba(14, 165, 233, 0.2); --tag-text: #bae6fd; --tag-border: rgba(186, 230, 253, 0.4); }
-body.dark-mode .tag-slate { --tag-bg: rgba(100, 116, 139, 0.2); --tag-text: #e2e8f0; --tag-border: rgba(203, 213, 225, 0.4); }
-body.dark-mode .tag-red { --tag-bg: rgba(239, 68, 68, 0.2); --tag-text: #fecaca; --tag-border: rgba(254, 202, 202, 0.4); }
-body.dark-mode .tag-teal { --tag-bg: rgba(20, 184, 166, 0.2); --tag-text: #99f6e4; --tag-border: rgba(153, 246, 228, 0.4); }
-
-/* Clean up old dark mode tag colors block if it exists below */
+html.dark-mode .tag-yellow { --tag-bg: rgba(234, 179, 8, 0.2); --tag-text: #fef08a; --tag-border: rgba(254, 240, 138, 0.4); }
+html.dark-mode .tag-pink { --tag-bg: rgba(236, 72, 153, 0.2); --tag-text: #fbcfe8; --tag-border: rgba(251, 207, 232, 0.4); }
+html.dark-mode .tag-orange { --tag-bg: rgba(249, 115, 22, 0.2); --tag-text: #fed7aa; --tag-border: rgba(254, 215, 170, 0.4); }
+html.dark-mode .tag-blue { --tag-bg: rgba(59, 130, 246, 0.2); --tag-text: #bfdbfe; --tag-border: rgba(191, 219, 254, 0.4); }
+html.dark-mode .tag-indigo { --tag-bg: rgba(99, 102, 241, 0.2); --tag-text: #c7d2fe; --tag-border: rgba(199, 210, 254, 0.4); }
+html.dark-mode .tag-cyan { --tag-bg: rgba(6, 182, 212, 0.2); --tag-text: #a5f3fc; --tag-border: rgba(165, 243, 252, 0.4); }
+html.dark-mode .tag-rose { --tag-bg: rgba(244, 63, 94, 0.2); --tag-text: #fecdd3; --tag-border: rgba(254, 205, 211, 0.4); }
+html.dark-mode .tag-green { --tag-bg: rgba(34, 197, 94, 0.2); --tag-text: #bbf7d0; --tag-border: rgba(187, 247, 208, 0.4); }
+html.dark-mode .tag-purple { --tag-bg: rgba(168, 85, 247, 0.2); --tag-text: #e9d5ff; --tag-border: rgba(233, 213, 255, 0.4); }
+html.dark-mode .tag-sky { --tag-bg: rgba(14, 165, 233, 0.2); --tag-text: #bae6fd; --tag-border: rgba(186, 230, 253, 0.4); }
+html.dark-mode .tag-slate { --tag-bg: rgba(100, 116, 139, 0.2); --tag-text: #e2e8f0; --tag-border: rgba(203, 213, 225, 0.4); }
+html.dark-mode .tag-red { --tag-bg: rgba(239, 68, 68, 0.2); --tag-text: #fecaca; --tag-border: rgba(254, 202, 202, 0.4); }
+html.dark-mode .tag-teal { --tag-bg: rgba(20, 184, 166, 0.2); --tag-text: #99f6e4; --tag-border: rgba(153, 246, 228, 0.4); }
 
 /* Note Popover */
 .note-popover {
@@ -1235,7 +1529,7 @@ body.dark-mode .tag-teal { --tag-bg: rgba(20, 184, 166, 0.2); --tag-text: #99f6e
 .chip {
   padding: 0.5rem 1rem;
   border-radius: var(--radius-full);
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   background: var(--color-surface);
   color: var(--color-muted);
   font-size: 0.9rem;
@@ -1280,7 +1574,7 @@ body.dark-mode .tag-teal { --tag-bg: rgba(20, 184, 166, 0.2); --tag-text: #99f6e
   box-shadow: var(--shadow-sm);
 }
 
-body.dark-mode .year-links {
+html.dark-mode .year-links {
   background: rgba(15, 23, 42, 0.8);
 }
 
@@ -1393,9 +1687,9 @@ body.dark-mode .year-links {
 .tag-banner { --tag-bg: rgba(235, 69, 158, 0.1); --tag-border: #EB459E; --tag-text: #EB459E; }
 .tag-etc { --tag-bg: rgba(100, 116, 139, 0.1); --tag-border: #64748b; --tag-text: #64748b; }
 
-body.dark-mode .tag-nitro { --tag-bg: rgba(88, 101, 242, 0.2); --tag-text: #7983F5; }
-body.dark-mode .tag-banner { --tag-bg: rgba(235, 69, 158, 0.2); --tag-text: #F06EB0; }
-body.dark-mode .tag-etc { --tag-bg: rgba(148, 163, 184, 0.2); --tag-text: #94a3b8; }
+html.dark-mode .tag-nitro { --tag-bg: rgba(88, 101, 242, 0.2); --tag-text: #7983F5; }
+html.dark-mode .tag-banner { --tag-bg: rgba(235, 69, 158, 0.2); --tag-text: #F06EB0; }
+html.dark-mode .tag-etc { --tag-bg: rgba(148, 163, 184, 0.2); --tag-text: #94a3b8; }
 
 .gift-card .tag {
   font-size: 1rem;
@@ -1413,4 +1707,22 @@ body.dark-mode .tag-etc { --tag-bg: rgba(148, 163, 184, 0.2); --tag-text: #94a3b
     justify-content: center;
     top: calc(var(--header-height) + 0.5rem);
   }
+}
+
+/* Utility for hidden elements override */
+[hidden] {
+  display: none !important;
+}
+
+/* Filter Animation */
+.gift-card {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 1;
+  transform: scale(1);
+}
+
+.gift-card.is-hiding {
+  opacity: 0;
+  transform: scale(0.95);
+  pointer-events: none;
 }

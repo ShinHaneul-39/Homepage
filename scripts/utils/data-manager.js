@@ -1,13 +1,28 @@
+/**
+ * @fileoverview 데이터 추출 및 관리 유틸리티 모듈
+ * 
+ * HTML 파일에서 경력 및 감사 인사 데이터를 추출(Scraping)하고,
+ * CSV 파일로 저장하거나 불러오는 기능을 제공하는 Node.js 모듈입니다.
+ * 빌드 타임 또는 데이터 마이그레이션 시 사용됩니다.
+ */
+
 const fs = require('fs');
 const path = require('path');
-const cheerio = require('cheerio');
-const { stringify } = require('csv-stringify');
-const { parse } = require('csv-parse');
+const cheerio = require('cheerio'); // HTML 파싱 라이브러리
+const { stringify } = require('csv-stringify'); // CSV 생성 라이브러리
+const { parse } = require('csv-parse'); // CSV 파싱 라이브러리
 
 /**
- * Extracts career data from HTML string
- * @param {string} html 
- * @returns {Array<Object>}
+ * HTML 문자열에서 경력 데이터 추출
+ * 
+ * @param {string} html - 파싱할 HTML 문자열
+ * @returns {Array<Object>} 추출된 경력 데이터 객체 배열
+ * 
+ * [추출 로직]
+ * 1. Cheerio를 사용해 HTML 로드
+ * 2. `.discord-career-table tbody tr` 선택자로 행 순회
+ * 3. 각 셀(td)의 텍스트 추출 및 정제
+ * 4. 서버 이름과 비고(Note, sup 태그) 분리 처리
  */
 function extractCareerData(html) {
     const $ = cheerio.load(html);
@@ -17,20 +32,20 @@ function extractCareerData(html) {
         const cells = $(row).find('td');
         if (cells.length === 0) return;
 
-        // Server Name & Note Separation
+        // 서버 이름 & 비고(Note) 분리 로직
         const serverCell = $(cells[1]);
         const sup = serverCell.find('sup');
         let serverName = serverCell.text().trim();
         let note = '';
 
         if (sup.length > 0) {
-            // Remove sup from server name extraction
+            // sup 태그를 제외한 순수 서버 이름 추출을 위해 복제본 사용
             const tempCell = serverCell.clone();
             tempCell.find('sup').remove();
             serverName = tempCell.text().trim();
             
-            // Extract note (marker + detail)
-            const marker = sup.text().trim(); // e.g. [리모델링]
+            // 비고 추출 (마커 + 상세 내용)
+            const marker = sup.text().trim(); // 예: [리모델링]
             const detail = sup.attr('data-note') || '';
             note = detail ? `${marker} ${detail}` : marker;
         }
@@ -52,9 +67,15 @@ function extractCareerData(html) {
 }
 
 /**
- * Extracts special thanks data from HTML string
- * @param {string} html 
- * @returns {Array<Object>}
+ * HTML 문자열에서 Special Thanks 데이터 추출
+ * 
+ * @param {string} html - 파싱할 HTML 문자열
+ * @returns {Array<Object>} 추출된 감사 인사 데이터 객체 배열
+ * 
+ * [추출 로직]
+ * 1. 연도별 섹션(`.gift-year`) 순회
+ * 2. 섹션 내의 선물 카드(`.gift-card`) 순회
+ * 3. data-type, 사용자명, 아이템, 날짜 정보 등 추출
  */
 function extractThanksData(html) {
     const $ = cheerio.load(html);
@@ -81,23 +102,26 @@ function extractThanksData(html) {
 }
 
 /**
- * Saves data to CSV file using streams
- * @param {Array<Object>} data 
- * @param {string} filePath 
- * @returns {Promise<void>}
+ * 데이터를 CSV 파일로 저장 (스트림 방식 사용)
+ * 
+ * @param {Array<Object>} data - 저장할 데이터 배열
+ * @param {string} filePath - 저장할 파일 경로 (절대 경로 권장)
+ * @returns {Promise<void>} 완료 시 해결되는 프로미스
  */
 function saveToCSV(data, filePath) {
     return new Promise((resolve, reject) => {
         if (!data || data.length === 0) {
-            return resolve(); // Nothing to write
+            return resolve(); // 저장할 데이터가 없으면 바로 종료
         }
 
         const columns = Object.keys(data[0]);
         const stringifier = stringify({ header: true, columns: columns });
         const writableStream = fs.createWriteStream(filePath, { encoding: 'utf8' });
 
+        // 파이프 연결: Stringifier -> File Write Stream
         stringifier.pipe(writableStream);
 
+        // 데이터 쓰기
         data.forEach(row => {
             stringifier.write(row);
         });
@@ -111,21 +135,22 @@ function saveToCSV(data, filePath) {
 }
 
 /**
- * Loads data from CSV file using streams
- * @param {string} filePath 
- * @returns {Promise<Array<Object>>}
+ * CSV 파일에서 데이터 로드 (스트림 방식 사용)
+ * 
+ * @param {string} filePath - 읽을 파일 경로
+ * @returns {Promise<Array<Object>>} 로드된 데이터 객체 배열
  */
 function loadFromCSV(filePath) {
     return new Promise((resolve, reject) => {
         if (!fs.existsSync(filePath)) {
-            return reject(new Error(`File not found: ${filePath}`));
+            return reject(new Error(`파일을 찾을 수 없습니다: ${filePath}`));
         }
 
         const data = [];
         const parser = fs.createReadStream(filePath)
             .pipe(parse({
-                columns: true,
-                trim: true,
+                columns: true, // 첫 줄을 헤더로 인식
+                trim: true,    // 공백 제거
                 skip_empty_lines: true
             }));
 
@@ -142,22 +167,24 @@ function loadFromCSV(filePath) {
 }
 
 /**
- * Validates integrity of loaded career data
- * @param {Array<Object>} data 
- * @returns {boolean}
+ * 경력 데이터 무결성 검증
+ * 
+ * @param {Array<Object>} data - 검증할 데이터
+ * @returns {boolean} 유효성 여부 (필수 키 포함 여부)
  */
 function validateCareerData(data) {
     if (!Array.isArray(data)) return false;
-    if (data.length === 0) return true; // Empty is valid but suspicious, but technically valid structure
+    if (data.length === 0) return true; // 빈 배열은 구조적으로는 유효함
     
     const requiredKeys = ['no', 'serverName', 'note', 'category', 'count', 'department', 'position', 'job', 'term'];
     return data.every(row => requiredKeys.every(key => key in row));
 }
 
 /**
- * Validates integrity of loaded thanks data
- * @param {Array<Object>} data 
- * @returns {boolean}
+ * 감사 인사 데이터 무결성 검증
+ * 
+ * @param {Array<Object>} data - 검증할 데이터
+ * @returns {boolean} 유효성 여부
  */
 function validateThanksData(data) {
     if (!Array.isArray(data)) return false;

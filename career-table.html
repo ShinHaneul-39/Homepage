@@ -3,18 +3,34 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Discord 관리자 경력(Sky Minimal 프리뷰)" />
+    <meta name="description" content="신하늘의 Discord 서버 관리자 경력을 상세히 정리한 아카이브입니다. 다년간 여러 대규모 커뮤니티에서 쌓아온 운영 노하우, 직책, 그리고 구체적인 활동 내역을 확인해보세요. 체계적인 커뮤니티 관리 역량과 경험을 투명하게 공개하며, 관리자로서의 전문성을 증명하는 공간입니다." />
     <title>Discord 관리자 경력 - 신하늘</title>
     <meta property="og:title" content="Discord 관리자 경력 - 신하늘" />
-    <meta property="og:description" content="Discord 관리자 경력 표와 필터" />
-    <meta property="og:site_name" content="신하늘" />
+    <meta property="og:description" content="신하늘의 Discord 서버 관리자 경력을 상세히 정리한 아카이브입니다. 다년간 여러 대규모 커뮤니티에서 쌓아온 운영 노하우, 직책, 그리고 구체적인 활동 내역을 확인해보세요. 체계적인 커뮤니티 관리 역량과 경험을 투명하게 공개하며, 관리자로서의 전문성을 증명하는 공간입니다." />
+    <meta property="og:site_name" content="신하늘 (Shin Haneul)" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://raw.githubusercontent.com/Shin-Haneul/Homepage/main/images/embed_image.png" />
-    <meta property="og:url" content="https://shinhaneul-39.github.io/Homepage/career_table.html" />
+    <meta property="og:image" content="https://shinhaneul-39.github.io/Homepage/assets/images/banner.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="400" />
+    <meta property="og:image:alt" content="신하늘의 개인 배너 이미지 - Sky Minimal Theme" />
+    <meta property="og:url" content="https://shinhaneul-39.github.io/Homepage/career-table.html" />
+    <meta name="theme-color" content="#87ceeb" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Discord 관리자 경력 - 신하늘" />
+    <meta name="twitter:description" content="신하늘의 Discord 서버 관리자 경력을 상세히 정리한 아카이브입니다. 다년간 여러 대규모 커뮤니티에서 쌓아온 운영 노하우, 직책, 그리고 구체적인 활동 내역을 확인해보세요." />
+    <meta name="twitter:image" content="https://shinhaneul-39.github.io/Homepage/assets/images/banner.png" />
+    <meta name="twitter:creator" content="@ShinHaneul" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Theme Init (Flash Prevention) -->
+    <script src="assets/js/theme-init.js"></script>
+
+    <!-- Styles -->
     <link rel="stylesheet" href="assets/css/main.css" />
   </head>
   <body>
@@ -60,8 +76,16 @@
                   <th data-sort-type="number">순 인원 <i class="fas fa-sort"></i></th>
                   <th class="filter-th" data-filter-type="department">부서 <i class="fas fa-chevron-down filter-toggle-icon"></i><div class="filter-options"></div></th>
                   <th class="filter-th" data-filter-type="position">직급 <i class="fas fa-chevron-down filter-toggle-icon"></i><div class="filter-options"></div></th>
-                  <th data-sort-type="string">직무 </th>
-                  <th data-sort-type="string">임기 </th>
+                  <th>직무 </th>
+                  <th data-sort-type="term" class="th-term">
+                    <div class="th-inner">
+                      임기 <i class="fas fa-sort-down"></i>
+                      <label class="term-filter" title="진행중인 임기만 보기">
+                        <input type="checkbox" id="current-term-only" class="toggle-checkbox" data-role="toggle-checkbox">
+                        <span>현직</span>
+                      </label>
+                    </div>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -72,51 +96,9 @@
         </section>
       </div>
     </main>
+    
+    <footer id="site-footer"></footer>
 
-    <footer class="footer">
-      <div class="container">
-        <div class="footer-content">
-          <div class="footer-links">
-            <a href="index.html">프로필</a>
-            <a href="career_table.html">Discord 관리자 경력</a>
-            <a href="blog.html">블로그</a>
-            <a href="special_thanks.html">고마운 사람들</a>
-          </div>
-          <div class="social-links">
-            <a href="https://github.com/ShinHaneul-39" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
-            <a href="https://www.youtube.com/@shin._.haneul" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-            <a href="https://open.spotify.com/user/312a6vtoanw5rvzhshbsx7k52cwu" target="_blank" rel="noopener noreferrer" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
-            <a href="discord://-/users/959784288717520937" title="Discord"><i class="fab fa-discord"></i></a>
-          </div>
-          <p>&copy; 2025 신하늘 | All Rights Reserved</p>
-        </div>
-      </div>
-    </footer>
-
-    <script>
-      window.PortfolioTagColorConfig = window.PortfolioTagColorConfig || {};
-      window.PortfolioTagColorConfig.category = Object.assign({}, window.PortfolioTagColorConfig.category, {
-        '친목': { bg: '#FFF69C', fg: '#1f2937' },
-        '홍보': { bg: '#FFB3A7', fg: '#1f2937' },
-        '이모지': { bg: '#fdba74', fg: '#1f2937' },
-        '커뮤니티': { bg: '#BFD3FF', fg: '#1f2937' },
-        '개발': { bg: '#C7D2FE', fg: '#1f2937' },
-        '_default': { bg: '#e2e8f0', fg: '#1f2937' }
-      });
-      window.PortfolioTagColorConfig.department = Object.assign({}, window.PortfolioTagColorConfig.department, {
-        '연합팀': { bg: '#FEF3C7', fg: '#1f2937' },
-        '홍보팀': { bg: '#FFB3A7', fg: '#1f2937' },
-        '안내팀': { bg: '#bae6fd', fg: '#1f2937' },
-        '봇 관리자': { bg: '#AFC6FF', fg: '#1f2937' },
-        '_default': undefined
-      });
-      window.PortfolioTagColorConfig.position = Object.assign({}, window.PortfolioTagColorConfig.position, {
-        '팀원': { bg: '#9EFFCF', fg: '#1f2937' },
-        '팀장': { bg: '#E9D5FF', fg: '#1f2937' },
-        '소유자': { bg: '#87CEEB', fg: '#1f2937' },
-        '_default': undefined
-      });
-    </script>
     <script src="assets/js/papaparse.min.js"></script>
     <script src="assets/js/main.js" defer></script>
     <script src="assets/js/portfolio.js" defer></script>

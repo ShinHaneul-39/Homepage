@@ -9,7 +9,7 @@ const {
     loadFromCSV, 
     validateCareerData, 
     validateThanksData 
-} = require('../utils/dataManager');
+} = require('../scripts/utils/data-manager');
 
 const TEMP_DIR = path.join(__dirname, 'temp');
 

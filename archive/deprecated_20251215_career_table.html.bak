@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Discord 관리자 경력(Sky Minimal 프리뷰)" />
+    <title>Discord 관리자 경력 - 신하늘</title>
+    <meta property="og:title" content="Discord 관리자 경력 - 신하늘" />
+    <meta property="og:description" content="Discord 관리자 경력 표와 필터" />
+    <meta property="og:site_name" content="신하늘" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://raw.githubusercontent.com/Shin-Haneul/Homepage/main/images/embed_image.png" />
+    <meta property="og:url" content="https://shinhaneul-39.github.io/Homepage/career_table.html" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Theme Init (Flash Prevention) -->
+    <script src="assets/js/theme-init.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/main.css" />
+  </head>
+  <body>
+    <header id="site-header"></header>
+    <!-- Scripts -->
+    <script src="assets/js/components.js"></script>
+    <script>
+      // Force immediate execution of component rendering
+      if (typeof ComponentManager !== 'undefined') {
+        new ComponentManager();
+      }
+    </script>
+    
+    <section class="intro section">
+      <div class="container">
+        <div class="intro-tag">Sky Minimal</div>
+        <h1>Discord 관리자 경력</h1>
+        <p class="desc">다양한 서버에서의 역할과 책임을 표로 정리했습니다</p>
+      </div>
+    </section>
+
+    <section class="hero-banner" aria-label="배너">
+      <div class="container">
+        <div class="banner-frame" role="figure" aria-label="배너 이미지">
+          <img class="banner-media" src="assets/images/banner.png" alt="배너 이미지" />
+        </div>
+      </div>
+    </section>
+
+    <main>
+      <div class="container">
+        <section id="discord-career">
+          <h2><i class="fab fa-discord"></i>Discord 관리자 경력</h2>
+          <p class="section-intro">다양한 Discord 서버에서 관리자로 활동한 경험을 정리했습니다. 각 서버에서의 역할과 책임을 통해 커뮤니티 관리 및 운영 능력을 키워왔습니다.</p>
+          <p class="last-updated"><i class="far fa-clock"></i> 최근 업데이트: 2025.12.15</p>
+          <div class="table-container">
+            <table class="discord-career-table">
+              <thead>
+                <tr>
+                  <th data-sort-type="number">No. </th>
+                  <th data-sort-type="string">서버명 </th>
+                  <th class="filter-th" data-filter-type="category">분류 <i class="fas fa-chevron-down filter-toggle-icon"></i><div class="filter-options"></div></th>
+                  <th data-sort-type="number">순 인원 <i class="fas fa-sort"></i></th>
+                  <th class="filter-th" data-filter-type="department">부서 <i class="fas fa-chevron-down filter-toggle-icon"></i><div class="filter-options"></div></th>
+                  <th class="filter-th" data-filter-type="position">직급 <i class="fas fa-chevron-down filter-toggle-icon"></i><div class="filter-options"></div></th>
+                  <th data-sort-type="string">직무 </th>
+                  <th data-sort-type="string" class="th-term">
+                    <div class="th-inner">
+                      임기 
+                      <label class="term-filter" title="진행중인 임기만 보기">
+                        <input type="checkbox" id="current-term-only" class="toggle-checkbox" data-role="toggle-checkbox">
+                        <span>현직</span>
+                      </label>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Data will be loaded from CSV -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-links">
+            <a href="index.html">프로필</a>
+            <a href="career_table.html">Discord 관리자 경력</a>
+            <a href="blog.html">블로그</a>
+            <a href="special_thanks.html">고마운 사람들</a>
+          </div>
+          <div class="social-links">
+            <a href="https://github.com/ShinHaneul-39" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="https://www.youtube.com/@shin._.haneul" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="https://open.spotify.com/user/312a6vtoanw5rvzhshbsx7k52cwu" target="_blank" rel="noopener noreferrer" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
+            <a href="discord://-/users/959784288717520937" title="Discord"><i class="fab fa-discord"></i></a>
+          </div>
+          <p>&copy; 2025 신하늘 | All Rights Reserved</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/papaparse.min.js"></script>
+    <script src="assets/js/main.js" defer></script>
+    <script src="assets/js/portfolio.js" defer></script>
+  </body>
+</html>
