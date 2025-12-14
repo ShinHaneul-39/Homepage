@@ -246,3 +246,228 @@ body > .filter-options { position: fixed; z-index: 9999; }
   background: var(--color-surface);
 }
 .banner-image { height: clamp(200px, 36vh, 400px); }
+
+/* ==========================================================================
+   Table & Tag Styles (Added for Discord Career Table)
+   ========================================================================== */
+
+/* Table Styles */
+.table-container {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-1);
+  margin: var(--space-6) 0;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
+
+/* Scrollable wrapper for table */
+.table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+th, td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+th {
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+tr:hover td {
+  background: var(--color-surface);
+}
+
+/* Filter Headers */
+.filter-th {
+  cursor: pointer;
+  user-select: none;
+}
+.filter-toggle-icon {
+  margin-left: 6px;
+  font-size: 0.8em;
+  color: var(--color-muted);
+  transition: transform 0.2s;
+}
+.filter-toggle-icon.active {
+  color: var(--color-accent);
+  transform: rotate(180deg);
+}
+
+/* Filter Dropdown */
+.filter-options {
+  position: fixed; /* JS handles positioning */
+  z-index: 1000;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 12px;
+  min-width: 180px;
+  max-height: 300px;
+  overflow-y: auto;
+  display: none;
+}
+.filter-options.active {
+  display: block;
+}
+.filter-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-border);
+}
+.btn-reset {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+.filter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.filter-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.filter-option input[type="checkbox"] {
+  accent-color: var(--color-accent);
+}
+
+/* Tags */
+.tag {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tag-fg, var(--color-text));
+  z-index: 0;
+  vertical-align: middle;
+}
+.tag::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--tag-bg, var(--color-border));
+  opacity: var(--tag-bg-alpha, 0.35); /* Default transparency */
+  border-radius: inherit;
+  z-index: -1;
+}
+.tag-emoji {
+  font-style: normal;
+  font-size: 1.1em;
+  line-height: 1;
+}
+
+/* Mobile responsive for table */
+@media (max-width: 768px) {
+  th, td {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+}
+
+/* Override for Intro Tag (keep it as text) */
+.intro .tag {
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+  display: block;
+  width: fit-content;
+}
+.intro .tag::before {
+  display: none !important;
+}
+
+
+/* Table Row Animations */
+tbody tr {
+  transition: opacity 0.2s, transform 0.2s;
+  opacity: 1;
+  transform: translateY(0);
+}
+tbody tr.is-hiding {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+
+
+/* ==========================================================================
+   Note Popover Styles
+   ========================================================================== */
+.note-trigger {
+  cursor: help;
+  position: relative;
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px dotted var(--color-muted);
+  transition: color 0.2s, border-bottom-color 0.2s;
+}
+.note-trigger:hover, .note-trigger:focus {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
+  outline: none;
+}
+
+.note-popover {
+  position: fixed; /* Fixed positioning to avoid clipping in overflow containers */
+  z-index: 2000;
+  min-width: 200px;
+  max-width: 320px;
+  background: #f8f9fa;
+  color: var(--color-text);
+  border: 1px solid #dee2e6;
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  word-wrap: break-word;
+}
+
+.note-popover.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Dark mode adjustment for popover */
+@media (prefers-color-scheme: dark) {
+  .note-popover {
+    background: #2d3748;
+    border-color: #4a5568;
+    color: #f7fafc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+}
+

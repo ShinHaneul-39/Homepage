@@ -14,35 +14,19 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css" />
-    <link rel="stylesheet" href="assets/css/style-v2.css" />
+    <link rel="stylesheet" href="assets/css/main.css" />
   </head>
   <body>
-    <!-- Topbar (Sky Minimal) -->
-    <header class="topbar">
-      <div class="container topbar-inner">
-        <div class="brand"><a href="index.html" aria-label="홈으로">신하늘</a></div>
-        <nav class="nav" aria-label="주 메뉴">
-          <a href="index.html">프로필</a>
-          <a href="career_table.html">Discord 관리자 경력</a>
-          <a href="blog.html">블로그</a>
-          <a href="special_thanks.html" class="active">고마운 사람들</a>
-        </nav>
-      </div>
-    </header>
+    <!-- Header -->
+    <header id="site-header"></header>
 
     <main>
       <!-- Intro -->
       <section class="intro section">
         <div class="container">
-          <div class="tag">Sky Minimal</div>
+          <div class="intro-tag">Sky Minimal</div>
           <h1>고마운 사람들</h1>
-          <p class="intro-text desc">Discord에서 받은 선물 기록입니다</p>
-          <div class="social-links" style="margin-top:12px; display:flex; gap:12px; align-items:center;">
-            <a href="https://github.com/ShinHaneul-39" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
-            <a href="https://www.youtube.com/@shin._.haneul" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-            <a href="https://open.spotify.com/user/312a6vtoanw5rvzhshbsx7k52cwu" target="_blank" rel="noopener noreferrer" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
-            <a href="discord://-/users/959784288717520937" title="Discord"><i class="fab fa-discord"></i></a>
-          </div>
+          <p class="intro-text desc">Discord에서 받은 선물 기록입니다.</p>
         </div>
       </section>
 
@@ -185,137 +169,9 @@
     </main>
 
     <!-- Footer -->
-    <footer class="footer">
-      <div class="container">
-        <div style="display:flex; gap:24px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
-          <nav aria-label="푸터 링크" style="display:flex; gap:16px; flex-wrap:wrap;">
-            <a href="index.html">프로필</a>
-            <a href="career_table.html">Discord 관리자 경력</a>
-            <a href="blog.html">블로그</a>
-            <a href="special_thanks.html" aria-current="page">고마운 사람들</a>
-          </nav>
-          <div style="display:flex; gap:12px; flex-wrap:wrap;">
-            <a href="https://github.com/ShinHaneul-39" target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a href="https://www.youtube.com/@shin._.haneul" target="_blank" rel="noopener noreferrer">YouTube</a>
-            <a href="https://open.spotify.com/user/312a6vtoanw5rvzhshbsx7k52cwu" target="_blank" rel="noopener noreferrer">Spotify</a>
-            <a href="discord://-/users/959784288717520937" title="Discord">Discord</a>
-          </div>
-        </div>
-        <div style="margin-top:12px">© 2025 신하늘 | All Rights Reserved</div>
-      </div>
-    </footer>
+    <footer id="site-footer"></footer>
 
-    <script src="assets/js/main.js" defer></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const filterRoot = document.querySelector('.gift-filters');
-        const tabs = filterRoot ? Array.from(filterRoot.querySelectorAll('[role="tab"]')) : [];
-        const cards = Array.from(document.querySelectorAll('.gift-card.card'));
-        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-        function applyFilter(filter) {
-          const f = (filter || 'all').toLowerCase();
-          cards.forEach(card => {
-            const type = (card.dataset.type || '').toLowerCase();
-            const show = f === 'all' || type === f;
-            if (show) {
-              if (card.hidden) {
-                card.hidden = false;
-                card.classList.remove('is-hiding');
-                if (!reduceMotion) {
-                  card.classList.add('is-hiding');
-                  requestAnimationFrame(() => card.classList.remove('is-hiding'));
-                }
-              }
-            } else {
-              if (!card.hidden) {
-                if (reduceMotion) {
-                  card.hidden = true;
-                  card.classList.remove('is-hiding');
-                } else {
-                  card.classList.add('is-hiding');
-                  let done = false;
-                  const finish = () => {
-                    if (done) return; done = true;
-                    card.hidden = true;
-                    card.classList.remove('is-hiding');
-                    card.removeEventListener('transitionend', onEnd);
-                  };
-                  const onEnd = (ev) => {
-                    if (ev.propertyName === 'opacity') finish();
-                  };
-                  card.addEventListener('transitionend', onEnd);
-                  setTimeout(finish, 250);
-                }
-              }
-            }
-          });
-        }
-
-        function setActiveTab(newTab) {
-          tabs.forEach(tab => {
-            const isActive = tab === newTab;
-            tab.classList.toggle('active', isActive);
-            tab.setAttribute('aria-selected', String(isActive));
-            tab.tabIndex = isActive ? 0 : -1;
-          });
-          applyFilter(newTab.dataset.filter || 'all');
-        }
-
-        if (tabs.length) {
-          tabs.forEach((tab, idx) => {
-            tab.addEventListener('click', (e) => { e.preventDefault(); setActiveTab(tab); tab.focus(); });
-            tab.addEventListener('keydown', (e) => {
-              const key = e.key;
-              if (key === 'ArrowRight' || key === 'ArrowLeft') {
-                e.preventDefault();
-                const dir = key === 'ArrowRight' ? 1 : -1;
-                const nextIndex = (idx + dir + tabs.length) % tabs.length;
-                tabs[nextIndex].focus();
-              } else if (key === 'Home') {
-                e.preventDefault(); tabs[0].focus();
-              } else if (key === 'End') {
-                e.preventDefault(); tabs[tabs.length - 1].focus();
-              } else if (key === 'Enter' || key === ' ') {
-                e.preventDefault(); setActiveTab(tab);
-              }
-            });
-          });
-          const current = tabs.find(t => t.getAttribute('aria-selected') === 'true') || tabs[0];
-          setActiveTab(current);
-        }
-
-        const select = document.querySelector('.year-select');
-        function scrollToId(id) {
-          const el = document.getElementById(id);
-          if (el) {
-            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            history.replaceState(null, '', `#${id}`);
-          }
-        }
-        if (select) {
-          select.addEventListener('change', () => scrollToId(select.value));
-        }
-        document.querySelectorAll('.year-links a[href^="#"]').forEach(a => {
-          a.addEventListener('click', (e) => {
-            e.preventDefault();
-            const id = a.getAttribute('href').slice(1);
-            scrollToId(id);
-          });
-        });
-
-        const years = Array.from(document.querySelectorAll('.gift-year[id]'));
-        const io = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              const id = entry.target.id;
-              if (select) select.value = id;
-              document.querySelectorAll('.year-links a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${id}`));
-            }
-          });
-        }, { root: null, rootMargin: '-72px 0px -70% 0px', threshold: 0.01 });
-        years.forEach(y => io.observe(y));
-      });
-    </script>
+    <script src="assets/js/components.js"></script>
+    <script src="assets/js/thanks.js"></script>
   </body>
 </html>

@@ -15,34 +15,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     
     <!-- Styles -->
-    <link rel="stylesheet" href="assets/css/style-v2.css" />
+    <link rel="stylesheet" href="assets/css/main.css" />
   </head>
-  <body>
-    <!-- Skip to main content for accessibility -->
-    <a href="#main-content" class="skip-link">메인 콘텐츠로 건너뛰기</a>
-    
-    <!-- Topbar -->
-    <header class="topbar" role="banner">
-      <div class="container">
-        <div class="brand">
-          <a href="index.html" aria-label="홈으로 이동">
-            <img src="assets/images/profile.png" alt="신하늘 프로필" width="32" height="32" loading="eager" />
-            <span>신하늘</span>
-          </a>
-        </div>
-        <nav class="nav" role="navigation" aria-label="주요 네비게이션">
-          <a href="index.html">프로필</a>
-          <a href="career_table.html">Discord 관리자 경력</a>
-          <a href="blog.html" aria-current="page">블로그</a>
-          <a href="special_thanks.html">고마운 사람들</a>
-        </nav>
-      </div>
-    </header>
+  <body>   
+    <!-- Header -->
+    <header id="site-header"></header>
 
     <main id="main-content">
       <!-- Intro -->
       <section class="intro section">
         <div class="container">
+          <div class="intro-tag">Sky Minimal</div>
           <h1 class="intro-title">블로그</h1>
           <p class="intro-desc">제 생각과 경험을 공유하는 공간입니다.</p>
         </div>
@@ -80,26 +63,8 @@
     </main>
 
     <!-- Footer -->
-    <footer class="footer" role="contentinfo">
-      <div class="container">
-        <div class="footer-content">
-          <nav class="footer-nav" aria-label="푸터 네비게이션">
-            <a href="index.html">프로필</a>
-            <a href="career_table.html">Discord 관리자 경력</a>
-            <a href="blog.html" aria-current="page">블로그</a>
-            <a href="special_thanks.html">고마운 사람들</a>
-          </nav>
-          <div class="social-links" role="group" aria-label="소셜 미디어 링크">
-            <a href="https://github.com/ShinHaneul-39" target="_blank" rel="noopener noreferrer" aria-label="GitHub 프로필">GitHub</a>
-            <a href="https://www.youtube.com/@shin._.haneul" target="_blank" rel="noopener noreferrer" aria-label="YouTube 채널">YouTube</a>
-            <a href="https://open.spotify.com/user/312a6vtoanw5rvzhshbsx7k52cwu" target="_blank" rel="noopener noreferrer" aria-label="Spotify 프로필">Spotify</a>
-            <a href="discord://-/users/959784288717520937" aria-label="Discord 프로필">Discord</a>
-          </div>
-        </div>
-        <div class="footer-copyright">
-          <p>© <time datetime="2025">2025</time> 신하늘 | All Rights Reserved</p>
-        </div>
-      </div>
-    </footer>
+    <footer id="site-footer"></footer>
+    
+    <script src="assets/js/components.js"></script>
   </body>
 </html>

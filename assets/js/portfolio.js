@@ -2,6 +2,31 @@
 (function(){
   'use strict';
 
+  // 태그 색상 설정 (HTML 인라인 스크립트에서 이동)
+  const TagConfig = {
+    category: {
+      '친목': { bg: '#FFF69C', fg: '#1f2937' },
+      '홍보': { bg: '#FFB3A7', fg: '#1f2937' },
+      '이모지': { bg: '#fdba74', fg: '#1f2937' },
+      '커뮤니티': { bg: '#BFD3FF', fg: '#1f2937' },
+      '개발': { bg: '#C7D2FE', fg: '#1f2937' },
+      '_default': { bg: '#e2e8f0', fg: '#1f2937' }
+    },
+    department: {
+      '연합팀': { bg: '#FEF3C7', fg: '#1f2937' },
+      '홍보팀': { bg: '#FFB3A7', fg: '#1f2937' },
+      '안내팀': { bg: '#bae6fd', fg: '#1f2937' },
+      '봇 관리자': { bg: '#AFC6FF', fg: '#1f2937' },
+      '_default': { bg: '#e2e8f0', fg: '#1f2937' }
+    },
+    position: {
+      '팀원': { bg: '#9EFFCF', fg: '#1f2937' },
+      '팀장': { bg: '#E9D5FF', fg: '#1f2937' },
+      '소유자': { bg: '#87CEEB', fg: '#1f2937' },
+      '_default': { bg: '#e2e8f0', fg: '#1f2937' }
+    }
+  };
+
   function ready(fn){
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn); else fn();
   }
@@ -19,12 +44,14 @@
       this.state = { category:new Set(), department:new Set(), position:new Set() };
       this._buildAllOptions();
       this._bindGlobalHandlers();
-      // 카테고리 텍스트를 칩(태그) 형태로 장식
-      this._decorateCategoryCells();
-      // 직급 텍스트도 칩(태그) 형태로 장식 (이모지 없음)
-      this._decoratePositionCells();
-      // 부서 텍스트도 칩(태그) 형태로 장식 (이모지 없음)
-      this._decorateDepartmentCells();
+      // 카테고리 텍스트를 칩(태그) 형태로 장식 (HTML에서 직접 구현함)
+      // this._decorateCategoryCells();
+      // 직급 텍스트도 칩(태그) 형태로 장식
+      // this._decoratePositionCells();
+      // 부서 텍스트도 칩(태그) 형태로 장식
+      // this._decorateDepartmentCells();
+      // 비고(sup)에 대한 팝오버 초기화
+      // this._initNotes();
       // 정렬 핸들러 바인딩
       this._bindSortHandlers();
     }
@@ -479,7 +506,7 @@
       const idx = this.typeToIndex['category'];
       if(idx == null || idx < 0) return;
 
-      const colors = (window.PortfolioTagColorConfig && window.PortfolioTagColorConfig.category) || {};
+      const colors = (TagConfig && TagConfig.category) || {};
       const defaultColor = colors._default || { bg:'#e2e8f0', fg:'#1f2937' };
       const emojiMap = {
         '친목': '👥',
@@ -568,9 +595,8 @@
         chip.appendChild(document.createTextNode(raw));
 
         // 직급 색상: position 맵 우선, 없으면 category의 _default 사용
-        const cfg = window.PortfolioTagColorConfig || {};
-        const posColors = (cfg.position) || {};
-        const catColors = (cfg.category) || {};
+        const posColors = (TagConfig.position) || {};
+        const catColors = (TagConfig.category) || {};
         const defaultColor = posColors._default || catColors._default || { bg:'#e2e8f0', fg:'#1f2937' };
         const color = posColors[raw] || defaultColor;
         if (color.bg) {
@@ -629,9 +655,8 @@
         cell.dataset.filterTokens = parts.join('|');
 
         // 부서 색상: department 맵 우선, 없으면 category의 _default 사용
-        const cfg = window.PortfolioTagColorConfig || {};
-        const deptColors = (cfg.department) || {};
-        const catColors = (cfg.category) || {};
+        const deptColors = (TagConfig.department) || {};
+        const catColors = (TagConfig.category) || {};
         const defaultColor = deptColors._default || catColors._default || { bg:'#e2e8f0', fg:'#1f2937' };
 
         cell.textContent = '';
@@ -655,6 +680,123 @@
           cell.appendChild(chip);
         });
       });
+    }
+
+    // ===== 노트 팝오버 기능 =====
+    _initNotes() {
+      // 1. 노트 트리거 식별 및 초기화
+      const triggers = Array.from(document.querySelectorAll('sup[data-note]'));
+      if (triggers.length === 0) return;
+
+      // 공유 팝오버 엘리먼트 생성 (하나만 사용하여 재활용)
+      let popover = document.getElementById('shared-note-popover');
+      if (!popover) {
+        popover = document.createElement('div');
+        popover.id = 'shared-note-popover';
+        popover.className = 'note-popover';
+        popover.setAttribute('role', 'tooltip');
+        document.body.appendChild(popover);
+      }
+
+      let activeTrigger = null;
+      let hideTimeout = null;
+
+      const showPopover = (trigger) => {
+        if (hideTimeout) {
+          clearTimeout(hideTimeout);
+          hideTimeout = null;
+        }
+        
+        // 내용 설정
+        popover.textContent = trigger.dataset.note;
+        
+        // 위치 계산 (Fixed positioning)
+        const rect = trigger.getBoundingClientRect();
+        const popRect = popover.getBoundingClientRect(); 
+        
+        // 일단 보이게 해서 크기 측정 가능하게 함 (opacity 0 상태)
+        popover.style.display = 'block'; 
+        
+        // 임시로 위치 잡고 측정
+        const pWidth = popover.offsetWidth;
+        const pHeight = popover.offsetHeight;
+        
+        const viewportW = window.innerWidth;
+        const viewportH = window.innerHeight;
+        const margin = 10;
+
+        // 기본 위치: 트리거 하단 중앙
+        let top = rect.bottom + 8;
+        let left = rect.left + (rect.width / 2) - (pWidth / 2);
+
+        // 화면 오른쪽 넘어감 방지
+        if (left + pWidth + margin > viewportW) {
+          left = viewportW - pWidth - margin;
+        }
+        // 화면 왼쪽 넘어감 방지
+        if (left < margin) {
+          left = margin;
+        }
+        
+        // 화면 아래쪽 넘어감 방지 -> 위로 표시
+        if (top + pHeight + margin > viewportH) {
+          top = rect.top - pHeight - 8;
+        }
+
+        popover.style.top = `${top}px`;
+        popover.style.left = `${left}px`;
+        
+        // 활성화
+        requestAnimationFrame(() => {
+          popover.classList.add('visible');
+        });
+        
+        activeTrigger = trigger;
+      };
+
+      const hidePopover = () => {
+        popover.classList.remove('visible');
+        activeTrigger = null;
+      };
+
+      // 이벤트 핸들러
+      triggers.forEach(trigger => {
+        trigger.classList.add('note-trigger');
+        trigger.setAttribute('tabindex', '0');
+        trigger.setAttribute('role', 'button');
+        trigger.setAttribute('aria-label', '비고 보기');
+
+        // 데스크톱: 호버
+        trigger.addEventListener('mouseenter', () => showPopover(trigger));
+        trigger.addEventListener('mouseleave', () => {
+          hidePopover();
+        });
+
+        // 키보드 접근성
+        trigger.addEventListener('focus', () => showPopover(trigger));
+        trigger.addEventListener('blur', () => hidePopover());
+
+        // 모바일/클릭: 토글
+        trigger.addEventListener('click', (e) => {
+          e.stopPropagation(); // 문서 클릭 핸들러 방지
+          if (activeTrigger === trigger && popover.classList.contains('visible')) {
+            hidePopover();
+          } else {
+            showPopover(trigger);
+          }
+        });
+      });
+
+      // 외부 클릭 시 닫기
+      document.addEventListener('click', (e) => {
+        if (activeTrigger && !e.target.closest('.note-trigger') && !e.target.closest('.note-popover')) {
+          hidePopover();
+        }
+      });
+      
+      window.addEventListener('scroll', () => {
+        if (activeTrigger) hidePopover();
+      }, { passive: true });
     }
   }
 

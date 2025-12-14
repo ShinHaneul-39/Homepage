@@ -13,30 +13,18 @@
     <meta property="og:site_name" content="신하늘" />
     <meta property="og:type" content="article" />
     <meta property="og:image" content="@@OG_IMAGE@@" />
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css"
-    />
-    <link rel="stylesheet" href="../assets/css/style-v2.css" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
   </head>
   <body>
-    <!-- Topbar -->
-    <header class="topbar">
-      <div class="container topbar-inner">
-        <div class="brand"><a href="../index.html" aria-label="홈으로">신하늘</a></div>
-        <nav class="nav" aria-label="주 메뉴">
-          <a href="../index.html">프로필</a>
-          <a href="../career_table.html">Discord 관리자 경력</a>
-          <a href="../blog.html">블로그</a>
-          <a href="../special_thanks.html">고마운 사람들</a>
-        </nav>
-      </div>
-    </header>
+    <!-- Header -->
+    <header id="site-header"></header>
 
     <main>
       <section class="section">
@@ -85,25 +73,39 @@
     </main>
 
     <!-- Footer -->
-    <footer class="footer">
-      <div class="container">
-        <div style="display:flex; gap:24px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
-          <nav aria-label="푸터 링크" style="display:flex; gap:16px; flex-wrap:wrap;">
-            <a href="../index.html">프로필</a>
-            <a href="../career_table.html">Discord 관리자 경력</a>
-            <a href="../blog.html" aria-current="page">블로그</a>
-            <a href="../special_thanks.html">고마운 사람들</a>
-          </nav>
-        </div>
-        <div style="margin-top:12px">© 2025 신하늘 | All Rights Reserved</div>
-      </div>
-    </footer>
+    <footer id="site-footer"></footer>
 
-    <!-- Markdown renderer: marked.js + DOMPurify -->
+    <script src="../assets/js/components.js"></script>
+    <script>
+        // Force immediate execution of component rendering
+        if (typeof ComponentManager !== 'undefined') {
+            new ComponentManager();
+        }
+    </script>
+    <!-- Markdown renderer: marked.js + DOMPurify + PrismJS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
+        // Configure marked options
+        marked.setOptions({
+          highlight: function(code, lang) {
+            if (Prism.languages[lang]) {
+              return Prism.highlight(code, Prism.languages[lang], lang);
+            } else {
+              return code;
+            }
+          },
+          breaks: true,
+          gfm: true
+        });
+
         function stripIndent(str) {
           const text = String(str || '')
             .replace(/^\uFEFF/, '')
@@ -132,26 +134,11 @@
           // 1) 커스텀 밑줄: __내용__ -> <u>내용</u>
           let text = String(md || '').replace(/__([^\n_]+?)__/g, '<u>$1</u>');
           
-          // 2) 헤딩 레벨 제한: #### 이상은 ### 로 클램프 (코드블록 내부 제외)
-          {
-            const lines = text.split('\n');
-            let inCode = false;
-            for (let i = 0; i < lines.length; i++) {
-              const raw = lines[i];
-              const trimmed = raw.trim();
-              if (/^```/.test(trimmed)) {
-                inCode = !inCode;
-                continue;
-              }
-              if (!inCode) {
-                const m = raw.match(/^\s{0,3}(#{4,})\s+(.*)$/);
-                if (m) {
-                  lines[i] = '### ' + m[2];
-                }
-              }
-            }
-            text = lines.join('\n');
-          }
+          // 2) 헤딩 레벨 제한 제거 (H1~H3 지원 요청에 따라)
+          // 기존 #### 제한 로직은 마크다운 표준을 따르도록 marked.js에 위임하거나
+          // 디자인 가이드에 따라 H4 이상을 H3로 변환하는 로직 유지 가능.
+          // 여기서는 H1~H3가 정상 동작해야 하므로 별도 제한 없이 marked가 처리하도록 둠.
+          // 단, 코드 블록 내부 보호 로직은 유지.
           
           // 3) 작은 문단: '-# ' 줄을 <p class="text-sm">로 변환
           text = text
@@ -161,6 +148,12 @@
               return m ? `<p class="text-sm">${m[1]}</p>` : line;
             })
             .join('\n');
+            
+          // 4) 다중 인용문 (>>>) 지원
+          // marked는 기본적으로 > 중첩을 지원하지만 >>> 문법은 비표준일 수 있음.
+          // >>> 를 > > > 로 변환하여 표준 마크다운 중첩 인용으로 처리
+          text = text.replace(/^>>>\s/gm, '> > > ');
+          
           return text;
         }
     
@@ -172,6 +165,13 @@
           const html = DOMPurify.sanitize(marked.parse(md));
           el.innerHTML = html;
           el.classList.add('rendered');
+          
+          // Apply syntax highlighting after rendering
+          if (window.Prism) {
+            el.querySelectorAll('pre code').forEach((block) => {
+              Prism.highlightElement(block);
+            });
+          }
         });
       });
     </script>

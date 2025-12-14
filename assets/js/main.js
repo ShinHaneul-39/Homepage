@@ -5,7 +5,7 @@ class SiteManager {
   }
 
   init() {
-    this.setupScrollNavigation();
+    // this.setupScrollNavigation(); // Legacy or unused
     // this.setupHeaderCollapse(); // 축소 모드 비활성화
     this.setupDarkModeToggle();
     this.setupGiftDates();
@@ -14,29 +14,12 @@ class SiteManager {
     this.setupInlineNotes();
   }
 
-  // 스크롤 시 네비게이션 스타일 변경
+  // 스크롤 시 네비게이션 스타일 변경 (CSS sticky로 대체됨)
+  /* 
   setupScrollNavigation() {
-    let ticking = false;
-    
-    const updateNavOnScroll = () => {
-      const nav = document.getElementById('main-nav');
-      if (!nav) return;
-      
-      if (window.scrollY > 100) {
-        nav.classList.add('scrolled');
-      } else {
-        nav.classList.remove('scrolled');
-      }
-      ticking = false;
-    };
-
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        requestAnimationFrame(updateNavOnScroll);
-        ticking = true;
-      }
-    });
+    // ... code removed ...
   }
+  */
 
   // 헤더(배너) 축소 전환: 최상단에서는 전체 표시, 스크롤하면 적당히 잘리도록
   setupHeaderCollapse() {
@@ -68,50 +51,78 @@ class SiteManager {
 
   // 다크 모드 토글 기능
   setupDarkModeToggle() {
-    const darkModeToggle = document.getElementById('dark-mode-toggle');
-    if (!darkModeToggle) return;
+    // 다크 모드 토글 버튼은 ComponentManager에 의해 동적으로 생성되므로
+    // componentsLoaded 이벤트를 기다리거나, DOM에서 요소를 찾을 때까지 대기해야 할 수 있음.
+    // 하지만 가장 안전한 방법은 이벤트 위임을 사용하거나, ComponentManager가 완료된 후 실행되도록 보장하는 것임.
+    // 여기서는 간단하게 document level 이벤트 위임을 사용하거나, 요소가 없으면 componentsLoaded를 리스닝함.
 
-    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-    const savedTheme = localStorage.getItem('theme');
+    const initToggle = () => {
+      const darkModeToggle = document.getElementById('dark-mode-toggle');
+      if (!darkModeToggle) return;
 
-    // 초기 테마 설정
-    const applyTheme = (theme) => {
-      const isDark = theme === 'dark';
-      document.body.classList.toggle('dark-mode', isDark);
-      
-      const iconClass = isDark ? 'fas fa-sun' : 'fas fa-moon';
-      const text = isDark ? ' 라이트 모드' : ' 다크 모드 ';
-      darkModeToggle.innerHTML = `<i class="${iconClass}"></i><span>${text}</span>`;
-      
-      // 접근성을 위한 aria-label 업데이트
-      darkModeToggle.setAttribute('aria-label', 
-        isDark ? '라이트 모드로 전환' : '다크 모드로 전환'
-      );
+      const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+      const savedTheme = localStorage.getItem('theme');
+
+      // 초기 테마 설정 함수
+      const applyTheme = (theme) => {
+        const isDark = theme === 'dark';
+        document.body.classList.toggle('dark-mode', isDark);
+        
+        const iconClass = isDark ? 'fas fa-sun' : 'fas fa-moon';
+        // 모바일 등 공간 부족 시 텍스트 생략 가능성을 위해 span으로 감쌈
+        // const text = isDark ? ' 라이트 모드' : ' 다크 모드 '; 
+        // 버튼 안에는 아이콘만 넣고, title/aria-label로 접근성 처리 권장 (디자인 간소화)
+        darkModeToggle.innerHTML = `<i class="${iconClass}"></i>`;
+        
+        // 접근성을 위한 aria-label 업데이트
+        const label = isDark ? '라이트 모드로 전환' : '다크 모드로 전환';
+        darkModeToggle.setAttribute('aria-label', label);
+        darkModeToggle.setAttribute('title', label);
+      };
+
+      // 초기 테마 적용
+      if (savedTheme) {
+        applyTheme(savedTheme);
+      } else if (prefersDarkScheme.matches) {
+        applyTheme('dark');
+      } else {
+        applyTheme('light');
+      }
+
+      // 기존 리스너 제거를 위해 cloneNode 사용 (중복 방지)
+      const newToggle = darkModeToggle.cloneNode(true);
+      darkModeToggle.parentNode.replaceChild(newToggle, darkModeToggle);
+
+      // 토글 이벤트 리스너 재등록
+      newToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        const currentTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+        applyTheme(currentTheme);
+        localStorage.setItem('theme', currentTheme);
+      });
+
+      // 시스템 테마 변경 감지 (한 번만 등록)
+      if (!this._themeListenerAdded) {
+        const listener = (e) => {
+          if (!localStorage.getItem('theme')) {
+            applyTheme(e.matches ? 'dark' : 'light');
+          }
+        };
+
+        if (prefersDarkScheme.addEventListener) {
+          prefersDarkScheme.addEventListener('change', listener);
+        } else {
+          prefersDarkScheme.addListener(listener); // Legacy support
+        }
+        this._themeListenerAdded = true;
+      }
     };
 
-    // 초기 테마 적용
-    if (savedTheme) {
-      applyTheme(savedTheme);
-    } else if (prefersDarkScheme.matches) {
-      applyTheme('dark');
-    } else {
-      applyTheme('light');
-    }
+    // 시도 1: 즉시 실행
+    initToggle();
 
-    // 토글 이벤트 리스너
-    darkModeToggle.addEventListener('click', (e) => {
-      e.preventDefault();
-      const currentTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
-      applyTheme(currentTheme);
-      localStorage.setItem('theme', currentTheme);
-    });
-
-    // 시스템 테마 변경 감지
-    prefersDarkScheme.addEventListener('change', (e) => {
-      if (!localStorage.getItem('theme')) {
-        applyTheme(e.matches ? 'dark' : 'light');
-      }
-    });
+    // 시도 2: componentsLoaded 이벤트 리스닝 (ComponentManager가 완료된 후)
+    document.addEventListener('componentsLoaded', initToggle);
   }
 
   // 선물 날짜 현지화 (special_thanks.html용)

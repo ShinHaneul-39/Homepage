@@ -19,31 +19,22 @@
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
   
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  
   <!-- Styles -->
-  <link rel="stylesheet" href="assets/css/style-v2.css" />
+  <link rel="stylesheet" href="assets/css/main.css" />
 </head>
 <body>
   <!-- Skip to main content for accessibility -->
-  <a href="#main-content" class="skip-link">메인 콘텐츠로 건너뛰기</a>
+  <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">메인 콘텐츠로 건너뛰기</a>
   
-  <header class="topbar">
-    <div class="container topbar-inner">
-      <div class="brand">
-        <a href="index.html" aria-label="홈으로 이동">신하늘</a>
-      </div>
-      <nav class="nav" aria-label="주 메뉴">
-        <a href="#profile" aria-current="page">프로필</a>
-        <a href="career_table.html">Discord 관리자 경력</a>
-        <a href="blog.html">블로그</a>
-        <a href="special_thanks.html">고마운 사람들</a>
-      </nav>
-    </div>
-  </header>
+  <header id="site-header"></header>
 
   <main id="main-content">
     <section class="intro section">
       <div class="container">
-        <div class="tag" role="text" aria-label="사이트 테마">Sky Minimal</div>
+        <div class="intro-tag" role="text" aria-label="사이트 테마">Sky Minimal</div>
         <h1>신하늘의 프로필</h1>
         <p class="desc">제가 어떤 사람인지 궁금하신가요? 이 링크를 눌러 알아보세요!</p>
       </div>
@@ -223,58 +214,10 @@
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <nav aria-label="푸터 네비게이션">
-          <div class="footer-links">
-            <a href="index.html" aria-current="page">프로필</a>
-            <a href="career_table.html">Discord 관리자 경력</a>
-            <a href="blog.html">블로그</a>
-            <a href="special_thanks.html">고마운 사람들</a>
-          </div>
-        </nav>
-        <div class="social-links" aria-label="소셜 미디어 링크">
-          <a 
-            href="https://github.com/ShinHaneul-39" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            aria-label="GitHub에서 신하늘 팔로우하기 (새 창에서 열림)"
-            title="GitHub"
-          >
-            <i class="fab fa-github" aria-hidden="true"></i>
-          </a>
-          <a 
-            href="https://www.youtube.com/@shin._.haneul" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            aria-label="YouTube에서 신하늘 구독하기 (새 창에서 열림)"
-            title="YouTube"
-          >
-            <i class="fab fa-youtube" aria-hidden="true"></i>
-          </a>
-          <a 
-            href="https://open.spotify.com/user/312a6vtoanw5rvzhshbsx7k52cwu" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            aria-label="Spotify에서 신하늘 팔로우하기 (새 창에서 열림)"
-            title="Spotify"
-          >
-            <i class="fab fa-spotify" aria-hidden="true"></i>
-          </a>
-          <a 
-            href="discord://-/users/959784288717520937" 
-            title="Discord로 연락하기"
-            aria-label="Discord로 신하늘에게 연락하기"
-          >
-            <i class="fab fa-discord" aria-hidden="true"></i>
-          </a>
-        </div>
-      </div>
-      <div style="margin-top: var(--space-3); text-align: center; color: var(--color-muted);">
-        © 2025 신하늘 | All Rights Reserved
-      </div>
-    </div>
-  </footer>
+  <footer id="site-footer"></footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/components.js"></script>
+  <script src="assets/js/main.js" defer></script>
 </body>
 </html>
