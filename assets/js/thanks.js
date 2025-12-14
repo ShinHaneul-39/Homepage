@@ -44,6 +44,17 @@ class ThanksManager {
       
       if (!container || !yearLinksNav || !yearSelect) return;
 
+      const userLocale = navigator.language || 'ko-KR';
+      const dateFormatter = new Intl.DateTimeFormat(userLocale, {
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric',
+          hour: '2-digit', 
+          minute: '2-digit',
+          hour12: false
+      });
+      const offsetFormatter = new Intl.DateTimeFormat('en-US', { timeZoneName: 'shortOffset' });
+
       container.innerHTML = '';
       yearLinksNav.innerHTML = '';
       yearSelect.innerHTML = '';
@@ -96,18 +107,57 @@ class ThanksManager {
               if (item.type === 'nitro') tagClass = 'tag-nitro';
               else if (item.type === 'banner') tagClass = 'tag-banner';
               
-              article.innerHTML = `
-                  <div class="gift-card-header">
-                      <span class="gift-number">${item.number}</span>
-                      <div class="gift-user">${item.user}</div>
-                  </div>
-                  <div class="gift-card-body">
-                      <span class="tag ${tagClass}">${item.item}</span>
-                  </div>
-                  <div class="gift-meta">
-                      <time datetime="${item.date}">${item.displayDate}</time>
-                  </div>
-              `;
+              // Create Header
+              const headerDiv = document.createElement('div');
+              headerDiv.className = 'gift-card-header';
+              
+              const numberSpan = document.createElement('span');
+              numberSpan.className = 'gift-number';
+              numberSpan.textContent = item.number;
+              
+              const userDiv = document.createElement('div');
+              userDiv.className = 'gift-user';
+              userDiv.textContent = item.user; // Secure: textContent escapes HTML
+              
+              headerDiv.appendChild(numberSpan);
+              headerDiv.appendChild(userDiv);
+              
+              // Create Body
+              const bodyDiv = document.createElement('div');
+              bodyDiv.className = 'gift-card-body';
+              
+              const tagSpan = document.createElement('span');
+              tagSpan.className = `tag ${tagClass}`;
+              tagSpan.textContent = item.item; // Secure
+              
+              bodyDiv.appendChild(tagSpan);
+              
+              // Create Meta
+              const metaDiv = document.createElement('div');
+              metaDiv.className = 'gift-meta';
+              
+              const timeEl = document.createElement('time');
+              timeEl.setAttribute('datetime', item.date);
+              
+              // Format date to user's locale
+              try {
+                  const dateObj = new Date(item.date);
+                  const dateStr = dateFormatter.format(dateObj);
+                  const offsetPart = offsetFormatter.formatToParts(dateObj).find(p => p.type === 'timeZoneName');
+                  const offsetStr = offsetPart ? offsetPart.value : '';
+                  
+                  timeEl.textContent = `${dateStr} (${offsetStr})`;
+              } catch (e) {
+                  timeEl.textContent = item.displayDate; // Fallback
+              }
+
+              metaDiv.appendChild(timeEl);
+              
+              // Append all to article
+              article.appendChild(headerDiv);
+              article.appendChild(bodyDiv);
+              article.appendChild(metaDiv);
+
               grid.appendChild(article);
           });
 

@@ -170,7 +170,24 @@
         resetBtn.type='button';
         resetBtn.className='btn-reset';
         resetBtn.textContent='모두 보기';
-        resetBtn.addEventListener('click',()=>{ this.state[type].clear(); this._applyFilters(); this._updateHeaderActive(header); });
+        resetBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // 드롭다운 닫힘 방지 (선택 사항) 또는 닫힘 허용
+            // 1. 상태 초기화
+            this.state[type].clear();
+            
+            // 2. UI 체크박스 모두 해제
+            const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(cb => cb.checked = false);
+            
+            // 3. 필터 적용 (모든 데이터 표시)
+            this._applyFilters();
+            
+            // 4. 헤더 활성 상태 업데이트
+            this._updateHeaderActive(header);
+            
+            // 5. 드롭다운 닫기 (사용자 경험상 닫는게 깔끔함)
+            this._closeAll();
+        });
         ctrl.appendChild(resetBtn);
         container.appendChild(ctrl);
 
@@ -610,15 +627,53 @@
         // 이미 렌더링된 경우 중복 방지
         if(cell.querySelector('.tag')) return;
 
+      // 이모지와 텍스트 분리 (정규식: 이모지 + 나머지)
+        // CSV 데이터 예시: "👥친목"
+        let emojiChar = '';
+        let textContent = raw;
+
+        // 이모지 매핑 테이블 (우선 순위 높음)
+        // 키워드가 포함되어 있으면 해당 이모지를 사용
+        for (const key in emojiMap) {
+            if (raw.includes(key)) {
+                emojiChar = emojiMap[key];
+                // 텍스트에서 키워드만 남길지, 이모지만 뺄지 결정
+                // 여기서는 기존 로직대로 텍스트 전체를 사용하되 이모지 문자가 있다면 제거
+                textContent = raw.replace(emojiChar, '').trim(); 
+                // 만약 raw가 "👥친목"이고 key가 "친목"이면 emojiChar="👥"
+                // textContent는 "👥"를 제거한 "친목"이 됨.
+                // 하지만 raw에 이모지가 없는 경우("친목")에는 textContent="친목"이 됨.
+                
+                // 추가: raw 자체에 다른 이모지가 있을 수 있으므로 정규식으로 한번 더 청소
+                textContent = textContent.replace(/[\u{1F300}-\u{1F9FF}\u2600-\u26FF\u2700-\u27BF]/gu, '').trim();
+                break;
+            }
+        }
+
+        // 매핑에 없으면 정규식으로 추출 시도
+        if (!emojiChar) {
+            const match = raw.match(/^([\u{1F300}-\u{1F9FF}\u2600-\u26FF\u2700-\u27BF])\s*(.*)$/u);
+            if (match) {
+                emojiChar = match[1];
+                textContent = match[2];
+            } else {
+                // 이모지도 없고 매핑도 안되면 기본값
+                emojiChar = '🏷️';
+            }
+        }
+        
+        // 색상 키 추출 (이모지 제외한 텍스트 기준)
+        const colorKey = textContent.trim();
+        const color = colors[colorKey] || defaultColor;
+
         const chip = document.createElement('span');
         chip.className = 'tag';
         const emoji = document.createElement('span');
         emoji.className = 'tag-emoji';
-        emoji.textContent = emojiMap[raw] || '🏷️';
+        emoji.textContent = emojiChar;
         chip.appendChild(emoji);
-        chip.appendChild(document.createTextNode(raw));
+        chip.appendChild(document.createTextNode(textContent));
 
-        const color = colors[raw] || defaultColor;
         if(color.bg) {
           chip.style.setProperty('--tag-bg', color.bg);
           chip.style.setProperty('--tag-bg-alpha', '0.35');
@@ -662,19 +717,45 @@
         // 이미 렌더링된 경우 중복 방지
         if(cell.querySelector('.tag')) return;
 
+        // 이모지 분리 로직 (Category와 동일)
+        let emojiChar = '';
+        let textContent = raw;
+        
+        // 이모지 매핑 우선
+        for (const key in emojiMap) {
+            if (raw.includes(key)) {
+                emojiChar = emojiMap[key];
+                textContent = raw.replace(emojiChar, '').trim();
+                textContent = textContent.replace(/[\u{1F300}-\u{1F9FF}\u2600-\u26FF\u2700-\u27BF]/gu, '').trim();
+                break;
+            }
+        }
+
+        if (!emojiChar) {
+            const match = raw.match(/^([\u{1F300}-\u{1F9FF}\u2600-\u26FF\u2700-\u27BF])\s*(.*)$/u);
+            if (match) {
+                emojiChar = match[1];
+                textContent = match[2];
+            } else {
+                emojiChar = '🎖️';
+            }
+        }
+        
+        const colorKey = textContent.trim();
+
         const chip = document.createElement('span');
         chip.className = 'tag';
         const emoji = document.createElement('span');
         emoji.className = 'tag-emoji';
-        emoji.textContent = emojiMap[raw] || '🎖️';
+        emoji.textContent = emojiChar;
         chip.appendChild(emoji);
-        chip.appendChild(document.createTextNode(raw));
+        chip.appendChild(document.createTextNode(textContent));
 
         // 직급 색상: position 맵 우선, 없으면 category의 _default 사용
         const posColors = (TagConfig.position) || {};
         const catColors = (TagConfig.category) || {};
         const defaultColor = posColors._default || catColors._default || { bg:'#e2e8f0', fg:'#1f2937' };
-        const color = posColors[raw] || defaultColor;
+        const color = posColors[colorKey] || defaultColor;
         if (color.bg) {
           chip.style.setProperty('--tag-bg', color.bg);
         }
@@ -726,9 +807,41 @@
         if(cell.querySelector('.tag')) return;
 
         // 쉼표 등 구분자로 다중 부서를 분리하여 여러 칩으로 렌더링
-        let parts = raw.split(/[,，、\/|]/).map(s=>s.trim()).filter(Boolean);
-        if(parts.length === 0) parts = [raw];
-        cell.dataset.filterTokens = parts.join('|');
+        // 이모지가 구분자 역할을 할 수도 있음 (예: "📣홍보팀👋안내팀")
+        // 정규식으로 이모지+텍스트 덩어리를 찾아서 분리
+        // (\p{Emoji}...)(text...)
+        
+        let parts = [];
+        // 이모지가 포함된 경우 이모지를 기준으로 분리 시도
+        // 예: "📣홍보팀👋안내팀" -> ["📣홍보팀", "👋안내팀"]
+        // 정규식: 이모지로 시작하고 다음 이모지 전까지의 문자열 매칭
+        const emojiRegex = /([\u{1F300}-\u{1F9FF}\u2600-\u26FF\u2700-\u27BF])\s*([^,，、\/|\u{1F300}-\u{1F9FF}\u2600-\u26FF\u2700-\u27BF]*)/gu;
+        
+        let match;
+        let hasEmoji = false;
+        while ((match = emojiRegex.exec(raw)) !== null) {
+            hasEmoji = true;
+            parts.push({ emoji: match[1], text: match[2].trim() });
+        }
+
+        if (!hasEmoji) {
+            // 이모지가 없으면 기존 방식대로 구분자로 분리
+             const textParts = raw.split(/[,，、\/|]/).map(s=>s.trim()).filter(Boolean);
+             textParts.forEach(t => {
+                 let emoji = '🏷️';
+                 for (const key in emojiMap) {
+                     if (t.includes(key)) {
+                         emoji = emojiMap[key];
+                         break;
+                     }
+                 }
+                 parts.push({ emoji: emoji, text: t });
+             });
+        }
+        
+        if(parts.length === 0) return; // Should not happen if raw exists
+
+        cell.dataset.filterTokens = parts.map(p => p.text).join('|');
 
         // 부서 색상: department 맵 우선, 없으면 category의 _default 사용
         const deptColors = (TagConfig.department) || {};
@@ -739,12 +852,13 @@
         parts.forEach(part => {
           const chip = document.createElement('span');
           chip.className = 'tag';
-          const emoji = document.createElement('span');
-          emoji.className = 'tag-emoji';
-          emoji.textContent = emojiMap[part] || '🏷️';
-          chip.appendChild(emoji);
-          chip.appendChild(document.createTextNode(part));
-          const color = deptColors[part] || defaultColor;
+          const emojiSpan = document.createElement('span');
+          emojiSpan.className = 'tag-emoji';
+          emojiSpan.textContent = part.emoji;
+          chip.appendChild(emojiSpan);
+          chip.appendChild(document.createTextNode(part.text));
+          
+          const color = deptColors[part.text] || defaultColor;
           if (color.bg) {
             chip.style.setProperty('--tag-bg', color.bg);
             chip.style.setProperty('--tag-bg-alpha', '0.35');
@@ -788,12 +902,10 @@
         
         // 위치 계산 (Fixed positioning)
         const rect = trigger.getBoundingClientRect();
-        const popRect = popover.getBoundingClientRect(); 
         
-        // 일단 보이게 해서 크기 측정 가능하게 함 (opacity 0 상태)
-        popover.style.display = 'block'; 
+        // CSS에서 기본적으로 display: block (visibility로 제어)이므로
+        // 별도의 display 설정 불필요. 크기 측정 가능.
         
-        // 임시로 위치 잡고 측정
         const pWidth = popover.offsetWidth;
         const pHeight = popover.offsetHeight;
         
@@ -823,16 +935,23 @@
         popover.style.left = `${left}px`;
         
         // 활성화
-        requestAnimationFrame(() => {
-          popover.classList.add('visible');
-        });
-        
+        popover.classList.add('visible');
         activeTrigger = trigger;
       };
 
       const hidePopover = () => {
         popover.classList.remove('visible');
+        // 애니메이션 후 display: none 처리 필요 시 setTimeout 사용 가능하나,
+        // CSS transition과 함께 사용 시 visible 클래스 제거만으로 충분할 수 있음.
+        // 여기서는 즉시 사라짐을 보장하기 위해 visible 제거.
+        // display: none 처리는 transitionend에서 하거나, CSS에서 opacity로 제어.
+        
+        // 안전하게 상태 초기화
         activeTrigger = null;
+        if (hideTimeout) {
+             clearTimeout(hideTimeout);
+             hideTimeout = null;
+        }
       };
 
       // 이벤트 핸들러
@@ -842,9 +961,13 @@
         trigger.setAttribute('role', 'button');
         trigger.setAttribute('aria-label', '비고 보기');
 
-        // 데스크톱: 호버
+        // 데스크톱: 호버 (즉시 반응 및 안전 지연)
         trigger.addEventListener('mouseenter', () => showPopover(trigger));
         trigger.addEventListener('mouseleave', () => {
+          // 마우스가 팝오버로 이동하는 경우를 고려하여 약간의 지연 후 닫기
+          // 만약 즉시 닫아야 한다면 delay를 0으로 하거나 setTimeout을 제거
+          // 요구사항: "마우스 포인터가 각주 영역을 완전히 벗어난 직후 팝업이 즉시 사라짐"
+          // -> 지연 없이 즉시 닫기 호출
           hidePopover();
         });
 
@@ -854,7 +977,9 @@
 
         // 모바일/클릭: 토글
         trigger.addEventListener('click', (e) => {
-          e.stopPropagation(); // 문서 클릭 핸들러 방지
+          e.preventDefault(); // 기본 동작 방지 (혹시 모를 링크 이동 등)
+          e.stopPropagation();
+          // 터치 디바이스에서는 click이 주된 인터랙션이므로 호버와 충돌 방지
           if (activeTrigger === trigger && popover.classList.contains('visible')) {
             hidePopover();
           } else {
@@ -863,10 +988,39 @@
         });
       });
 
+      // 팝오버 자체에 마우스가 올라갔을 때 닫기 방지 (선택 사항이나, 사용자 경험상 좋음)
+      // 하지만 요구사항은 "각주 영역을 벗어나면 즉시 사라짐"이므로 이 기능은 오히려 방해가 될 수 있음.
+      // 따라서 팝오버 호버 핸들링은 추가하지 않음 (각주에서 떼면 바로 닫힘).
+
       // 외부 클릭 시 닫기
       document.addEventListener('click', (e) => {
+        // 모바일 등에서 클릭으로 열었을 때 외부 클릭으로 닫기 위함
         if (activeTrigger && !e.target.closest('.note-trigger') && !e.target.closest('.note-popover')) {
           hidePopover();
+        }
+      });
+      
+      // 안전장치: 마우스가 트리거와 팝업 영역 밖으로 벗어나면 강제로 닫기
+      // mouseleave 이벤트가 누락되거나 빠른 이동 시 발생하는 문제를 방지
+      document.addEventListener('mousemove', (e) => {
+        if (!activeTrigger) return;
+        
+        const triggerRect = activeTrigger.getBoundingClientRect();
+        const popoverRect = popover.getBoundingClientRect();
+        const x = e.clientX;
+        const y = e.clientY;
+        const buffer = 10; // 여유 공간
+
+        const inTrigger = x >= triggerRect.left - buffer && x <= triggerRect.right + buffer &&
+                          y >= triggerRect.top - buffer && y <= triggerRect.bottom + buffer;
+                          
+        // 팝업이 보이는 상태라면 팝업 영역도 안전 구역으로 포함
+        const inPopover = popover.classList.contains('visible') && 
+                          x >= popoverRect.left - buffer && x <= popoverRect.right + buffer &&
+                          y >= popoverRect.top - buffer && y <= popoverRect.bottom + buffer;
+
+        if (!inTrigger && !inPopover) {
+            hidePopover();
         }
       });
       

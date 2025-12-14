@@ -5,7 +5,6 @@ class SiteManager {
   }
 
   init() {
-    // this.setupScrollNavigation(); // Legacy or unused
     // this.setupHeaderCollapse(); // 축소 모드 비활성화
     this.setupDarkModeToggle();
     this.setupGiftDates();
@@ -13,13 +12,6 @@ class SiteManager {
     this.setupKeyboardNavigation();
     this.setupInlineNotes();
   }
-
-  // 스크롤 시 네비게이션 스타일 변경 (CSS sticky로 대체됨)
-  /* 
-  setupScrollNavigation() {
-    // ... code removed ...
-  }
-  */
 
   // 헤더(배너) 축소 전환: 최상단에서는 전체 표시, 스크롤하면 적당히 잘리도록
   setupHeaderCollapse() {
@@ -121,6 +113,8 @@ class SiteManager {
     const giftDates = document.querySelectorAll('.gift-date[data-epoch]');
     if (giftDates.length === 0) return;
 
+    const userLocale = navigator.language || 'ko-KR';
+
     giftDates.forEach(el => {
       try {
         const timestamp = parseInt(el.getAttribute('data-epoch'), 10) * 1000;
@@ -141,10 +135,27 @@ class SiteManager {
           relativeTime = ` (${months}개월 전)`;
         }
 
-        el.textContent = date.toLocaleString('ko-KR') + relativeTime;
+        // Intl.DateTimeFormat을 사용하여 일관된 포맷 적용
+        const dateTimeFormatter = new Intl.DateTimeFormat(userLocale, {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
+
+        // GMT 오프셋 (GMT+9 등)
+        const offsetFormatter = new Intl.DateTimeFormat('en-US', { timeZoneName: 'shortOffset' });
+        const offsetPart = offsetFormatter.formatToParts(date).find(p => p.type === 'timeZoneName');
+        const offsetString = offsetPart ? offsetPart.value : '';
+
+        el.textContent = `${dateTimeFormatter.format(date)} (${offsetString})${relativeTime}`;
         el.setAttribute('title', `정확한 시간: ${date.toISOString()}`);
       } catch (error) {
         console.warn('Invalid date format:', el.getAttribute('data-epoch'));
+        el.textContent = '날짜 정보 없음';
+        el.classList.add('text-error');
       }
     });
   }

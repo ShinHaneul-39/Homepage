@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://shinhaneul-39.github.io/Homepage/sitemap.xml

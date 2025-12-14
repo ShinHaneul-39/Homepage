@@ -9,11 +9,22 @@
     <meta property="og:description" content="Discord에서 받은 선물 기록" />
     <meta property="og:site_name" content="신하늘" />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ko_KR" />
     <meta property="og:image" content="https://raw.githubusercontent.com/Shin-Haneul/Homepage/main/images/embed_image.png" />
     <meta property="og:url" content="https://shinhaneul-39.github.io/Homepage/special_thanks.html" />
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <meta name="theme-color" content="#3b82f6" />
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css" />
+    
+    <!-- Styles -->
     <link rel="stylesheet" href="assets/css/main.css" />
   </head>
   <body>
@@ -44,6 +55,10 @@
         <div class="container">
           <h2 class="section-title"><i class="fas fa-gift" aria-hidden="true"></i> 고마운 사람들</h2>
           <p class="section-desc">친구들이 선물해 준 내용을 정리했습니다.</p>
+          <p class="last-updated">
+            <i class="far fa-clock"></i> 최근 업데이트: 
+            <time datetime="2025-03-10T00:00:00+08:00" data-timezone-convert="true">2025.03.10</time>
+          </p>
 
           <!-- Summary -->
           <div class="gift-summary card" role="region" aria-label="요약">
@@ -80,17 +95,9 @@
     <footer id="site-footer"></footer>
 
     <script src="assets/js/components.js"></script>
+    <script src="assets/js/main.js"></script>
     <script src="assets/js/papaparse.min.js"></script>
     <script src="assets/js/thanks.js"></script>
-  </body>
-</html>        </div>
-      </section>
-    </main>
-
-    <!-- Footer -->
-    <footer id="site-footer"></footer>
-
-    <script src="assets/js/components.js"></script>
-    <script src="assets/js/thanks.js"></script>
+    <script src="assets/js/time-utils.js" defer></script>
   </body>
 </html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>이미지 배치 테스트 - 신하늘</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <!-- New Post Image CSS -->
+    <link rel="stylesheet" href="../assets/css/post-images.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header id="site-header"></header>
+
+    <main>
+      <section class="section">
+        <div class="container">
+          <article class="post-card post-full" aria-label="이미지 배치 기능 테스트">
+            <header>
+              <h1 class="post-title">이미지 배치 기능 가이드</h1>
+              <div class="post-meta">가이드 · 2025.11.07</div>
+              <p class="post-subtitle">포스트 작성 시 이미지를 자유롭게 배치하는 방법을 소개합니다.</p>
+            </header>
+            
+            <div class="post-content">
+              <p>이 페이지는 새로 구현된 이미지 레이아웃 시스템을 테스트하고 설명하기 위한 페이지입니다.</p>
+              
+              <h2>1. 기본 이미지 (중앙 정렬)</h2>
+              <p>이미지를 <code>p</code> 태그나 <code>div</code> 안에 넣으면 기본적으로 중앙 정렬되며, <code>alt</code> 속성이 있으면 자동으로 캡션이 생성됩니다.</p>
+              <img src="https://picsum.photos/id/1015/800/400" alt="아름다운 강 풍경 (자동 캡션)" title="아름다운 강 풍경 (Title 속성)">
+
+              <hr style="margin: 3rem 0; border: 0; border-top: 1px solid var(--color-border);">
+
+              <h2>2. 좌우 배치 (PC에서만 적용)</h2>
+              <p>텍스트와 이미지를 함께 배치할 때 유용합니다. 모바일에서는 자동으로 상하로 배치됩니다.</p>
+              
+              <div class="clearfix">
+                <img class="img-left" src="https://picsum.photos/id/1025/400/400" alt="왼쪽 정렬 이미지">
+                <p>이 텍스트는 이미지의 오른쪽에 흐르게 됩니다. <code>.img-left</code> 클래스를 사용하면 이미지가 왼쪽으로 뜨고(float), 텍스트가 그 옆을 채웁니다. 긴 텍스트를 작성하면 자연스럽게 이미지 아래로 감싸게 됩니다.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+              </div>
+
+              <div class="clearfix" style="margin-top: 2rem;">
+                <img class="img-right" src="https://picsum.photos/id/1035/400/400" alt="오른쪽 정렬 이미지">
+                <p>이 텍스트는 이미지의 왼쪽에 흐르게 됩니다. <code>.img-right</code> 클래스를 사용하면 이미지가 오른쪽으로 배치됩니다.</p>
+                <p>이미지 사이즈는 부모 컨테이너의 45%로 제한되어 텍스트 가독성을 해치지 않습니다. 모바일 화면에서는 이 속성이 무시되고 이미지가 꽉 찬 너비로 표시됩니다.</p>
+              </div>
+
+              <hr style="margin: 3rem 0; border: 0; border-top: 1px solid var(--color-border);">
+
+              <h2>3. 그리드 레이아웃</h2>
+              <p>여러 이미지를 갤러리처럼 보여줄 때 사용합니다.</p>
+
+              <h3>2열 그리드 (.img-grid-2)</h3>
+              <div class="img-grid img-grid-2">
+                <img src="https://picsum.photos/id/1040/600/400" alt="성 풍경">
+                <img src="https://picsum.photos/id/1041/600/400" alt="바다 풍경">
+              </div>
+
+              <h3>3열 그리드 (.img-grid-3)</h3>
+              <div class="img-grid img-grid-3">
+                <img src="https://picsum.photos/id/1050/400/400" alt="이미지 1">
+                <img src="https://picsum.photos/id/1051/400/400" alt="이미지 2">
+                <img src="https://picsum.photos/id/1052/400/400" alt="이미지 3">
+                <img src="https://picsum.photos/id/1053/400/400" alt="이미지 4">
+                <img src="https://picsum.photos/id/1054/400/400" alt="이미지 5">
+                <img src="https://picsum.photos/id/1055/400/400" alt="이미지 6">
+              </div>
+
+              <hr style="margin: 3rem 0; border: 0; border-top: 1px solid var(--color-border);">
+
+              <h2>4. 전체 너비 이미지</h2>
+              <p>본문 너비를 벗어나 화면 전체를 가로지르는 임팩트 있는 이미지를 배치할 수 있습니다.</p>
+            </div>
+            
+            <div class="img-full-width">
+              <img src="https://picsum.photos/id/1060/1600/600" alt="파노라마 뷰" title="컨테이너를 벗어난 전체 너비 이미지">
+            </div>
+
+            <div class="post-content">
+              <p>위와 같이 <code>.img-full-width</code> 클래스를 사용하면 컨테이너 제한을 무시하고 화면 끝까지 확장됩니다.</p>
+              
+              <h2>5. 라이트박스 테스트</h2>
+              <p>위의 모든 이미지는 클릭하면 확대해서 볼 수 있습니다. (Lazy Loading도 적용됨)</p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="site-footer"></footer>
+
+    <script src="../assets/js/components.js"></script>
+    <!-- New Post Image JS -->
+    <script src="../assets/js/post-images.js"></script>
+  </body>
+</html>
