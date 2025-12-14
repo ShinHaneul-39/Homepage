@@ -414,7 +414,7 @@ body.menu-open .topbar-inner {
 /* Hero Section */
 .intro {
   text-align: center;
-  padding-top: 4.5rem; /* Reduced by 25% from 6rem for better balance */
+  padding-top: 5rem; /* Adjusted to ~17% reduction from 6rem */
   padding-bottom: var(--space-8);
   position: relative;
 }
@@ -1430,7 +1430,7 @@ html.dark-mode .tag-teal { --tag-bg: rgba(20, 184, 166, 0.2); --tag-text: #99f6e
   h1 { font-size: 2rem; }
   h2 { font-size: 1.75rem; }
 
-  .intro { padding-top: 2.25rem; } /* Reduced by 25% from 3rem */
+  .intro { padding-top: 2.5rem; } /* Adjusted to ~17% reduction from 3rem */
   
   /* Navigation */
   .desktop-nav { display: none; }
