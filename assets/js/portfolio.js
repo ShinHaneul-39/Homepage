@@ -157,9 +157,14 @@
       this.filterHeaders = Array.from(this.table.querySelectorAll('th.filter-th'));
       this.typeToIndex = this._mapFilterTypeToColumnIndex(); // 필터 타입별 컬럼 인덱스 매핑
       
-      // 임기(Term) 컬럼 인덱스 찾기 (현직자 필터링용)
+      // 주요 컬럼 인덱스 찾기
       const headers = Array.from(this.table.querySelectorAll('thead th'));
       this.termColIndex = headers.findIndex(th => th.textContent.includes('임기'));
+      // No 컬럼 인덱스 찾기 (정확한 매칭을 위해 trim 및 대소문자 확인)
+      this.noColIndex = headers.findIndex(th => {
+          const text = th.textContent.trim().toLowerCase();
+          return text.startsWith('no') || text === '#';
+      });
 
       // 필터 상태 관리 (Set을 사용하여 다중 선택 지원)
       this.state = { category:new Set(), department:new Set(), position:new Set() };
@@ -232,17 +237,38 @@
                          const allHeaders = Array.from(this.table.querySelectorAll('thead th'));
                          this._updateSortIcons(allHeaders, allHeaders[index], dir);
                     });
+                } else {
+                    this._applyDefaultSort();
                 }
             } catch (e) {
                 console.error('정렬 상태 복원 실패:', e);
+                this._applyDefaultSort();
             }
         } else {
-             // 기본 정렬: 임기(Term) 기준 (최신순 또는 시간순)
-             if (this.termColIndex > -1) {
-                 this.sortState = { index: this.termColIndex, dir: 'asc' }; // asc = 과거->현재
-                 this._sortByColumn(this.termColIndex, 'term', 'asc');
-             }
+             this._applyDefaultSort();
         }
+    }
+
+    /**
+     * 기본 정렬 적용 (No 컬럼 오름차순)
+     * 캐시가 없거나 오류 발생 시 호출됩니다.
+     */
+    _applyDefaultSort() {
+        // requestAnimationFrame을 사용하여 DOM이 완전히 준비된 후 실행 보장
+        requestAnimationFrame(() => {
+            // 기본 정렬: No 컬럼 오름차순 (1, 2, 3...)
+            if (this.noColIndex > -1) {
+                this.sortState = { index: this.noColIndex, dir: 'asc' };
+                this._sortByColumn(this.noColIndex, 'number', 'asc');
+                
+                const allHeaders = Array.from(this.table.querySelectorAll('thead th'));
+                this._updateSortIcons(allHeaders, allHeaders[this.noColIndex], 'asc');
+            } else if (this.termColIndex > -1) {
+                // Fallback: 임기순
+                this.sortState = { index: this.termColIndex, dir: 'asc' }; 
+                this._sortByColumn(this.termColIndex, 'term', 'asc');
+            }
+        });
     }
 
     /**
@@ -808,74 +834,81 @@
      * 특정 컬럼 기준으로 행 정렬
      */
     _sortByColumn(colIdx, sortType, dir){
-      const rows = Array.from(this.tbody.rows);
-      // 안정 정렬(Stable Sort)을 위해 원래 인덱스 유지
-      const withIndex = rows.map((tr, i)=>({ tr, i }));
-  
-      // 한국어 정렬기 (제거됨 - 서버명 정렬 기능 삭제)
-      // const collator = new Intl.Collator('ko', { numeric: true, sensitivity: 'base' });
-  
-      const parseNumber = (text)=>{
-        if(!text) return null;
-        const m = text.replace(/[\,\s]/g,'').match(/\d+/);
-        return m ? parseInt(m[0],10) : null;
-      };
+      try {
+          const rows = Array.from(this.tbody.rows);
+          if (rows.length === 0) return;
 
-      const parseTermDate = (text) => {
-           if (!text) return -Infinity; 
-           const parts = text.split('~');
-           const startStr = parts[0].trim(); 
-           if(!startStr) return -Infinity;
-           const yymm = startStr.split('.');
-           if(yymm.length < 2) return -Infinity;
-           
-           let year = parseInt(yymm[0], 10);
-           let month = parseInt(yymm[1], 10);
-           
-           if (isNaN(year) || isNaN(month)) return -Infinity;
-           if (year < 100) year += 2000;
-           
-           return year * 100 + month; 
-       };
-  
-      const cmp = (a, b)=>{
-        const ta = a.tr.cells[colIdx]?.textContent.trim() ?? '';
-        const tb = b.tr.cells[colIdx]?.textContent.trim() ?? '';
-  
-        if(sortType === 'number'){
-          const na = parseNumber(ta);
-          const nb = parseNumber(tb);
-          const isNullA = (na===null || isNaN(na));
-          const isNullB = (nb===null || isNaN(nb));
-          if(!isNullA && !isNullB){
-            return na - nb;
-          } else if(isNullA && isNullB){
-            return a.i - b.i;
-          } else {
-            return isNullA ? 1 : -1;
-          }
-        } else if (sortType === 'term') {
-           const dateA = parseTermDate(ta);
-           const dateB = parseTermDate(tb);
-           if (dateA !== dateB) return dateA - dateB;
-           return a.i - b.i;
-        } else {
-          // 문자열 정렬 로직 제거됨 (서버명 정렬 비활성화)
-          // const res = collator.compare(ta, tb);
-          // if(res !== 0) return res;
-          return a.i - b.i;
-        }
-      };
-  
-      withIndex.sort((x,y)=> dir==='asc' ? cmp(x,y) : cmp(y,x));
-  
-      this._animateReorder(()=>{
-        const frag = document.createDocumentFragment();
-        withIndex.forEach(({tr})=> frag.appendChild(tr));
-        this.tbody.appendChild(frag);
-      });
+          // 안정 정렬(Stable Sort)을 위해 원래 인덱스 유지
+          const withIndex = rows.map((tr, i)=>({ tr, i }));
       
-      localStorage.setItem('career_table_sort', JSON.stringify({ index: colIdx, dir: dir, type: sortType }));
+          // 숫자 파싱 로직 개선 (음수, 소수점 지원, # 제거)
+          const parseNumber = (text)=>{
+            if(!text) return -Infinity; // 빈 값은 맨 뒤/앞으로 (정렬 방향에 따라 다름, 여기선 최소값 취급)
+            // 텍스트에서 숫자만 추출 (예: "#1" -> 1, "No. 10" -> 10)
+            const cleanText = text.replace(/[^\d.\-]/g, '');
+            const num = parseFloat(cleanText);
+            return isNaN(num) ? -Infinity : num;
+          };
+
+          const parseTermDate = (text) => {
+               if (!text) return -Infinity; 
+               const parts = text.split('~');
+               const startStr = parts[0].trim(); 
+               if(!startStr) return -Infinity;
+               const yymm = startStr.split('.');
+               if(yymm.length < 2) return -Infinity;
+               
+               let year = parseInt(yymm[0], 10);
+               let month = parseInt(yymm[1], 10);
+               
+               if (isNaN(year) || isNaN(month)) return -Infinity;
+               if (year < 100) year += 2000;
+               
+               return year * 100 + month; 
+           };
+      
+          const cmp = (a, b)=>{
+            const ta = a.tr.cells[colIdx]?.textContent.trim() ?? '';
+            const tb = b.tr.cells[colIdx]?.textContent.trim() ?? '';
+      
+            if(sortType === 'number'){
+              const na = parseNumber(ta);
+              const nb = parseNumber(tb);
+              
+              // 둘 다 유효한 숫자인 경우
+              if(na !== -Infinity && nb !== -Infinity){
+                return na - nb;
+              }
+              // 둘 다 숫자가 아닌 경우 원래 순서 유지
+              if(na === -Infinity && nb === -Infinity){
+                return a.i - b.i;
+              }
+              // 하나만 숫자인 경우 (숫자가 우선)
+              return na === -Infinity ? 1 : -1;
+            } else if (sortType === 'term') {
+               const dateA = parseTermDate(ta);
+               const dateB = parseTermDate(tb);
+               if (dateA !== dateB) return dateA - dateB;
+               return a.i - b.i;
+            } else {
+              // 문자열 정렬 (필요시 localeCompare 사용 가능)
+              // 현재는 기본 정렬 로직이 없으므로 원래 순서 유지
+              return a.i - b.i;
+            }
+          };
+      
+          withIndex.sort((x,y)=> dir==='asc' ? cmp(x,y) : cmp(y,x));
+      
+          this._animateReorder(()=>{
+            const frag = document.createDocumentFragment();
+            withIndex.forEach(({tr})=> frag.appendChild(tr));
+            this.tbody.appendChild(frag);
+          });
+          
+          localStorage.setItem('career_table_sort', JSON.stringify({ index: colIdx, dir: dir, type: sortType }));
+      } catch (err) {
+          console.error('정렬 중 오류 발생:', err);
+      }
     }
 
     // ===== UI 장식 (Decoration) 기능 =====
