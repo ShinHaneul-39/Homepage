@@ -1050,6 +1050,11 @@ html.dark-mode .term-filter:has(input:checked) {
   background-color: rgba(96, 165, 250, 0.2);
 }
 
+/* Discord Career Section Header */
+#discord-career h2 i {
+  margin-right: 0.75rem;
+}
+
 /* Tables (Career Table) */
 .table-container {
   /* Restore Legacy Colors & Radius for Table Context to maintain exact design */

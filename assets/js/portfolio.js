@@ -290,10 +290,11 @@
      */
     _uniqueValues(colIdx){
       const s=new Set();
+      const ignore = new Set(['-', '—', '–']);
       Array.from(this.tbody.rows).forEach(tr=>{
         const cell = tr.cells[colIdx];
         const v = cell?.dataset.filterRaw || cell?.textContent.trim();
-        if(v) s.add(v);
+        if(v && !ignore.has(v)) s.add(v);
       });
       return Array.from(s).sort((a,b)=>a.localeCompare(b,'ko'));
     }
@@ -519,9 +520,15 @@
         if(!cell) return [];
         const raw = (cell.dataset.filterRaw) || (cell.textContent.trim()) || '';
         if(!raw) return [];
+        
+        const ignore = new Set(['-', '—', '–']);
+        
         // 파이프(|)나 콤마 등으로 구분된 다중 값 처리
-        const tokens = (cell.dataset.filterTokens ? cell.dataset.filterTokens.split('|') : raw.split(/[,，、\/|]/)).map(s=>s.trim()).filter(Boolean);
-        return Array.from(new Set(tokens.length ? tokens : [raw]));
+        const tokens = (cell.dataset.filterTokens ? cell.dataset.filterTokens.split('|') : raw.split(/[,，、\/|]/))
+          .map(s=>s.trim())
+          .filter(s => s && !ignore.has(s));
+          
+        return Array.from(new Set(tokens));
       };
 
       // 필터 조건 매칭 확인 헬퍼
