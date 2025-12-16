@@ -217,7 +217,8 @@
       this._bindSortHandlers(); // 정렬 핸들러 설정
       
       // 저장된 정렬 상태 복원 (로컬 스토리지)
-      this._restoreSortState();
+      // [수정] 자동 정렬 기능 비활성화: 데이터가 원본(CSV) 순서대로 표시되도록 변경
+      // this._restoreSortState();
     }
 
     /**
