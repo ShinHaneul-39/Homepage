@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,6 +22,7 @@
     "cheerio": "^1.1.2",
     "csv-parse": "^6.1.0",
     "csv-stringify": "^6.6.0",
+    "express": "^4.19.2",
     "papaparse": "^5.5.3"
   }
 }
