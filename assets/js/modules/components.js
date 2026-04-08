@@ -234,7 +234,7 @@ class ComponentManager {
       <nav id="mobile-nav" class="mobile-nav" aria-label="모바일 주 메뉴">
         <div class="mobile-nav-header">
             <span class="mobile-brand" data-i18n="profile_name">신하늘</span>
-            <button id="mobile-menu-close" class="btn-icon" aria-label="메뉴 닫기" data-i18n="menu_close">
+            <button id="mobile-menu-close" class="btn-icon" aria-label="메뉴 닫기">
                 <i class="fas fa-times"></i>
             </button>
         </div>
