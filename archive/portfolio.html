@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="신하늘의 포트폴리오 - 다양한 프로젝트와 경험을 소개합니다." />
+    <title>포트폴리오 | 신하늘</title>
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link">메인 콘텐츠로 건너뛰기</a>
+    
+    <!-- Topbar -->
+    <header class="topbar" role="banner">
+      <div class="container">
+        <div class="brand">
+          <a href="index.html" aria-label="홈으로 이동">
+            <img src="assets/images/profile.png" alt="신하늘 프로필" width="32" height="32" loading="eager" />
+            <span>신하늘</span>
+          </a>
+        </div>
+        <nav class="nav" role="navigation" aria-label="주요 네비게이션">
+          <a href="index.html">프로필</a>
+          <a href="career_table.html">Discord 관리자 경력</a>
+          <a href="blog.html">블로그</a>
+          <a href="special_thanks.html">고마운 사람들</a>
+          <a href="portfolio.html" aria-current="page">포트폴리오</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <!-- Intro -->
+      <section class="intro section">
+        <div class="container">
+          <h1 class="intro-title">포트폴리오</h1>
+          <p class="intro-desc">다양한 프로젝트와 경험을 소개합니다.</p>
+        </div>
+      </section>
+
+      <!-- Hero Banner -->
+      <section class="hero-banner section" role="img" aria-label="포트폴리오 배너">
+        <div class="container">
+          <div class="banner-frame" role="figure" aria-label="배너 이미지">
+            <img class="banner-media" src="assets/images/banner.png" alt="배너 이미지" width="800" height="400" loading="eager" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Portfolio Categories -->
+      <section class="portfolio-categories section">
+        <div class="container">
+          <h2 class="section-title"><i class="fas fa-folder-open" aria-hidden="true"></i> 프로젝트 카테고리</h2>
+          <p class="section-desc">다양한 분야의 프로젝트들을 카테고리별로 정리했습니다.</p>
+          
+          <div class="category-filters" role="group" aria-label="프로젝트 필터">
+            <button class="filter-btn active" data-filter="all" aria-pressed="true">
+              <i class="fas fa-th" aria-hidden="true"></i>
+              전체
+            </button>
+            <button class="filter-btn" data-filter="web" aria-pressed="false">
+              <i class="fas fa-globe" aria-hidden="true"></i>
+              웹 개발
+            </button>
+            <button class="filter-btn" data-filter="discord" aria-pressed="false">
+              <i class="fab fa-discord" aria-hidden="true"></i>
+              Discord 봇
+            </button>
+            <button class="filter-btn" data-filter="design" aria-pressed="false">
+              <i class="fas fa-palette" aria-hidden="true"></i>
+              디자인
+            </button>
+            <button class="filter-btn" data-filter="other" aria-pressed="false">
+              <i class="fas fa-code" aria-hidden="true"></i>
+              기타
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Portfolio Grid -->
+      <section class="portfolio-grid section">
+        <div class="container">
+          <div class="projects-grid grid-3">
+            <!-- Web Development Projects -->
+            <article class="project-card" data-category="web" aria-labelledby="project-1-title">
+              <div class="project-image">
+                <img src="assets/images/project-placeholder.svg" alt="개인 홈페이지 프로젝트" width="300" height="200" loading="lazy" />
+                <div class="project-overlay">
+                  <div class="project-links">
+                    <a href="#" class="project-link" aria-label="프로젝트 상세보기">
+                      <i class="fas fa-eye" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://github.com/ShinHaneul-39" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="GitHub에서 보기">
+                      <i class="fab fa-github" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="project-content">
+                <h3 id="project-1-title" class="project-title">개인 홈페이지</h3>
+                <p class="project-description">HTML, CSS, JavaScript를 사용한 반응형 개인 홈페이지<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+                <div class="project-tags">
+                  <span class="tag">HTML</span>
+                  <span class="tag">CSS</span>
+                  <span class="tag">JavaScript</span>
+                </div>
+                <div class="project-meta">
+                  <time datetime="2024-01-15" class="project-date">2024.01.15</time>
+                </div>
+              </div>
+            </article>
+
+            <!-- Discord Bot Projects -->
+            <article class="project-card" data-category="discord" aria-labelledby="project-2-title">
+              <div class="project-image">
+                <img src="assets/images/project-placeholder.svg" alt="Discord 관리 봇 프로젝트" width="300" height="200" loading="lazy" />
+                <div class="project-overlay">
+                  <div class="project-links">
+                    <a href="#" class="project-link" aria-label="프로젝트 상세보기">
+                      <i class="fas fa-eye" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" class="project-link" aria-label="GitHub에서 보기">
+                      <i class="fab fa-github" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="project-content">
+                <h3 id="project-2-title" class="project-title">Discord 관리 봇</h3>
+                <p class="project-description">서버 관리를 위한 다기능 Discord 봇<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+                <div class="project-tags">
+                  <span class="tag">Python</span>
+                  <span class="tag">Discord.py</span>
+                  <span class="tag">SQLite</span>
+                </div>
+                <div class="project-meta">
+                  <time datetime="2023-12-20" class="project-date">2023.12.20</time>
+                </div>
+              </div>
+            </article>
+
+            <!-- Design Projects -->
+            <article class="project-card" data-category="design" aria-labelledby="project-3-title">
+              <div class="project-image">
+                <img src="assets/images/project-placeholder.svg" alt="UI/UX 디자인 프로젝트" width="300" height="200" loading="lazy" />
+                <div class="project-overlay">
+                  <div class="project-links">
+                    <a href="#" class="project-link" aria-label="프로젝트 상세보기">
+                      <i class="fas fa-eye" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" class="project-link" aria-label="Figma에서 보기">
+                      <i class="fab fa-figma" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="project-content">
+                <h3 id="project-3-title" class="project-title">UI/UX 디자인</h3>
+                <p class="project-description">모바일 앱을 위한 사용자 인터페이스 디자인</p>
+                <div class="project-tags">
+                  <span class="tag">Figma</span>
+                  <span class="tag">UI/UX</span>
+                  <span class="tag">Mobile</span>
+                </div>
+                <div class="project-meta">
+                  <time datetime="2024-02-10" class="project-date">2024.02.10</time>
+                </div>
+              </div>
+            </article>
+
+            <!-- Other Projects -->
+            <article class="project-card" data-category="other" aria-labelledby="project-4-title">
+              <div class="project-image">
+                <img src="assets/images/project-placeholder.svg" alt="기타 프로젝트" width="300" height="200" loading="lazy" />
+                <div class="project-overlay">
+                  <div class="project-links">
+                    <a href="#" class="project-link" aria-label="프로젝트 상세보기">
+                      <i class="fas fa-eye" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" class="project-link" aria-label="GitHub에서 보기">
+                      <i class="fab fa-github" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="project-content">
+                <h3 id="project-4-title" class="project-title">데이터 분석 도구</h3>
+                <p class="project-description">Python을 사용한 데이터 시각화 및 분석 도구</p>
+                <div class="project-tags">
+                  <span class="tag">Python</span>
+                  <span class="tag">Pandas</span>
+                  <span class="tag">Matplotlib</span>
+                </div>
+                <div class="project-meta">
+                  <time datetime="2023-11-05" class="project-date">2023.11.05</time>
+                </div>
+              </div>
+            </article>
+
+            <!-- Additional Web Project -->
+            <article class="project-card" data-category="web" aria-labelledby="project-5-title">
+              <div class="project-image">
+                <img src="assets/images/project-placeholder.svg" alt="웹 애플리케이션 프로젝트" width="300" height="200" loading="lazy" />
+                <div class="project-overlay">
+                  <div class="project-links">
+                    <a href="#" class="project-link" aria-label="프로젝트 상세보기">
+                      <i class="fas fa-eye" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" class="project-link" aria-label="GitHub에서 보기">
+                      <i class="fab fa-github" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="project-content">
+                <h3 id="project-5-title" class="project-title">웹 애플리케이션</h3>
+                <p class="project-description">React를 사용한 SPA 웹 애플리케이션</p>
+                <div class="project-tags">
+                  <span class="tag">React</span>
+                  <span class="tag">Node.js</span>
+                  <span class="tag">MongoDB</span>
+                </div>
+                <div class="project-meta">
+                  <time datetime="2024-03-01" class="project-date">2024.03.01</time>
+                </div>
+              </div>
+            </article>
+
+            <!-- Additional Discord Project -->
+            <article class="project-card" data-category="discord" aria-labelledby="project-6-title">
+              <div class="project-image">
+                <img src="assets/images/project-placeholder.svg" alt="Discord 음악 봇 프로젝트" width="300" height="200" loading="lazy" />
+                <div class="project-overlay">
+                  <div class="project-links">
+                    <a href="#" class="project-link" aria-label="프로젝트 상세보기">
+                      <i class="fas fa-eye" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" class="project-link" aria-label="GitHub에서 보기">
+                      <i class="fab fa-github" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="project-content">
+                <h3 id="project-6-title" class="project-title">Discord 음악 봇</h3>
+                <p class="project-description">YouTube 음악 재생 기능을 제공하는 Discord 봇</p>
+                <div class="project-tags">
+                  <span class="tag">JavaScript</span>
+                  <span class="tag">Discord.js</span>
+                  <span class="tag">YouTube API</span>
+                </div>
+                <div class="project-meta">
+                  <time datetime="2023-10-15" class="project-date">2023.10.15</time>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills Section -->
+      <section class="skills section">
+        <div class="container">
+          <h2 class="section-title"><i class="fas fa-code" aria-hidden="true"></i> 기술 스택</h2>
+          <p class="section-desc">사용 가능한 기술들과 숙련도를 정리했습니다.</p>
+          
+          <div class="skills-grid grid-2">
+            <div class="skill-category">
+              <h3 class="skill-category-title">
+                <i class="fas fa-laptop-code" aria-hidden="true"></i>
+                프론트엔드
+              </h3>
+              <div class="skill-list">
+                <div class="skill-item">
+                  <div class="skill-info">
+                    <span class="skill-name">HTML/CSS</span>
+                    <span class="skill-level" role="text">90%</span>
+                  </div>
+                  <div class="skill-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" aria-label="HTML/CSS 숙련도 90%">
+                    <div class="skill-progress" style="width: 90%"></div>
+                  </div>
+                </div>
+                <div class="skill-item">
+                  <div class="skill-info">
+                    <span class="skill-name">JavaScript</span>
+                    <span class="skill-level" role="text">85%</span>
+                  </div>
+                  <div class="skill-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" aria-label="JavaScript 숙련도 85%">
+                    <div class="skill-progress" style="width: 85%"></div>
+                  </div>
+                </div>
+                <div class="skill-item">
+                  <div class="skill-info">
+                    <span class="skill-name">React</span>
+                    <span class="skill-level" role="text">75%</span>
+                  </div>
+                  <div class="skill-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" aria-label="React 숙련도 75%">
+                    <div class="skill-progress" style="width: 75%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="skill-category">
+              <h3 class="skill-category-title">
+                <i class="fas fa-server" aria-hidden="true"></i>
+                백엔드
+              </h3>
+              <div class="skill-list">
+                <div class="skill-item">
+                  <div class="skill-info">
+                    <span class="skill-name">Python</span>
+                    <span class="skill-level" role="text">80%</span>
+                  </div>
+                  <div class="skill-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" aria-label="Python 숙련도 80%">
+                    <div class="skill-progress" style="width: 80%"></div>
+                  </div>
+                </div>
+                <div class="skill-item">
+                  <div class="skill-info">
+                    <span class="skill-name">Node.js</span>
+                    <span class="skill-level" role="text">70%</span>
+                  </div>
+                  <div class="skill-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" aria-label="Node.js 숙련도 70%">
+                    <div class="skill-progress" style="width: 70%"></div>
+                  </div>
+                </div>
+                <div class="skill-item">
+                  <div class="skill-info">
+                    <span class="skill-name">Database</span>
+                    <span class="skill-level" role="text">65%</span>
+                  </div>
+                  <div class="skill-bar" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" aria-label="Database 숙련도 65%">
+                    <div class="skill-progress" style="width: 65%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section class="contact section">
+        <div class="container">
+          <h2 class="section-title"><i class="fas fa-envelope" aria-hidden="true"></i> 연락하기</h2>
+          <p class="section-desc">프로젝트 협업이나 문의사항이 있으시면 언제든 연락해주세요.</p>
+          
+          <div class="contact-content">
+            <div class="contact-info">
+              <div class="contact-item">
+                <div class="contact-icon" aria-hidden="true">
+                  <i class="fab fa-discord"></i>
+                </div>
+                <div class="contact-details">
+                  <h3 class="contact-title">Discord</h3>
+                  <p class="contact-value">신하늘#0000</p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon" aria-hidden="true">
+                  <i class="fab fa-github"></i>
+                </div>
+                <div class="contact-details">
+                  <h3 class="contact-title">GitHub</h3>
+                  <p class="contact-value">ShinHaneul-39</p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon" aria-hidden="true">
+                  <i class="fab fa-youtube"></i>
+                </div>
+                <div class="contact-details">
+                  <h3 class="contact-title">YouTube</h3>
+                  <p class="contact-value">@shin._.haneul</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footnotes Section -->
+      <section class="footnotes-section section">
+        <div class="container">
+          <h3>각주</h3>
+          <ol class="footnotes-list">
+            <li id="fn1">
+              반응형 웹 디자인은 사용자의 화면 크기에 맞춰 레이아웃이 유동적으로 변하는 웹 페이지 디자인을 말합니다.
+              <a href="#fnref1" class="footnote-backref" aria-label="본문으로 돌아가기" title="본문으로 돌아가기">↩</a>
+            </li>
+            <li id="fn2">
+              Python과 Discord.py 라이브러리를 활용하여 24시간 작동하며 서버 관리에 필요한 명령어들을 제공합니다.
+              <a href="#fnref2" class="footnote-backref" aria-label="본문으로 돌아가기" title="본문으로 돌아가기">↩</a>
+            </li>
+          </ol>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+      <div class="container">
+        <div class="footer-content">
+          <nav class="footer-nav" aria-label="푸터 네비게이션">
+            <a href="index.html">프로필</a>
+            <a href="career_table.html">Discord 관리자 경력</a>
+            <a href="blog.html">블로그</a>
+            <a href="special_thanks.html">고마운 사람들</a>
+            <a href="portfolio.html" aria-current="page">포트폴리오</a>
+          </nav>
+          <div class="social-links" role="group" aria-label="소셜 미디어 링크">
+            <a href="https://github.com/ShinHaneul-39" target="_blank" rel="noopener noreferrer" aria-label="GitHub 프로필">GitHub</a>
+            <a href="https://www.youtube.com/@shin._.haneul" target="_blank" rel="noopener noreferrer" aria-label="YouTube 채널">YouTube</a>
+            <a href="https://open.spotify.com/user/312a6vtoanw5rvzhshbsx7k52cwu" target="_blank" rel="noopener noreferrer" aria-label="Spotify 프로필">Spotify</a>
+            <a href="discord://-/users/959784288717520937" aria-label="Discord 프로필">Discord</a>
+          </div>
+        </div>
+        <div class="footer-copyright">
+          <p>© <time datetime="2025">2025</time> 신하늘 | All Rights Reserved</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Portfolio Filter JavaScript -->
+    <script>
+      // 접근성을 고려한 포트폴리오 필터링 기능
+      document.addEventListener('DOMContentLoaded', function() {
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+        
+        function filterProjects(category) {
+          let visibleCount = 0;
+          
+          projectCards.forEach(card => {
+            const cardCategory = card.dataset.category;
+            const shouldShow = category === 'all' || cardCategory === category;
+            
+            if (shouldShow) {
+              card.style.display = '';
+              card.setAttribute('aria-hidden', 'false');
+              visibleCount++;
+            } else {
+              card.style.display = 'none';
+              card.setAttribute('aria-hidden', 'true');
+            }
+          });
+          
+          // 접근성: 필터 결과 알림
+          announceFilterResults(visibleCount, category);
+        }
+        
+        function announceFilterResults(count, category) {
+          const categoryNames = {
+            'all': '전체',
+            'web': '웹 개발',
+            'discord': 'Discord 봇',
+            'design': '디자인',
+            'other': '기타'
+          };
+          
+          const announcement = document.createElement('div');
+          announcement.setAttribute('aria-live', 'polite');
+          announcement.setAttribute('aria-atomic', 'true');
+          announcement.className = 'sr-only';
+          announcement.textContent = `${categoryNames[category]} 카테고리에서 ${count}개의 프로젝트가 표시됩니다.`;
+          
+          document.body.appendChild(announcement);
+          
+          setTimeout(() => {
+            if (announcement.parentNode) {
+              announcement.parentNode.removeChild(announcement);
+            }
+          }, 1000);
+        }
+        
+        function setActiveFilter(activeButton) {
+          filterButtons.forEach(btn => {
+            const isActive = btn === activeButton;
+            btn.classList.toggle('active', isActive);
+            btn.setAttribute('aria-pressed', String(isActive));
+          });
+        }
+        
+        filterButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            const category = this.dataset.filter;
+            setActiveFilter(this);
+            filterProjects(category);
+          });
+          
+          // 키보드 네비게이션 지원
+          button.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              this.click();
+            }
+          });
+        });
+        
+        // 프로젝트 카드 호버 효과 (접근성 고려)
+        projectCards.forEach(card => {
+          const overlay = card.querySelector('.project-overlay');
+          
+          card.addEventListener('mouseenter', function() {
+            if (overlay) {
+              overlay.style.opacity = '1';
+            }
+          });
+          
+          card.addEventListener('mouseleave', function() {
+            if (overlay) {
+              overlay.style.opacity = '0';
+            }
+          });
+          
+          // 키보드 포커스 지원
+          card.addEventListener('focus', function() {
+            if (overlay) {
+              overlay.style.opacity = '1';
+            }
+          });
+          
+          card.addEventListener('blur', function() {
+            if (overlay) {
+              overlay.style.opacity = '0';
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

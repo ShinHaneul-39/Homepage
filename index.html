@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <!-- Config & Analytics -->
+  <script src="assets/js/core/site-data.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script>
+    if (typeof CONFIG !== 'undefined' && CONFIG.GA_ID) {
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${CONFIG.GA_ID}`;
+      document.head.appendChild(script);
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', CONFIG.GA_ID);
+    }
+  </script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>신하늘</title>
+  <meta name="description" content="ISTP/INTP · Social, Media, Coding" />
+  <meta property="og:title" content="신하늘" />
+  <meta property="og:description" content="ISTP/INTP · Social, Media, Coding" />
+  <meta property="og:site_name" content="Shin Haneul" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://shinhaneul-39.github.io/Homepage/assets/images/banner.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="400" />
+  <meta property="og:image:alt" content="Shin Haneul Banner" />
+  <meta property="og:url" content="https://shinhaneul-39.github.io/Homepage/" />
+  <meta property="og:locale" content="ko_KR" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="신하늘" />
+  <meta name="twitter:description" content="ISTP/INTP · Social, Media, Coding" />
+  <meta name="twitter:image" content="https://shinhaneul-39.github.io/Homepage/assets/images/banner.png" />
+  <meta name="twitter:creator" content="@ShinHaneul" />
+
+  <!-- Theme Color for Discord/Browser -->
+  <meta name="theme-color" content="#87ceeb" />
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://shinhaneul-39.github.io/Homepage/" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/images/profile.png" />
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  
+  <!-- Theme Init (Flash Prevention) -->
+  <script src="assets/js/core/theme-init.js"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body>
+  <!-- Skip to main content for accessibility -->
+  <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;" data-i18n="skip_content">메인 콘텐츠로 건너뛰기</a>
+  
+  <header id="site-header"></header>
+
+  <main id="main-content">
+    <section class="intro section">
+      <div class="container">
+        <div class="intro-tag" role="text" aria-label="사이트 테마" data-i18n="intro_tag">Sky Minimal</div>
+        <h1 data-i18n="intro_title">신하늘의 프로필</h1>
+        <p class="desc" data-i18n="intro_desc">제 홈페이지에 오신 것을 환영합니다!</p>
+      </div>
+    </section>
+
+    <section class="hero-banner" aria-label="배너 이미지">
+      <div class="container">
+        <div class="banner-frame">
+          <img 
+            class="banner-media" 
+            src="assets/images/banner.png" 
+            alt="신하늘의 개인 배너 이미지"
+            width="1200"
+            height="400"
+            loading="eager"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section id="profile" class="profile section">
+      <div class="container">
+        <div class="profile-card">
+          <img 
+            class="avatar" 
+            src="assets/images/profile.png" 
+            alt="신하늘의 프로필 사진"
+            width="120"
+            height="120"
+            loading="lazy"
+          />
+          <div class="profile-info">
+            <h2 class="section-title" data-i18n="profile_name">신하늘</h2>
+            <p class="muted" data-i18n="profile_tagline">ISTP-T / INTP-A · Social, Media, Coding</p>
+            <div class="profile-actions">
+              <a 
+                class="btn primary" 
+                href="discord://-/users/959784288717520937" 
+                title="Discord로 연락하기"
+                aria-label="Discord로 신하늘에게 연락하기"
+                data-i18n="btn_contact"
+              >
+                연락하기
+              </a>
+              <a 
+                class="btn ghost" 
+                href="https://github.com/ShinHaneul-39" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="신하늘의 GitHub 프로필 보기 (새 창에서 열림)"
+                data-i18n="btn_github"
+              >
+                GitHub
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="details" class="details section" aria-labelledby="details-title">
+      <div class="container">
+        <h2 id="details-title" class="section-title" data-i18n="section_profile_details">프로필 상세</h2>
+        <div class="details-card" role="group" aria-label="상세 프로필 정보">
+          <dl class="details-grid">
+            <div class="detail-row">
+              <dt data-i18n="detail_name_label">실명</dt>
+              <dd data-i18n="detail_name_value">(비공개)</dd>
+            </div>
+            <div class="detail-row">
+              <dt data-i18n="detail_alias_label">가명</dt>
+              <dd data-i18n="detail_alias_value">신하늘</dd>
+            </div>
+            <div class="detail-row">
+              <dt data-i18n="detail_nick_label">별칭</dt>
+              <dd data-i18n="detail_nick_value">하늘이, 늘이, 늘</dd>
+            </div>
+            <div class="detail-row">
+              <dt data-i18n="detail_birth_label">출생</dt>
+              <dd>
+                <time datetime="2011-03-09T09:35:00+08:00" data-timezone-convert="true" data-i18n="detail_birth_value">
+                  2011년 3월 9일 09:35 (GMT+8)
+                </time>
+              </dd>
+            </div>
+            <div class="detail-row">
+              <dt data-i18n="detail_gender_label">성별</dt>
+              <dd data-i18n="detail_gender_value">남성</dd>
+            </div>
+            <div class="detail-row">
+              <dt data-i18n="detail_height_label">신장</dt>
+              <dd>169.0 cm</dd>
+            </div>
+            <div class="detail-row">
+              <dt data-i18n="detail_weight_label">체중</dt>
+              <dd>60.10 kg</dd>
+            </div>
+            <div class="detail-row">
+              <dt data-i18n="detail_nation_label">국적</dt>
+              <dd data-i18n="detail_nation_value">중화인민공화국 (중국)</dd>
+            </div>
+            <div class="detail-row">
+              <dt data-i18n="detail_mbti_label">MBTI</dt>
+              <dd>ISTP-T / INTP-A</dd>
+            </div>
+            <div class="detail-row">
+              <dt data-i18n="detail_hobby_label">취미</dt>
+              <dd>Social, Media, Coding</dd>
+            </div>
+            <div class="detail-row">
+              <dt data-i18n="detail_ideal_label">이상형</dt>
+              <dd data-i18n="detail_ideal_value">나이 차 ±1살, &lt;160cm, 귀엽고 착함</dd>
+            </div>
+            <div class="detail-row">
+              <dt data-i18n="detail_fandom_label">팬덤</dt>
+              <dd data-i18n="detail_fandom_value">장난감(감규리), 바위게(QWER)</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section id="tmi" class="tmi section">
+      <div class="container">
+        <h2 class="section-title" data-i18n="section_tmi">TMI</h2>
+        <p class="section-desc" data-i18n="section_tmi_desc">작지만 나를 잘 보여주는 정보들을 모았습니다.</p>
+        <div class="grid grid-3">
+          <article class="card">
+            <h3 data-i18n="tmi_1_title">가명의 기원</h3>
+            <p data-i18n="tmi_1_content">신하늘이라는 가명은 Opentown이라는 SNS에서 최초로 사용했었어요! 당시 짝사랑 중이었던 여자의 성이 신이고 좋아하는 색상이 하늘색이라 신하늘이라는 가명을 짓게 되었어요. 지금 생각해도 정말 예쁘고 귀여운 이름이라고 생각한답니다?</p>
+          </article>
+          <article class="card">
+            <h3 data-i18n="tmi_2_title">한국어 잘 하는 이유</h3>
+            <p data-i18n="tmi_2_content">중국인이 어떻게 한국어를 잘 하는지에 대해 궁금한 분들이 많을 것 같아요! 사실 별거 없고 그냥 중국인이지만 민족이 조선족이기에 당연한 거에요! 영화에서 자주 보이는 그 조선족 맞아요! 저 본인은 그냥 한국인처럼 평범히 대해주길 원한답니다?</p>
+          </article>
+          <article class="card">
+            <h3 data-i18n="tmi_3_title">디스코드 망령이에요</h3>
+            <p data-i18n="tmi_3_content">평소 여러 플랫폼에서 디스코드에 관한 질문에 답변하는걸 즐겨요! 디스코드 실험에 대한 정보에 관심이 많고, 직접 봇을 만들어보기도 했었어요! 디스코드가 아닌 곳에서 제 프로필 사진을 본다면 대부분 저 본인일거에요!</p>
+          </article>
+        </div>
+        <p class="muted" style="margin-top: var(--space-3); text-align: center;">
+          <i class="fas fa-comment" aria-hidden="true"></i> 
+          <span data-i18n="tmi_footer">이 외 궁금한 게 더 있으면 Discord에서 물어보세요!</span>
+        </p>
+      </div>
+    </section>
+
+    <section id="posts" class="posts section">
+      <div class="container">
+        <h2 class="section-title" data-i18n="section_posts">최근 포스트</h2>
+        <div class="grid grid-2">
+          <article class="post-card">
+            <a 
+              href="posts/2025-09-26_001.html" 
+              class="post-link" 
+              aria-label="Samsung Galaxy Ring 리뷰 포스트 읽기"
+            >
+              <figure class="thumb">
+                <picture>
+                  <source 
+                    srcset="assets/images/posts/2025-09-26-x7a9kd.jpg" 
+                    type="image/jpeg" 
+                  />
+                  <img 
+                    src="assets/images/embed_image.png" 
+                    alt="Samsung Galaxy Ring과 케이스 사진" 
+                    width="400"
+                    height="200"
+                    loading="lazy"
+                    onerror="this.onerror=null; this.src='assets/images/embed_image.png';" 
+                  />
+                </picture>
+              </figure>
+              <h3 class="post-title">Samsung Galaxy Ring 리뷰</h3>
+              <div class="post-meta">
+                <time datetime="2025-09-26T09:00:00+09:00" data-timezone-convert="true">2025-09-26</time>
+              </div>
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/core/i18n.js?v=2"></script>
+  <script src="assets/js/modules/components.js"></script>
+  <script src="assets/js/core/main.js" defer></script>
+  <script src="assets/js/modules/time-utils.js?v=2" defer></script>
+</body>
+</html>

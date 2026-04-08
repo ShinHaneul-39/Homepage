@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+  <!-- Config & Analytics -->
+   <script src="../assets/js/core/site-data.js"></script>
+   <script src="../assets/js/config.js"></script>
+   <script>
+    if (typeof CONFIG !== 'undefined' && CONFIG.GA_ID) {
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${CONFIG.GA_ID}`;
+      document.head.appendChild(script);
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', CONFIG.GA_ID);
+    }
+  </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Discord에서 받은 선물 기록 및 명예의 전당" />
+    <title>고마운 사람들 - 신하늘</title>
+    <meta property="og:title" content="고마운 사람들 - 신하늘" />
+    <meta property="og:description" content="Discord에서 받은 선물 기록 및 명예의 전당" />
+    <meta property="og:site_name" content="신하늘 (Shin Haneul)" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:image" content="https://shinhaneul-39.github.io/Homepage/assets/images/banner.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="400" />
+    <meta property="og:image:alt" content="신하늘의 개인 배너 이미지 - Sky Minimal Theme" />
+    <meta property="og:url" content="https://shinhaneul-39.github.io/Homepage/special-thanks.html" />
+    <meta name="theme-color" content="#87ceeb" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="고마운 사람들 - 신하늘" />
+    <meta name="twitter:description" content="신하늘에게 따뜻한 마음을 전해준 고마운 분들을 위한 명예의 전당입니다. Discord Nitro, 서버 부스트, 배너 등 다양한 방식으로 응원해주신 소중한 인연들을 기록했습니다." />
+    <meta name="twitter:image" content="https://shinhaneul-39.github.io/Homepage/assets/images/banner.png" />
+    <meta name="twitter:creator" content="@ShinHaneul" />
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- Theme Init (Flash Prevention) -->
+  <script src="../assets/js/core/theme-init.js"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header id="site-header"></header>
+
+    <main>
+      <!-- Intro -->
+      <section class="intro section">
+        <div class="container">
+          <div class="intro-tag" data-i18n="intro_tag">Sky Minimal</div>
+          <h1 data-i18n="thanks_title">고마운 사람들</h1>
+          <p class="intro-text desc" data-i18n="thanks_desc">Discord에서 받은 선물 기록입니다.</p>
+        </div>
+      </section>
+
+      <!-- Hero Banner -->
+      <section class="hero-banner" aria-label="배너">
+        <div class="container">
+          <div class="banner-frame" role="figure" aria-label="배너 이미지">
+            <img class="banner-media" src="../assets/images/banner.png" alt="배너 이미지" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Gift List -->
+      <section id="gift-log" class="section">
+        <div class="container">
+          <h2 class="section-title"><i class="fas fa-gift" aria-hidden="true"></i> <span data-i18n="thanks_title">고마운 사람들</span></h2>
+          <p class="section-desc" data-i18n="thanks_section_desc">친구들이 선물해 준 내용을 정리했습니다.</p>
+          <p class="last-updated">
+            <i class="far fa-clock"></i> <span data-i18n="last_updated" datetime="2025-03-10">최근 업데이트: 2025.03.10</span>
+          </p>
+
+          <!-- Summary -->
+          <div class="gift-summary card" role="region" aria-label="요약">
+            <div class="summary-stats">
+              <div class="stat"><strong data-i18n="thanks_summary_total">총 선물</strong><span>14</span></div>
+              <div class="stat"><strong data-i18n="thanks_summary_people">고마운 분들</strong><span>12</span></div>
+            </div>
+            <p class="summary-note muted" data-i18n="thanks_summary_note">항상 감사드립니다. 여러분의 응원이 큰 힘이 됩니다.</p>
+          </div>
+
+          <!-- Filters (UI only) -->
+          <div class="gift-filters" role="tablist" aria-label="선물 유형">
+            <button class="chip active" role="tab" aria-selected="true" tabindex="0" data-filter="all" data-i18n="filter_all">전체</button>
+            <button class="chip" role="tab" aria-selected="false" tabindex="-1" data-filter="nitro" data-i18n="filter_nitro">Nitro</button>
+            <button class="chip" role="tab" aria-selected="false" tabindex="-1" data-filter="banner" data-i18n="filter_banner">배너</button>
+            <button class="chip" role="tab" aria-selected="false" tabindex="-1" data-filter="etc" data-i18n="filter_etc">기타</button>
+          </div>
+          <div class="year-jump" aria-label="연도 바로가기">
+            <nav class="year-links" aria-label="연도 앵커">
+              <!-- Years will be loaded dynamically -->
+            </nav>
+            <select class="year-select" aria-label="연도 선택">
+              <!-- Options will be loaded dynamically -->
+            </select>
+          </div>
+
+          <!-- Gift Lists will be loaded here -->
+          <div id="gift-list-container"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="site-footer"></footer>
+
+    <script src="../assets/js/core/i18n.js?v=2"></script>
+    <script src="../assets/js/modules/components.js"></script>
+    <script src="../assets/js/core/main.js"></script>
+    <script src="../assets/js/vendor/papaparse.min.js"></script>
+    <script src="../assets/js/pages/thanks.js"></script>
+    <script src="../assets/js/modules/time-utils.js?v=2" defer></script>
+  </body>
+</html>
